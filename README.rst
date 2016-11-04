@@ -1,4 +1,6 @@
 pytest-testdox
 ==============
 
-A [TestDox format](https://en.wikipedia.org/wiki/TestDox) reporter for pytest
+A `TestDox format`_ reporter for pytest
+
+.. _TestDox format: https://en.wikipedia.org/wiki/TestDox
