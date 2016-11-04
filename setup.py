@@ -23,6 +23,7 @@ setup(
     install_requires=[
         'pytest'
     ],
+    packages=['pytest_testdox'],
     classifiers=[
         'Development Status :: 4 - Beta',
         'Framework :: Pytest',
