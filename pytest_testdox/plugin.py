@@ -25,7 +25,7 @@ def pytest_configure(config):
 
 class TestdoxTerminalReporter(TerminalReporter):
 
-    _last_class_name = None
+    _last_header = ''
 
     def pytest_runtest_logstart(self, nodeid, location):
         pass
@@ -38,12 +38,19 @@ class TestdoxTerminalReporter(TerminalReporter):
 
         outcome = 'x' if report.outcome == 'passed' else ' '
         title = node_parts[-1]
-        class_name = node_parts[-3] if '()' in node_parts[-2] else None
+        class_name = node_parts[-3] if '()' in node_parts[-2] else ''
+        module_name = node_parts[0]
 
-        if class_name != self._last_class_name:
-            self._last_class_name = class_name
+        if class_name:
+            header = class_name.replace('Test', '')
+        else:
+            header = module_name.replace('.py', '').replace('_', ' ')
+            header = re.sub(r'^test', '', header).strip()
+
+        if header != self._last_header:
+            self._last_header = header
             self._tw.sep(' ')
-            self._tw.line(class_name.replace('Test', ''))
+            self._tw.line(header)
 
         self._tw.line('- [{outcome}] {title}'.format(
             outcome=outcome,
