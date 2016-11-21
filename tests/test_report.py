@@ -3,7 +3,7 @@
 
 class TestReport(object):
 
-    def test_prints_a_passing_test(self, testdir):
+    def test_should_print_a_passing_test(self, testdir):
         testdir.makepyfile("""
             def test_a_feature_is_working():
                 assert True
@@ -21,7 +21,7 @@ class TestReport(object):
         result = testdir.runpytest('--testdox')
         result.stdout.fnmatch_lines('- [ ] a failed test of a feature')
 
-    def test_prints_the_test_class_name(self, testdir):
+    def test_should_print_the_test_class_name(self, testdir):
         testdir.makepyfile("""
             class TestFoo(object):
                 def test_foo(self):
@@ -39,7 +39,10 @@ class TestReport(object):
         lines = result.stdout.get_lines_after('Bar')
         assert '- [x] bar' in lines[0]
 
-    def test_prints_the_module_name(self, testdir):
+    def test_should_print_the_module_name_of_a_test_without_class(
+        self,
+        testdir
+    ):
         testdir.makefile('.py', test_module_name="""
             def test_a_failed_test_of_a_feature():
                 assert False
