@@ -4,6 +4,8 @@ import re
 import pytest
 from _pytest.terminal import TerminalReporter
 
+from . import formatters
+
 
 def pytest_addoption(parser):
     group = parser.getgroup('terminal reporting', 'reporting', after='general')
@@ -36,16 +38,14 @@ class TestdoxTerminalReporter(TerminalReporter):
 
         node_parts = report.nodeid.split('::')
 
-        outcome = 'x' if report.outcome == 'passed' else ' '
         title = node_parts[-1]
         class_name = node_parts[-3] if '()' in node_parts[-2] else ''
         module_name = node_parts[0]
 
         if class_name:
-            header = class_name.replace('Test', '')
+            header = formatters.format_class_name(class_name)
         else:
-            header = module_name.replace('.py', '').replace('_', ' ')
-            header = re.sub(r'^test', '', header).strip()
+            header = formatters.format_module_name(module_name)
 
         if header != self._last_header:
             self._last_header = header
@@ -53,10 +53,6 @@ class TestdoxTerminalReporter(TerminalReporter):
             self._tw.line(header)
 
         self._tw.line('- [{outcome}] {title}'.format(
-            outcome=outcome,
-            title=self._format_title(title)
+            outcome=formatters.format_outcome(report.outcome),
+            title=formatters.format_title(title)
         ))
-
-    def _format_title(self, title):
-        title = re.sub(r'^test', '', title)
-        return title.replace('_', ' ').strip()
