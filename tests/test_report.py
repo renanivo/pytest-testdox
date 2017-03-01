@@ -12,7 +12,7 @@ class TestReport(object):
         result = testdir.runpytest('--testdox')
         result.stdout.fnmatch_lines('- [x] a feature is working')
 
-    def test_prints_a_failing_test(self, testdir):
+    def test_should_print_a_failing_test(self, testdir):
         testdir.makepyfile("""
             def test_a_failed_test_of_a_feature():
                 assert False
