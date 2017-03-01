@@ -1,10 +1,8 @@
 # -*- coding: utf-8 -*-
-import re
-
 import pytest
 from _pytest.terminal import TerminalReporter
 
-from . import formatters
+from . import formatters, parsers
 
 
 def pytest_addoption(parser):
@@ -29,23 +27,18 @@ class TestdoxTerminalReporter(TerminalReporter):
 
     _last_header = ''
 
-    def pytest_runtest_logstart(self, nodeid, location):
-        pass
-
     def pytest_runtest_logreport(self, report):
         if report.when != 'call':
             return
 
-        node_parts = report.nodeid.split('::')
+        node = parsers.parse_node(report.nodeid)
 
-        title = node_parts[-1]
-        class_name = node_parts[-3] if '()' in node_parts[-2] else ''
-        module_name = node_parts[0]
+        self._tw.line(report.nodeid)
 
-        if class_name:
-            header = formatters.format_class_name(class_name)
+        if node.class_name:
+            header = formatters.format_class_name(node.class_name)
         else:
-            header = formatters.format_module_name(module_name)
+            header = formatters.format_module_name(node.module_name)
 
         if header != self._last_header:
             self._last_header = header
@@ -54,5 +47,5 @@ class TestdoxTerminalReporter(TerminalReporter):
 
         self._tw.line('- [{outcome}] {title}'.format(
             outcome=formatters.format_outcome(report.outcome),
-            title=formatters.format_title(title)
+            title=formatters.format_title(node.title)
         ))
