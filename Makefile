@@ -6,12 +6,15 @@ help:  ## This help
 install:  ## Install package for development
 	@pip install -r requirements-dev.txt
 
+test:
+	@pytest --testdox --cov --cov-report=xml tests/
+
+check:  ## Run static code checks
+	isort --check
+	flake8 .
+
 clean:  ## Clean cache and temporary files
 	@find . -name "*.pyc" | xargs rm -rf
 	@find . -name "*.pyo" | xargs rm -rf
 	@find . -name "__pycache__" -type d | xargs rm -rf
 	@rm -rf *.egg-info
-
-check:  ## Run static code checks
-	isort --check
-	flake8 .
