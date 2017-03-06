@@ -33,8 +33,6 @@ class TestdoxTerminalReporter(TerminalReporter):
 
         node = parsers.parse_node(report.nodeid)
 
-        self._tw.line(report.nodeid)
-
         if node.class_name:
             header = formatters.format_class_name(node.class_name)
         else:
