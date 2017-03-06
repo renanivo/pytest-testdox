@@ -3,7 +3,7 @@ from __future__ import unicode_literals
 
 import pytest
 
-from pytest_testdox import parsers, formatters
+from pytest_testdox import formatters, parsers
 
 
 class TestParseNodeId(object):
