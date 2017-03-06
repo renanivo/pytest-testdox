@@ -1,0 +1,21 @@
+language: python
+python:
+  - 2.7
+  - 3.5
+  - 3.6
+
+cache:
+  directories:
+    - $HOME/.cache/pip
+
+before_install:
+  - pip install codecov
+
+install:
+  - make install
+
+script:
+  - make check test
+
+after_success:
+  - codecov
