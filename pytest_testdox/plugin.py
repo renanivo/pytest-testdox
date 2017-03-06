@@ -28,6 +28,11 @@ class TestdoxTerminalReporter(TerminalReporter):
     _last_header = ''
 
     def pytest_runtest_logreport(self, report):
+        res = self.config.hook.pytest_report_teststatus(report=report)
+        category = res[0]
+        self.stats.setdefault(category, []).append(report)
+        self._tests_ran = True
+
         if report.when != 'call':
             return
 
@@ -47,4 +52,3 @@ class TestdoxTerminalReporter(TerminalReporter):
             outcome=formatters.format_outcome(report.outcome),
             title=node.title
         ))
-

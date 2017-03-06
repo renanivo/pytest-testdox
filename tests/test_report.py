@@ -50,3 +50,12 @@ class TestReport(object):
 
         result = testdir.runpytest('--testdox')
         result.stdout.fnmatch_lines('module name')
+
+    def test_should_print_test_summary(self, testdir):
+        testdir.makefile('.py', test_module_name="""
+            def test_a_passing_test():
+                assert True
+        """)
+
+        result = testdir.runpytest('--testdox')
+        assert '1 passed' in result.stdout.str()
