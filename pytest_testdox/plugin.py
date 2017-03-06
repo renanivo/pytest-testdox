@@ -34,9 +34,9 @@ class TestdoxTerminalReporter(TerminalReporter):
         node = parsers.parse_node(report.nodeid)
 
         if node.class_name:
-            header = formatters.format_class_name(node.class_name)
+            header = node.class_name
         else:
-            header = formatters.format_module_name(node.module_name)
+            header = node.module_name
 
         if header != self._last_header:
             self._last_header = header
@@ -45,5 +45,6 @@ class TestdoxTerminalReporter(TerminalReporter):
 
         self._tw.line('- [{outcome}] {title}'.format(
             outcome=formatters.format_outcome(report.outcome),
-            title=formatters.format_title(node.title)
+            title=node.title
         ))
+
