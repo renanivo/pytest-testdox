@@ -7,7 +7,7 @@ install:  ## Install package for development
 	@pip install -r requirements-dev.txt
 
 test:
-	@py.test --testdox --cov --cov-report=xml tests/
+	@py.test --testdox tests/ --cov pytest_testdox --cov-report=xml
 
 check:  ## Run static code checks
 	isort --check
