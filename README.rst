@@ -10,3 +10,16 @@ pytest-testdox
 A `TestDox format`_ reporter for pytest
 
 .. _TestDox format: https://en.wikipedia.org/wiki/TestDox
+
+::
+
+    Pytest TestDox
+    - [x] prints a bdd style output to your test functions
+    - [x] lets you focus on the behavior
+
+Usage
+-----
+
+.. code:: python
+
+    pytest --testdox your-tests/
