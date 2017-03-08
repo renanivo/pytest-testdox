@@ -20,6 +20,6 @@ A `TestDox format`_ reporter for pytest
 Usage
 -----
 
-.. code:: python
+::
 
     pytest --testdox your-tests/
