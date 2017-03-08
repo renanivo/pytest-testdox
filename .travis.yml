@@ -1,21 +1,25 @@
 language: python
 python:
-  - 2.7
-  - 3.5
-  - 3.6
-
+- 2.7
+- 3.5
+- 3.6
 cache:
   directories:
-    - $HOME/.cache/pip
-
+  - $HOME/.cache/pip
 before_install:
-  - pip install codecov
-
+- pip install codecov
 install:
-  - make install
-
+- make install
 script:
-  - make check test
-
+- make check test
 after_success:
-  - codecov
+- codecov
+deploy:
+  provider: pypi
+  user: renanivo
+  distributions: sdist bdist_wheel
+  password:
+    secure: OSuOCSZxq7bFn72KChsjtoc+gayw/Otczpg35mg4h6Y1mRnuXLBfgii9Hv/dnB0iKM1Ek4CvQetpqvFHyvyzKPLwgLc72HIkCR9VlFgGUfRRZ65epNAEls57kyD+TJz5pB/FPUw607wKQz0qA4LS/2ZONJO3vCfBqD5fnYeBrN1lLK1kGTp/1lZQAiNEmLPpnIhljrBME2fKXHcgcSFXG2lBJNUH3DVq7cvhN/+Iu1KKJG/Gzoi6rI8PDVzlEnU+meRCTDVKiG1iGdhvS25SMIMtE8YhYZHj9lqVzSA3ivmPf3p8ymO65LuwTGghq+CPyMa/lQ34uU4y7HAROYg3ynhODvZjdb4XhuyyrVlBVVRv0fYNmgZMYnWxSoG78vUWRUlfstNBzzwvKHySN3o0rvew6UjO8bWFTtGzGIhsKcHxveZv4K0WNxgGd9aJCVWEEB3HjiTX/oB2Wh8bay12Qk3s8P2HHm9oQSFtURXYbWY3TXe0k5l41NmSlmg99NdQEmB9YCIfW3ujsj7OQXvoJ211p6+3z8u86GQDQt+UyssAriLMiz3hUaxl6EK6cduqaZ3EXepbzuxfN7V2KoRrgXxE+IY9zzcG/mAy6EOwCvseX9hpOS16yzvdTCEdYzDGIh7RECRZGgm6kI9LKdQIzLBphCqE1SD6gFqf3nj7JKE=
+  on:
+    tags: true
+    repo: renanivo/pytest-testdox
