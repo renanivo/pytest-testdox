@@ -13,7 +13,7 @@ def read(fname):
 
 setup(
     name='pytest-testdox',
-    version='0.0.1',
+    version='0.1.0',
     description='A testdox format reporter for pytest',
     long_description=read('README.rst'),
     author='Renan Ivo',
