@@ -17,6 +17,15 @@ A `TestDox format`_ reporter for pytest
     - [x] prints a bdd style output to your test functions
     - [x] lets you focus on the behavior
 
+
+Install
+-------
+
+::
+
+    pip install pytest-testdox
+
+
 Usage
 -----
 
