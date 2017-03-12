@@ -12,9 +12,7 @@ Node = namedtuple('Node', 'title class_name module_name')
 def parse_node(nodeid):
     node_parts = nodeid.split('::')
     title = formatters.format_title(node_parts[-1])
-    module_name = formatters.format_module_name(
-        re.sub('.py$', '', node_parts[0]).replace('/', '.')
-    )
+    module_name = formatters.format_module_name(node_parts[0])
 
     class_name = node_parts[-2]
     if '()' not in class_name:
