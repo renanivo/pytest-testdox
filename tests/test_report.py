@@ -59,3 +59,21 @@ class TestReport(object):
 
         result = testdir.runpytest('--testdox')
         assert '1 passed' in result.stdout.str()
+
+    def test_should_use_python_patterns_configuration(self, testdir):
+        testdir.makeini("""
+            [pytest]
+            python_classes=Describe*
+            python_files=*spec.py
+            python_functions=it*
+        """)
+        testdir.makefile('.py', module_spec="""
+            class DescribeTest(object):
+                def it_runs(self):
+                    pass
+        """)
+
+        result = testdir.runpytest('--testdox')
+
+        lines = result.stdout.get_lines_after('Test')
+        assert '- [x] runs' in lines[0]
