@@ -21,7 +21,7 @@ setup(
     url='https://github.com/renanivo/pytest-testdox',
     keywords='pytest testdox test report bdd',
     install_requires=[
-        'pytest'
+        'pytest>=3.0.0'
     ],
     packages=['pytest_testdox'],
     classifiers=[
