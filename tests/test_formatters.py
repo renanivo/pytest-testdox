@@ -42,7 +42,7 @@ class TestFormatClassName(object):
         result = formatters.format_class_name('AThingBuilder', patterns)
         assert result == 'A Thing Builder'
 
-    def test_should_remove_test_prefix(self, patterns):
+    def test_should_remove_test_pattern(self, patterns):
         assert formatters.format_class_name('TestAThing', patterns) == (
             'A Thing'
         )
@@ -57,7 +57,7 @@ class TestFormatModuleName(object):
     def patterns(self):
         return ['test*.py']
 
-    def test_should_remove_py_file_suffix(self, patterns):
+    def test_should_remove_py_file_pattern(self, patterns):
         assert formatters.format_module_name('pymodule.py', patterns) == (
             'pymodule'
         )
@@ -67,7 +67,7 @@ class TestFormatModuleName(object):
             'a test name'
         )
 
-    def test_should_remove_test_prefix(self, patterns):
+    def test_should_remove_test_pattern(self, patterns):
         assert formatters.format_module_name('test_a_thing.py', patterns) == (
             'a thing'
         )
