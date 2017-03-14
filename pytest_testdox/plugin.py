@@ -38,7 +38,12 @@ class TestdoxTerminalReporter(TerminalReporter):
         if report.when != 'call':
             return
 
-        node = parsers.parse_node(report.nodeid)
+        pattern_config = parsers.PatternConfig(
+            files=self.config.getini('python_files'),
+            functions=self.config.getini('python_functions'),
+            classes=self.config.getini('python_classes')
+        )
+        node = parsers.parse_node(report.nodeid, pattern_config)
 
         if node.class_name:
             header = node.class_name

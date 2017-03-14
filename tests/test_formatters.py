@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
+import pytest
 from pytest_testdox import formatters
 
 
@@ -15,36 +16,72 @@ class TestFormatOutcome(object):
 
 class TestFormatTitle(object):
 
-    def test_should_replace_underscores_with_spaces(self):
-        assert formatters.format_title('a_test_name') == 'a test name'
+    @pytest.fixture
+    def patterns(self):
+        return ['test*']
 
-    def test_should_remove_test_prefix(self):
-        assert formatters.format_title('test_a_thing') == 'a thing'
-        assert formatters.format_title('a_thing_test') == 'a thing test'
+    def test_should_replace_underscores_with_spaces(self, patterns):
+        assert formatters.format_title('a_test_name', patterns) == (
+            'a test name'
+        )
+
+    def test_should_remove_test_pattern(self, patterns):
+        assert formatters.format_title('test_a_thing', patterns) == 'a thing'
+        assert formatters.format_title('a_thing_test', patterns) == (
+            'a thing test'
+        )
 
 
 class TestFormatClassName(object):
 
-    def test_should_add_spaces_before_upercased_letters(self):
-        result = formatters.format_class_name('AThingBuilder')
+    @pytest.fixture
+    def patterns(self):
+        return ['Test*']
+
+    def test_should_add_spaces_before_upercased_letters(self, patterns):
+        result = formatters.format_class_name('AThingBuilder', patterns)
         assert result == 'A Thing Builder'
 
-    def test_should_remove_test_prefix(self):
-        assert formatters.format_class_name('TestAThing') == 'A Thing'
-        assert formatters.format_class_name('AThingTest') == 'A Thing Test'
+    def test_should_remove_test_pattern(self, patterns):
+        assert formatters.format_class_name('TestAThing', patterns) == (
+            'A Thing'
+        )
+        assert formatters.format_class_name('AThingTest', patterns) == (
+            'A Thing Test'
+        )
 
 
 class TestFormatModuleName(object):
 
-    def test_should_remove_py_file_suffix(self):
-        assert formatters.format_module_name('pymodule.py') == 'pymodule'
+    @pytest.fixture
+    def patterns(self):
+        return ['test*.py']
 
-    def test_should_replace_underscores_with_spaces(self):
-        assert formatters.format_module_name('a_test_name') == 'a test name'
+    def test_should_remove_py_file_pattern(self, patterns):
+        assert formatters.format_module_name('pymodule.py', patterns) == (
+            'pymodule'
+        )
 
-    def test_should_remove_test_prefix(self):
-        assert formatters.format_module_name('test_a_thing.py') == 'a thing'
-        assert formatters.format_module_name('a_test.py') == 'a test'
+    def test_should_replace_underscores_with_spaces(self, patterns):
+        assert formatters.format_module_name('a_test_name', patterns) == (
+            'a test name'
+        )
 
-    def test_should_replace_slashes_with_dots(self):
-        assert formatters.format_module_name('sub/module.py') == 'sub.module'
+    def test_should_remove_test_pattern(self, patterns):
+        assert formatters.format_module_name('test_a_thing.py', patterns) == (
+            'a thing'
+        )
+        assert formatters.format_module_name('a_test.py', patterns) == 'a test'
+
+    def test_should_replace_slashes_with_dots(self, patterns):
+        assert formatters.format_module_name('sub/module.py', patterns) == (
+            'sub.module'
+        )
+
+    def test_should_remove_infix_glob_patterns(self):
+        formatted = formatters.format_module_name(
+            'test_module.py',
+            ['test_*.py']
+        )
+
+        assert formatted == 'module'
