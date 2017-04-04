@@ -1,4 +1,4 @@
--e .
+pytest>=3.0.0
 bumpversion==0.5.3
 flake8==3.3.0
 isort==4.2.5
