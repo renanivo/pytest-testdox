@@ -1,7 +1,15 @@
 # -*- coding: utf-8 -*-
+import pytest
 
 
 class TestReport(object):
+
+    @pytest.fixture
+    def testdir(self, testdir):
+        testdir.makeconftest("""
+            pytest_plugins = 'pytest_testdox.plugin'
+        """)
+        return testdir
 
     def test_should_print_a_passing_test(self, testdir):
         testdir.makepyfile("""
