@@ -29,11 +29,21 @@ class TestdoxTerminalReporter(TerminalReporter):
 
     _last_header = ''
 
-    def pytest_runtest_logreport(self, report):
+    def _register_stats(self, report):
+        """
+        This method is not created for this plugin, but it is needed in order
+        to the reporter display the tests summary at the end.
+
+        Originally from:
+        https://github.com/pytest-dev/pytest/blob/47a2a77/_pytest/terminal.py#L198-L201
+        """
         res = self.config.hook.pytest_report_teststatus(report=report)
         category = res[0]
         self.stats.setdefault(category, []).append(report)
         self._tests_ran = True
+
+    def pytest_runtest_logreport(self, report):
+        self._register_stats(report)
 
         if report.when != 'call':
             return
