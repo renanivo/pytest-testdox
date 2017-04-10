@@ -29,7 +29,7 @@ class TestParseNodeId(object):
         assert node.title == formatters.format_title('test_title',
                                                      pattern_config.functions)
         assert node.module_name == (
-            formatters.format_module_name('tests.test_module',
+            formatters.format_module_name('tests/test_module.py',
                                           pattern_config.files)
         )
 
