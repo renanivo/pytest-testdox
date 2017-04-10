@@ -73,10 +73,13 @@ class TestFormatModuleName(object):
         )
         assert formatters.format_module_name('a_test.py', patterns) == 'a test'
 
-    def test_should_replace_slashes_with_dots(self, patterns):
-        assert formatters.format_module_name('sub/module.py', patterns) == (
-            'sub.module'
+    def test_should_remove_folders_from_the_name(self, patterns):
+        formatted = formatters.format_module_name(
+            'tests/sub/test_module.py',
+            patterns
         )
+
+        assert formatted == 'module'
 
     def test_should_remove_infix_glob_patterns(self):
         formatted = formatters.format_module_name(

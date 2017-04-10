@@ -27,7 +27,7 @@ def format_class_name(class_name, patterns):
 
 
 def format_module_name(module_name, patterns):
-    return format_title(module_name, patterns).replace('/', '.')
+    return format_title(module_name.split('/')[-1], patterns)
 
 
 def _remove_patterns(statement, patterns):
