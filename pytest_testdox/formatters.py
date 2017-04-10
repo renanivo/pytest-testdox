@@ -9,16 +9,13 @@ def format_outcome(outcome):
 
 
 def format_title(title, patterns):
-    return _remove_patterns(
-        patterns=patterns,
-        statement=title
-    ).replace('_', ' ').strip()
+    return _remove_patterns(title, patterns).replace('_', ' ').strip()
 
 
 def format_class_name(class_name, patterns):
     formatted = ''
 
-    class_name = _remove_patterns(patterns, class_name)
+    class_name = _remove_patterns(class_name, patterns)
 
     for letter in class_name:
         if letter.isupper():
@@ -30,13 +27,10 @@ def format_class_name(class_name, patterns):
 
 
 def format_module_name(module_name, patterns):
-    return format_title(
-        _remove_patterns(patterns, module_name),
-        patterns
-    ).replace('/', '.')
+    return format_title(module_name, patterns).replace('/', '.')
 
 
-def _remove_patterns(patterns, statement):
+def _remove_patterns(statement, patterns):
     for glob_pattern in patterns:
         pattern = glob_pattern.replace('*', '')
 
@@ -52,7 +46,7 @@ def _remove_patterns(patterns, statement):
             infix_patterns = glob_pattern.split('*', 2)
             infix_patterns[0] = '{}*'.format(infix_patterns[0])
             infix_patterns[1] = '*{}'.format(infix_patterns[1])
-            statement = _remove_patterns(infix_patterns, statement)
+            statement = _remove_patterns(statement, infix_patterns)
 
         else:
             pattern = '^{0}'.format(pattern)
