@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
+from functools import partial
+
 import pytest
 from _pytest.terminal import TerminalReporter
 
@@ -65,7 +67,9 @@ class TestdoxTerminalReporter(TerminalReporter):
             self._tw.sep(' ')
             self._tw.line(header)
 
-        self._tw.line('- [{outcome}] {title}'.format(
+        colored = partial(formatters.colored, outcome=report.outcome)
+
+        self._tw.line(colored('- [{outcome}] {title}'.format(
             outcome=formatters.format_outcome(report.outcome),
             title=node.title
-        ))
+        )))

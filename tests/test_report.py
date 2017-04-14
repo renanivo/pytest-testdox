@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+from __future__ import unicode_literals
+
 import pytest
 
 
@@ -18,7 +20,9 @@ class TestReport(object):
         """)
 
         result = testdir.runpytest('--testdox')
-        result.stdout.fnmatch_lines('- [x] a feature is working')
+
+        expected = '\033[92m- [x] a feature is working\033[0m'
+        assert expected in result.stdout.str()
 
     def test_should_print_a_failing_test(self, testdir):
         testdir.makepyfile("""
@@ -27,7 +31,9 @@ class TestReport(object):
         """)
 
         result = testdir.runpytest('--testdox')
-        result.stdout.fnmatch_lines('- [ ] a failed test of a feature')
+        expected = '\033[91m- [ ] a failed test of a feature\033[0m'
+
+        assert expected in result.stdout.str()
 
     def test_should_print_the_test_class_name(self, testdir):
         testdir.makepyfile("""
@@ -57,7 +63,7 @@ class TestReport(object):
         """)
 
         result = testdir.runpytest('--testdox')
-        result.stdout.fnmatch_lines('module name')
+        result.stdout.fnmatch_lines(b'module name')
 
     def test_should_print_test_summary(self, testdir):
         testdir.makefile('.py', test_module_name="""
