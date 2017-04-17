@@ -23,13 +23,11 @@ class Node(object):
         return self.title
 
     def __repr__(self):
-        items = (
-            '{}={!r}'.format(key, getattr(self, key))
-            for key in ('title', 'class_name', 'module_name')
-        )
-        return '{}({})'.format(
+        return '{}(title={!r}, class_name={!r}, module_name={!r})'.format(
             type(self).__name__,
-            items
+            self.title,
+            self.class_name,
+            self.module_name
         )
 
     @classmethod
@@ -70,13 +68,18 @@ class Result(object):
         )
         return formatters.colored(line, self.outcome)
 
+    def __repr__(self):
+        return '{}(outcome={!r}, node={!r})'.format(
+            type(self).__name__,
+            self.outcome,
+            self.node
+        )
+
     @property
     def header(self):
         return self.node.class_name or self.node.module_name
 
     @classmethod
     def create(cls, report, pattern_config):
-        from . import parsers
-        node = parsers.parse_node(report.nodeid, pattern_config)
-
+        node = Node.parse(report.nodeid, pattern_config)
         return cls(report.outcome, node)

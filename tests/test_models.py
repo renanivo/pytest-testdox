@@ -3,14 +3,19 @@ from __future__ import unicode_literals
 
 import pytest
 
-from pytest_testdox import formatters, models
+from pytest_testdox import formatters
+from pytest_testdox.models import Node, PatternConfig, Result
+
+@pytest.fixture
+def node():
+    return Node(title='title', class_name='class_name', module_name='module')
 
 
 class TestNode(object):
 
     @pytest.fixture
     def pattern_config(self):
-        return models.PatternConfig(
+        return PatternConfig(
             files=['test_*.py'],
             functions=['test*'],
             classes=['Test*']
@@ -18,13 +23,13 @@ class TestNode(object):
 
     def test_parse_should_return_a_node_instance(self, pattern_config):
         nodeid = 'tests/test_module.py::test_title'
-        node = models.Node.parse(nodeid, pattern_config)
+        node = Node.parse(nodeid, pattern_config)
 
-        assert isinstance(node, models.Node)
+        assert isinstance(node, Node)
 
     def test_parse_should_parse_node_id_attributes(self, pattern_config):
         nodeid = 'tests/test_module.py::test_title'
-        node = models.Node.parse(nodeid, pattern_config)
+        node = Node.parse(nodeid, pattern_config)
 
         assert node.title == formatters.format_title('test_title',
                                                      pattern_config.functions)
@@ -41,6 +46,23 @@ class TestNode(object):
         )
     ))
     def test_parse_with_class_name(self, pattern_config, nodeid, class_name):
-        node = models.Node.parse(nodeid, pattern_config)
+        node = Node.parse(nodeid, pattern_config)
 
         assert node.class_name == class_name
+
+    def test_repr_should_return_a_string_representation_of_itself(self, node):
+        from_repr = eval(repr(node))
+
+        assert from_repr.title == node.title
+        assert from_repr.class_name == node.class_name
+        assert from_repr.module_name == node.module_name
+
+
+class TestResult(object):
+
+    def test_repr_should_return_a_string_representation_of_itself(self, node):
+        result = Result('passed', node)
+        from_repr = eval(repr(result))
+
+        assert from_repr.outcome == result.outcome
+        assert isinstance(from_repr.node, Node)
