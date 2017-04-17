@@ -1,12 +1,10 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-from functools import partial
-
 import pytest
 from _pytest.terminal import TerminalReporter
 
-from . import formatters, parsers
+from . import models
 
 
 def pytest_addoption(parser):
@@ -29,7 +27,14 @@ def pytest_configure(config):
 
 class TestdoxTerminalReporter(TerminalReporter):
 
-    _last_header = ''
+    def __init__(self, config, file=None):
+        TerminalReporter.__init__(self, config, file)
+        self._last_header = None
+        self.pattern_config = models.PatternConfig(
+            files=self.config.getini('python_files'),
+            functions=self.config.getini('python_functions'),
+            classes=self.config.getini('python_classes')
+        )
 
     def _register_stats(self, report):
         """
@@ -50,26 +55,11 @@ class TestdoxTerminalReporter(TerminalReporter):
         if report.when != 'call':
             return
 
-        pattern_config = parsers.PatternConfig(
-            files=self.config.getini('python_files'),
-            functions=self.config.getini('python_functions'),
-            classes=self.config.getini('python_classes')
-        )
-        node = parsers.parse_node(report.nodeid, pattern_config)
+        result = models.Result.create(report, self.pattern_config)
 
-        if node.class_name:
-            header = node.class_name
-        else:
-            header = node.module_name
-
-        if header != self._last_header:
-            self._last_header = header
+        if result.header != self._last_header:
+            self._last_header = result.header
             self._tw.sep(' ')
-            self._tw.line(header)
+            self._tw.line(result.header)
 
-        colored = partial(formatters.colored, outcome=report.outcome)
-
-        self._tw.line(colored('- [{outcome}] {title}'.format(
-            outcome=formatters.format_outcome(report.outcome),
-            title=node.title
-        )))
+        self._tw.line(unicode(result))

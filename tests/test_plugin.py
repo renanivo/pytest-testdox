@@ -13,7 +13,7 @@ class TestReport(object):
         """)
         return testdir
 
-    def test_should_print_a_passing_test(self, testdir):
+    def test_should_print_a_green_passing_test(self, testdir):
         testdir.makepyfile("""
             def test_a_feature_is_working():
                 assert True
@@ -24,7 +24,7 @@ class TestReport(object):
         expected = '\033[92m- [x] a feature is working\033[0m'
         assert expected in result.stdout.str()
 
-    def test_should_print_a_failing_test(self, testdir):
+    def test_should_print_a_red_failing_test(self, testdir):
         testdir.makepyfile("""
             def test_a_failed_test_of_a_feature():
                 assert False

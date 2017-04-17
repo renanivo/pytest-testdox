@@ -3,28 +3,28 @@ from __future__ import unicode_literals
 
 import pytest
 
-from pytest_testdox import formatters, parsers
+from pytest_testdox import formatters, models
 
 
-class TestParseNodeId(object):
+class TestNode(object):
 
     @pytest.fixture
     def pattern_config(self):
-        return parsers.PatternConfig(
+        return models.PatternConfig(
             files=['test_*.py'],
             functions=['test*'],
             classes=['Test*']
         )
 
-    def test_should_return_a_node_instance(self, pattern_config):
+    def test_parse_should_return_a_node_instance(self, pattern_config):
         nodeid = 'tests/test_module.py::test_title'
-        node = parsers.parse_node(nodeid, pattern_config)
+        node = models.Node.parse(nodeid, pattern_config)
 
-        assert isinstance(node, parsers.Node)
+        assert isinstance(node, models.Node)
 
-    def test_should_parse_node_id_attributes(self, pattern_config):
+    def test_parse_should_parse_node_id_attributes(self, pattern_config):
         nodeid = 'tests/test_module.py::test_title'
-        node = parsers.parse_node(nodeid, pattern_config)
+        node = models.Node.parse(nodeid, pattern_config)
 
         assert node.title == formatters.format_title('test_title',
                                                      pattern_config.functions)
@@ -40,7 +40,7 @@ class TestParseNodeId(object):
             formatters.format_class_name('TestClassName', ['Test*'])
         )
     ))
-    def test_should_parse_class_name(self, pattern_config, nodeid, class_name):
-        node = parsers.parse_node(nodeid, pattern_config)
+    def test_parse_with_class_name(self, pattern_config, nodeid, class_name):
+        node = models.Node.parse(nodeid, pattern_config)
 
         assert node.class_name == class_name
