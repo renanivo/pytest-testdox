@@ -60,13 +60,18 @@ class Result(object):
     def __init__(self, outcome, node):
         self.outcome = outcome
         self.node = node
+        self.use_colors = True
 
     def __str__(self):
         line = '- [{outcome}] {node}'.format(
             outcome=formatters.format_outcome(self.outcome),
             node=self.node
         )
-        return formatters.colored(line, self.outcome)
+
+        if self.use_colors:
+            return formatters.colored(line, self.outcome)
+
+        return line
 
     def __repr__(self):
         return '{}(outcome={!r}, node={!r})'.format(

@@ -62,4 +62,6 @@ class TestdoxTerminalReporter(TerminalReporter):
             self._tw.sep(' ')
             self._tw.line(result.header)
 
+        result.use_colors = self.config.option.color != 'no'
+
         self._tw.line(unicode(result))

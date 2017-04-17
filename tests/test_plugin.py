@@ -35,6 +35,15 @@ class TestReport(object):
 
         assert expected in result.stdout.str()
 
+    def test_should_not_print_colors_when_disabled_by_parameter(self, testdir):
+        testdir.makepyfile("""
+            def test_a_feature_is_working():
+                assert True
+        """)
+        result = testdir.runpytest('--color=no', '--testdox')
+
+        assert '\033[92m' not in result.stdout.str()
+
     def test_should_print_the_test_class_name(self, testdir):
         testdir.makepyfile("""
             class TestFoo(object):

@@ -1,10 +1,12 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
+import mock
 import pytest
 
 from pytest_testdox import formatters
 from pytest_testdox.models import Node, PatternConfig, Result
+
 
 @pytest.fixture
 def node():
@@ -60,9 +62,27 @@ class TestNode(object):
 
 class TestResult(object):
 
-    def test_repr_should_return_a_string_representation_of_itself(self, node):
-        result = Result('passed', node)
+    @pytest.fixture
+    def result(self, node):
+        return Result('passed', node)
+
+    def test_repr_should_return_a_string_representation_of_itself(
+        self,
+        node,
+        result
+    ):
         from_repr = eval(repr(result))
 
         assert from_repr.outcome == result.outcome
         assert isinstance(from_repr.node, Node)
+
+    def test_str_should_should_return_string_without_colors(self, result):
+        """
+        When Result.use_colors is False
+        """
+        result.use_colors = False
+
+        with mock.patch('pytest_testdox.formatters.colored') as mock_colored:
+            unicode(result)
+
+        assert not mock_colored.called
