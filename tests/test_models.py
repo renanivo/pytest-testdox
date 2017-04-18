@@ -83,6 +83,6 @@ class TestResult(object):
         result.use_colors = False
 
         with mock.patch('pytest_testdox.formatters.colored') as mock_colored:
-            unicode(result)
+            str(result)
 
         assert not mock_colored.called
