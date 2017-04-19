@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-import mock
 import pytest
 
 from pytest_testdox import formatters
@@ -75,14 +74,3 @@ class TestResult(object):
 
         assert from_repr.outcome == result.outcome
         assert isinstance(from_repr.node, Node)
-
-    def test_str_should_should_return_string_without_colors(self, result):
-        """
-        When Result.use_colors is False
-        """
-        result.use_colors = False
-
-        with mock.patch('pytest_testdox.formatters.colored') as mock_colored:
-            str(result)
-
-        assert not mock_colored.called

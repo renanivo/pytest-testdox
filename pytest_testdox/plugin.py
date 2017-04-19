@@ -4,7 +4,7 @@ from __future__ import unicode_literals
 import pytest
 from _pytest.terminal import TerminalReporter
 
-from . import models
+from . import formatters, models
 
 
 def pytest_addoption(parser):
@@ -35,6 +35,10 @@ class TestdoxTerminalReporter(TerminalReporter):
             functions=self.config.getini('python_functions'),
             classes=self.config.getini('python_classes')
         )
+        self.color = formatters.Color()
+
+        if self.config.option.color == 'no':
+            self.color.disable()
 
     def _register_stats(self, report):
         """
@@ -62,6 +66,4 @@ class TestdoxTerminalReporter(TerminalReporter):
             self.write_sep(' ')
             self.write_line(result.header)
 
-        result.use_colors = self.config.option.color != 'no'
-
-        self.write_line(str(result))
+        self.write_line(self.color(result))

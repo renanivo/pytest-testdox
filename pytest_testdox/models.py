@@ -7,7 +7,6 @@ import six
 
 from . import formatters
 
-
 PatternConfig = namedtuple('PatternConfig', 'files functions classes')
 
 
@@ -60,16 +59,12 @@ class Result(object):
     def __init__(self, outcome, node):
         self.outcome = outcome
         self.node = node
-        self.use_colors = True
 
     def __str__(self):
         line = '- [{outcome}] {node}'.format(
             outcome=formatters.format_outcome(self.outcome),
             node=self.node
         )
-
-        if self.use_colors:
-            return formatters.colored(line, self.outcome)
 
         return line
 

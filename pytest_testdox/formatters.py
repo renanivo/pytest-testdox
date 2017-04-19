@@ -3,11 +3,6 @@ from __future__ import unicode_literals
 
 import re
 
-COLOR_BY_OUTCOME = {
-    'passed': '\033[92m',
-    'failed': '\033[91m',
-}
-
 
 def format_outcome(outcome):
     return 'x' if outcome == 'passed' else ' '
@@ -33,6 +28,28 @@ def format_class_name(class_name, patterns):
 
 def format_module_name(module_name, patterns):
     return format_title(module_name.split('/')[-1], patterns)
+
+
+class Color(object):
+    passed = '\033[92m'
+    failed = '\033[91m'
+
+    _reset = '\033[0m'
+
+    def __call__(self, result):
+        color = getattr(self, result.outcome, '')
+        reset = self._reset if color else ''
+
+        return '{color}{result}{reset}'.format(
+            color=color,
+            result=result,
+            reset=reset
+        )
+
+    def disable(self):
+        self.passed = ''
+        self.failed = ''
+        self._reset = ''
 
 
 def _remove_patterns(statement, patterns):
@@ -65,15 +82,3 @@ def _has_lower_letter_besides(index, string):
     letter_after = string[index + 1] if index < len(string) - 1 else ''
 
     return letter_before.islower() or letter_after.islower()
-
-
-def colored(statement, outcome):
-    color = COLOR_BY_OUTCOME.get(outcome)
-
-    if color:
-        return '{color}{statement}\033[0m'.format(
-            color=color,
-            statement=statement
-        )
-
-    return statement
