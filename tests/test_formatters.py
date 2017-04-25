@@ -39,8 +39,8 @@ class TestFormatClassName(object):
         return ['Test*']
 
     def test_should_add_spaces_before_upercased_letters(self, patterns):
-        result = formatters.format_class_name('AThingBuilder', patterns)
-        assert result == 'A Thing Builder'
+        formatted = formatters.format_class_name('AThingBuilder', patterns)
+        assert formatted == 'A Thing Builder'
 
     def test_should_remove_test_pattern(self, patterns):
         assert formatters.format_class_name('TestAThing', patterns) == (
@@ -49,6 +49,19 @@ class TestFormatClassName(object):
         assert formatters.format_class_name('AThingTest', patterns) == (
             'A Thing Test'
         )
+
+    @pytest.mark.parametrize('class_name,expected', (
+        ('SimpleHTTPServer', 'Simple HTTP Server'),
+        ('MyAPI', 'My API'),
+    ))
+    def test_should_not_split_letters_in_an_abbreviation(
+        self,
+        class_name,
+        expected,
+        patterns
+    ):
+        formatted = formatters.format_class_name(class_name, patterns)
+        assert formatted == expected
 
 
 class TestFormatModuleName(object):

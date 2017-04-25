@@ -17,8 +17,8 @@ def format_class_name(class_name, patterns):
 
     class_name = _remove_patterns(class_name, patterns)
 
-    for letter in class_name:
-        if letter.isupper():
+    for index, letter in enumerate(class_name):
+        if letter.isupper() and _has_lower_letter_besides(index, class_name):
             formatted += ' '
 
         formatted += letter
@@ -38,7 +38,7 @@ def _remove_patterns(statement, patterns):
             pattern = '{0}$'.format(pattern)
             statement = re.sub(pattern, '', statement)
 
-        elif glob_pattern.endswith('*'):
+        elif glob_pattern.endswith('*'):
             pattern = '^{0}'.format(pattern)
             statement = re.sub(pattern, '', statement)
 
@@ -53,3 +53,10 @@ def _remove_patterns(statement, patterns):
             statement = re.sub(pattern, '', statement)
 
     return statement
+
+
+def _has_lower_letter_besides(index, string):
+    letter_before = string[index - 1] if index > 0 else ''
+    letter_after = string[index + 1] if index < len(string) - 1 else ''
+
+    return letter_before.islower() or letter_after.islower()
