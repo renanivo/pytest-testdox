@@ -56,7 +56,7 @@ def _remove_patterns(statement, patterns):
 
 
 def _has_lower_letter_besides(index, string):
-   letter_before = string[index - 1] if index > 0 else ''
-   letter_after = string[index + 1] if index < len(string) - 1 else ''
+    letter_before = string[index - 1] if index > 0 else ''
+    letter_after = string[index + 1] if index < len(string) - 1 else ''
 
-   return letter_before.islower() or letter_after.islower()
+    return letter_before.islower() or letter_after.islower()
