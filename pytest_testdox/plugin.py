@@ -4,7 +4,7 @@ from __future__ import unicode_literals
 import pytest
 from _pytest.terminal import TerminalReporter
 
-from . import formatters, models
+from . import models, wrappers
 
 
 def pytest_addoption(parser):
@@ -35,10 +35,10 @@ class TestdoxTerminalReporter(TerminalReporter):
             functions=self.config.getini('python_functions'),
             classes=self.config.getini('python_classes')
         )
-        self.color = formatters.Color()
+        self.result_wrappers = []
 
-        if self.config.option.color == 'no':
-            self.color.disable()
+        if self.config.option.color != 'no':
+            self.result_wrappers.append(wrappers.ColorWrapper)
 
     def _register_stats(self, report):
         """
@@ -61,9 +61,15 @@ class TestdoxTerminalReporter(TerminalReporter):
 
         result = models.Result.create(report, self.pattern_config)
 
+        for wrapper in self.result_wrappers:
+            result = wrapper(result)
+
         if result.header != self._last_header:
             self._last_header = result.header
             self._tw.sep(' ')
             self._tw.line(result.header)
 
-        self._tw.line(self.color(result))
+        try:
+            self._tw.line(unicode(result))
+        except NameError:
+            self._tw.line(str(result))
