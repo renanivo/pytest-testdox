@@ -56,7 +56,7 @@ class TestdoxTerminalReporter(TerminalReporter):
     def pytest_runtest_logreport(self, report):
         self._register_stats(report)
 
-        if report.when != 'call':
+        if report.when != 'call' and not report.skipped:
             return
 
         result = models.Result.create(report, self.pattern_config)

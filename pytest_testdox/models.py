@@ -61,7 +61,7 @@ class Result(object):
         self.node = node
 
     def __str__(self):
-        line = '- [{outcome}] {node}'.format(
+        line = '- {outcome} {node}'.format(
             outcome=formatters.format_outcome(self.outcome),
             node=self.node
         )

@@ -35,6 +35,20 @@ class TestReport(object):
 
         assert expected in result.stdout.str()
 
+    def test_should_print_a_yellow_skipped_test(self, testdir):
+        testdir.makepyfile("""
+            import pytest
+
+            @pytest.mark.skip
+            def test_a_skipped_test():
+                pass
+        """)
+
+        result = testdir.runpytest('--testdox')
+        expected = '\033[93m- >>> a skipped test\033[0m'
+
+        assert expected in result.stdout.str()
+
     def test_should_not_print_colors_when_disabled_by_parameter(self, testdir):
         testdir.makepyfile("""
             def test_a_feature_is_working():
