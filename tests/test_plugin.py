@@ -21,7 +21,7 @@ class TestReport(object):
 
         result = testdir.runpytest('--testdox')
 
-        expected = '\033[92m- [x] a feature is working\033[0m'
+        expected = '\033[92m [x] a feature is working\033[0m'
         assert expected in result.stdout.str()
 
     def test_should_print_a_red_failing_test(self, testdir):
@@ -31,7 +31,7 @@ class TestReport(object):
         """)
 
         result = testdir.runpytest('--testdox')
-        expected = '\033[91m- [ ] a failed test of a feature\033[0m'
+        expected = '\033[91m [ ] a failed test of a feature\033[0m'
 
         assert expected in result.stdout.str()
 
@@ -45,7 +45,7 @@ class TestReport(object):
         """)
 
         result = testdir.runpytest('--testdox')
-        expected = '\033[93m- >>> a skipped test\033[0m'
+        expected = '\033[93m >>> a skipped test\033[0m'
 
         assert expected in result.stdout.str()
 
@@ -71,10 +71,10 @@ class TestReport(object):
         result = testdir.runpytest('--testdox')
 
         lines = result.stdout.get_lines_after('Foo')
-        assert '- [x] foo' in lines[0]
+        assert '[x] foo' in lines[0]
 
         lines = result.stdout.get_lines_after('Bar')
-        assert '- [x] bar' in lines[0]
+        assert '[x] bar' in lines[0]
 
     def test_should_print_the_module_name_of_a_test_without_class(
         self,
@@ -113,4 +113,4 @@ class TestReport(object):
         result = testdir.runpytest('--testdox')
 
         lines = result.stdout.get_lines_after('Test')
-        assert '- [x] runs' in lines[0]
+        assert '[x] runs' in lines[0]

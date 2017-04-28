@@ -60,20 +60,20 @@ class Result(object):
         self.outcome = outcome
         self.node = node
 
-    def __str__(self):
-        line = '- {outcome} {node}'.format(
-            outcome=formatters.format_outcome(self.outcome),
-            node=self.node
-        )
-
-        return line
-
     def __repr__(self):
         return '{}(outcome={!r}, node={!r})'.format(
             type(self).__name__,
             self.outcome,
             self.node
         )
+
+    def __str__(self):
+        line = ' {outcome} {node}'.format(
+            outcome=formatters.format_outcome(self.outcome),
+            node=self.node
+        )
+
+        return line
 
     @property
     def header(self):
