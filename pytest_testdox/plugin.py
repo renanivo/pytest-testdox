@@ -13,6 +13,11 @@ def pytest_addoption(parser):
         '--testdox', action='store_true', dest='testdox', default=False,
         help='Report test progress in testdox format'
     )
+    parser.addini(
+        'testdox_format',
+        help='TestDox report format (plaintext|utf8)',
+        default='utf8'
+    )
 
 
 @pytest.mark.trylast
@@ -37,9 +42,10 @@ class TestdoxTerminalReporter(TerminalReporter):
         )
         self.result_wrappers = []
 
-        self.result_wrappers.append(wrappers.UTF8Wrapper)
+        if config.getini('testdox_format') != 'plaintext':
+            self.result_wrappers.append(wrappers.UTF8Wrapper)
 
-        if self.config.option.color != 'no':
+        if config.option.color != 'no':
             self.result_wrappers.append(wrappers.ColorWrapper)
 
     def _register_stats(self, report):
