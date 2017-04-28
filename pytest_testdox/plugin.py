@@ -37,6 +37,8 @@ class TestdoxTerminalReporter(TerminalReporter):
         )
         self.result_wrappers = []
 
+        self.result_wrappers.append(wrappers.UTF8Wrapper)
+
         if self.config.option.color != 'no':
             self.result_wrappers.append(wrappers.ColorWrapper)
 

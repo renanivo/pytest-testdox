@@ -29,3 +29,24 @@ class ColorWrapper(Wrapper):
             result=self.wrapped,
             reset=reset
         )
+
+
+class UTF8Wrapper(Wrapper):
+
+    _CHARACTER_BY_OUTCOME = {
+        'passed': '✓',
+        'failed': '✗',
+        'skipped': '»',
+    }
+
+    _default_character = '»'
+
+    def __str__(self):
+        outcome = self._CHARACTER_BY_OUTCOME.get(
+            self.wrapped.outcome,
+            self._default_character
+        )
+        return ' {outcome} {node}'.format(
+            outcome=outcome,
+            node=self.wrapped.node
+        )
