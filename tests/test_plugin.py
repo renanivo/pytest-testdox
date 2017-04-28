@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+from __future__ import unicode_literals
+
 import pytest
 
 
@@ -11,23 +13,36 @@ class TestReport(object):
         """)
         return testdir
 
-    def test_should_print_a_passing_test(self, testdir):
+    def test_should_print_a_green_passing_test(self, testdir):
         testdir.makepyfile("""
             def test_a_feature_is_working():
                 assert True
         """)
 
         result = testdir.runpytest('--testdox')
-        result.stdout.fnmatch_lines('- [x] a feature is working')
 
-    def test_should_print_a_failing_test(self, testdir):
+        expected = '\033[92m- [x] a feature is working\033[0m'
+        assert expected in result.stdout.str()
+
+    def test_should_print_a_red_failing_test(self, testdir):
         testdir.makepyfile("""
             def test_a_failed_test_of_a_feature():
                 assert False
         """)
 
         result = testdir.runpytest('--testdox')
-        result.stdout.fnmatch_lines('- [ ] a failed test of a feature')
+        expected = '\033[91m- [ ] a failed test of a feature\033[0m'
+
+        assert expected in result.stdout.str()
+
+    def test_should_not_print_colors_when_disabled_by_parameter(self, testdir):
+        testdir.makepyfile("""
+            def test_a_feature_is_working():
+                assert True
+        """)
+        result = testdir.runpytest('--color=no', '--testdox')
+
+        assert '\033[92m' not in result.stdout.str()
 
     def test_should_print_the_test_class_name(self, testdir):
         testdir.makepyfile("""
@@ -57,7 +72,7 @@ class TestReport(object):
         """)
 
         result = testdir.runpytest('--testdox')
-        result.stdout.fnmatch_lines('module name')
+        result.stdout.fnmatch_lines(['module name'])
 
     def test_should_print_test_summary(self, testdir):
         testdir.makefile('.py', test_module_name="""

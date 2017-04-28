@@ -4,7 +4,7 @@ from __future__ import unicode_literals
 import pytest
 from _pytest.terminal import TerminalReporter
 
-from . import formatters, parsers
+from . import formatters, models
 
 
 def pytest_addoption(parser):
@@ -27,7 +27,18 @@ def pytest_configure(config):
 
 class TestdoxTerminalReporter(TerminalReporter):
 
-    _last_header = ''
+    def __init__(self, config, file=None):
+        TerminalReporter.__init__(self, config, file)
+        self._last_header = None
+        self.pattern_config = models.PatternConfig(
+            files=self.config.getini('python_files'),
+            functions=self.config.getini('python_functions'),
+            classes=self.config.getini('python_classes')
+        )
+        self.color = formatters.Color()
+
+        if self.config.option.color == 'no':
+            self.color.disable()
 
     def _register_stats(self, report):
         """
@@ -48,24 +59,11 @@ class TestdoxTerminalReporter(TerminalReporter):
         if report.when != 'call':
             return
 
-        pattern_config = parsers.PatternConfig(
-            files=self.config.getini('python_files'),
-            functions=self.config.getini('python_functions'),
-            classes=self.config.getini('python_classes')
-        )
-        node = parsers.parse_node(report.nodeid, pattern_config)
+        result = models.Result.create(report, self.pattern_config)
 
-        if node.class_name:
-            header = node.class_name
-        else:
-            header = node.module_name
+        if result.header != self._last_header:
+            self._last_header = result.header
+            self.write_sep(' ')
+            self.write_line(result.header)
 
-        if header != self._last_header:
-            self._last_header = header
-            self._tw.sep(' ')
-            self._tw.line(header)
-
-        self._tw.line('- [{outcome}] {title}'.format(
-            outcome=formatters.format_outcome(report.outcome),
-            title=node.title
-        ))
+        self.write_line(self.color(result))
