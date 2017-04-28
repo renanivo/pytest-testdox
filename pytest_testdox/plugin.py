@@ -63,7 +63,7 @@ class TestdoxTerminalReporter(TerminalReporter):
 
         if result.header != self._last_header:
             self._last_header = result.header
-            self.write_sep(' ')
-            self.write_line(result.header)
+            self._tw.sep(' ')
+            self._tw.line(result.header)
 
-        self.write_line(self.color(result))
+        self._tw.line(self.color(result))
