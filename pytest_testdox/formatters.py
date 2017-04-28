@@ -4,15 +4,6 @@ from __future__ import unicode_literals
 import re
 
 
-def format_outcome(outcome):
-    if outcome == 'passed':
-        return '[x]'
-    elif outcome == 'failed':
-        return '[ ]'
-    else:
-        return '>>>'
-
-
 def format_title(title, patterns):
     return _remove_patterns(title, patterns).replace('_', ' ').strip()
 
