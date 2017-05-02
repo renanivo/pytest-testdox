@@ -5,7 +5,12 @@ import re
 
 
 def format_outcome(outcome):
-    return 'x' if outcome == 'passed' else ' '
+    if outcome == 'passed':
+        return '[x]'
+    elif outcome == 'failed':
+        return '[ ]'
+    else:
+        return '>>>'
 
 
 def format_title(title, patterns):
@@ -33,6 +38,7 @@ def format_module_name(module_name, patterns):
 class Color(object):
     passed = '\033[92m'
     failed = '\033[91m'
+    skipped = '\033[93m'
 
     _reset = '\033[0m'
 
@@ -49,6 +55,7 @@ class Color(object):
     def disable(self):
         self.passed = ''
         self.failed = ''
+        self.skipped = ''
         self._reset = ''
 
 

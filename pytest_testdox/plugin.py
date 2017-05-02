@@ -56,14 +56,14 @@ class TestdoxTerminalReporter(TerminalReporter):
     def pytest_runtest_logreport(self, report):
         self._register_stats(report)
 
-        if report.when != 'call':
+        if report.when != 'call' and not report.skipped:
             return
 
         result = models.Result.create(report, self.pattern_config)
 
         if result.header != self._last_header:
             self._last_header = result.header
-            self.write_sep(' ')
-            self.write_line(result.header)
+            self._tw.sep(' ')
+            self._tw.line(result.header)
 
-        self.write_line(self.color(result))
+        self._tw.line(self.color(result))
