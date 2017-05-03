@@ -4,15 +4,6 @@ from __future__ import unicode_literals
 import re
 
 
-def format_outcome(outcome):
-    if outcome == 'passed':
-        return '[x]'
-    elif outcome == 'failed':
-        return '[ ]'
-    else:
-        return '>>>'
-
-
 def format_title(title, patterns):
     return _remove_patterns(title, patterns).replace('_', ' ').strip()
 
@@ -33,30 +24,6 @@ def format_class_name(class_name, patterns):
 
 def format_module_name(module_name, patterns):
     return format_title(module_name.split('/')[-1], patterns)
-
-
-class Color(object):
-    passed = '\033[92m'
-    failed = '\033[91m'
-    skipped = '\033[93m'
-
-    _reset = '\033[0m'
-
-    def __call__(self, result):
-        color = getattr(self, result.outcome, '')
-        reset = self._reset if color else ''
-
-        return '{color}{result}{reset}'.format(
-            color=color,
-            result=result,
-            reset=reset
-        )
-
-    def disable(self):
-        self.passed = ''
-        self.failed = ''
-        self.skipped = ''
-        self._reset = ''
 
 
 def _remove_patterns(statement, patterns):

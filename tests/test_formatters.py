@@ -5,18 +5,6 @@ import pytest
 from pytest_testdox import formatters
 
 
-class TestFormatOutcome(object):
-
-    def test_should_return_x_when_passed(self):
-        assert formatters.format_outcome('passed') == '[x]'
-
-    def test_should_return_a_space_when_failed(self):
-        assert formatters.format_outcome('failed') == '[ ]'
-
-    def test_should_return_angle_brackets_when_skipped(self):
-        assert formatters.format_outcome('skipped') == '>>>'
-
-
 class TestFormatTitle(object):
 
     @pytest.fixture
