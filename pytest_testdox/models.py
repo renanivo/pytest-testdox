@@ -38,12 +38,17 @@ class Node(object):
         )
 
     @classmethod
-    def parse(cls, nodeid, pattern_config):
+    def parse(cls, nodeid, pattern_config, overwrite_title=None):
         node_parts = nodeid.split('::')
-        title = formatters.format_title(
-            node_parts[-1],
-            pattern_config.functions
-        )
+
+        if overwrite_title:
+            title = overwrite_title
+        else:
+            title = formatters.format_title(
+                node_parts[-1],
+                pattern_config.functions
+            )
+
         module_name = formatters.format_module_name(
             node_parts[0],
             pattern_config.files

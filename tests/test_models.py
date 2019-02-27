@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
+import mock
 import pytest
 
 from pytest_testdox import formatters
@@ -12,15 +13,24 @@ def node():
     return Node(title='title', class_name='class_name', module_name='module')
 
 
-class TestNode(object):
+@pytest.fixture
+def report():
+    return mock.Mock(
+        nodeid='folder/test_file.py::test_title',
+        outcome='passed'
+    )
 
-    @pytest.fixture
-    def pattern_config(self):
-        return PatternConfig(
-            files=['test_*.py'],
-            functions=['test*'],
-            classes=['Test*']
-        )
+
+@pytest.fixture
+def pattern_config():
+    return PatternConfig(
+        files=['test_*.py'],
+        functions=['test*'],
+        classes=['Test*']
+    )
+
+
+class TestNode(object):
 
     def test_parse_should_return_a_node_instance(self, pattern_config):
         nodeid = 'tests/test_module.py::test_title'
@@ -38,6 +48,16 @@ class TestNode(object):
             formatters.format_module_name('tests/test_module.py',
                                           pattern_config.files)
         )
+
+    def test_parse_should_use_overwritten_title_instead_of_parse_node_id(
+        self,
+        pattern_config
+    ):
+        nodeid = 'tests/test_module.py::test_title'
+
+        node = Node.parse(nodeid, pattern_config, overwrite_title='new title')
+
+        assert node.title == 'new title'
 
     @pytest.mark.parametrize('nodeid,class_name', (
         ('tests/test_module.py::test_title', None),
@@ -96,3 +116,14 @@ class TestResult(object):
 
         assert from_repr.outcome == result.outcome
         assert isinstance(from_repr.node, Node)
+
+    def test_create_should_return_a_result_with_a_parsed_node(
+        self,
+        report,
+        pattern_config
+    ):
+        result = Result.create(report, pattern_config)
+
+        assert isinstance(result, Result)
+        assert result.outcome == report.outcome
+        assert result.node == Node.parse(report.nodeid, pattern_config)
