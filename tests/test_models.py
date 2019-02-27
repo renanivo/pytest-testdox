@@ -62,6 +62,24 @@ class TestNode(object):
         assert from_repr.class_name == node.class_name
         assert from_repr.module_name == node.module_name
 
+    def test_shoud_be_equal_when_objects_have_the_same_attributes(self, node):
+        other = Node(
+            title=node.title,
+            class_name=node.class_name,
+            module_name=node.module_name
+        )
+
+        assert node == other
+
+    def test_should_not_be_equal_when_it_is_not_the_same_class(self, node):
+        other = mock.Mock(
+            title=node.title,
+            class_name=node.class_name,
+            module_name=node.module_name
+        )
+
+        assert node != other
+
 
 class TestResult(object):
 

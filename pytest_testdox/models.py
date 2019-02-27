@@ -29,6 +29,14 @@ class Node(object):
             self.module_name
         )
 
+    def __eq__(self, other):
+        return (
+            type(self) == type(other) and
+            self.title == other.title and
+            self.class_name == other.class_name and
+            self.module_name == other.module_name
+        )
+
     @classmethod
     def parse(cls, nodeid, pattern_config):
         node_parts = nodeid.split('::')
