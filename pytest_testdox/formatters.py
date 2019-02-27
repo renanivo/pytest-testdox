@@ -34,7 +34,7 @@ def _remove_patterns(statement, patterns):
             pattern = '{0}$'.format(pattern)
             statement = re.sub(pattern, '', statement)
 
-        elif glob_pattern.endswith('*'):
+        elif glob_pattern.endswith('*'):
             pattern = '^{0}'.format(pattern)
             statement = re.sub(pattern, '', statement)
 
