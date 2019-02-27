@@ -41,12 +41,15 @@ class Node(object):
             pattern_config.files
         )
 
-        class_name = node_parts[-2]
-        if '()' not in class_name:
-            class_name = None
-        else:
+        class_name = None
+        if '()' in node_parts[-2]:
             class_name = formatters.format_class_name(
                 node_parts[-3],
+                pattern_config.classes
+            )
+        elif len(node_parts) > 2:
+            class_name = formatters.format_class_name(
+                node_parts[-2],
                 pattern_config.classes
             )
 
