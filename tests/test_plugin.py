@@ -3,6 +3,8 @@ from __future__ import unicode_literals
 
 import pytest
 
+from pytest_testdox import constants
+
 
 class TestReport(object):
 
@@ -133,10 +135,12 @@ class TestReport(object):
         testdir.makefile('.py', test_module_name="""
             import pytest
 
-            @pytest.mark.testdox_title('overwritten title')
+            @pytest.mark.{}('overwritten title')
             def test_a_passing_test():
                 assert True
-        """)
+        """.format(
+            constants.TITLE_MARK
+        ))
 
         result = testdir.runpytest('--testdox')
 

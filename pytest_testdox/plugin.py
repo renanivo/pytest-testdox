@@ -4,7 +4,7 @@ from __future__ import unicode_literals
 import pytest
 from _pytest.terminal import TerminalReporter
 
-from . import models, wrappers
+from . import models, wrappers, constants
 
 
 def pytest_addoption(parser):
@@ -30,7 +30,9 @@ def pytest_configure(config):
         config.pluginmanager.register(testdox_reporter, 'terminalreporter')
         config.addinivalue_line(
             "markers",
-            "testdox_title(title): Override testdox report title"
+            "{}(title): Override testdox report test title".format(
+                constants.TITLE_MARK
+            )
         )
 
 
@@ -42,7 +44,7 @@ def pytest_runtest_makereport(item, call):
 
     testdox_title = _first(
         mark.args[0]
-        for mark in item.iter_markers(name='testdox_title')
+        for mark in item.iter_markers(name=constants.TITLE_MARK)
     )
     if testdox_title:
         report.testdox_title = testdox_title
