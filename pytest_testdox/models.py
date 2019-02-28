@@ -38,7 +38,7 @@ class Node(object):
         )
 
     @classmethod
-    def parse(cls, nodeid, pattern_config, title=None):
+    def parse(cls, nodeid, pattern_config, title=None, class_name=None):
         node_parts = nodeid.split('::')
 
         if not title:
@@ -52,17 +52,17 @@ class Node(object):
             pattern_config.files
         )
 
-        class_name = None
-        if '()' in node_parts[-2]:
-            class_name = formatters.format_class_name(
-                node_parts[-3],
-                pattern_config.classes
-            )
-        elif len(node_parts) > 2:
-            class_name = formatters.format_class_name(
-                node_parts[-2],
-                pattern_config.classes
-            )
+        if not class_name:
+            if '()' in node_parts[-2]:
+                class_name = formatters.format_class_name(
+                    node_parts[-3],
+                    pattern_config.classes
+                )
+            elif len(node_parts) > 2:
+                class_name = formatters.format_class_name(
+                    node_parts[-2],
+                    pattern_config.classes
+                )
 
         return cls(title=title, class_name=class_name, module_name=module_name)
 
@@ -107,14 +107,13 @@ class Result(object):
 
     @classmethod
     def create(cls, report, pattern_config):
-        try:
-            title = report.testdox_title
-        except AttributeError:
-            title = None
+        title = getattr(report, 'testdox_title', None)
+        class_name = getattr(report, 'testdox_class_name', None)
 
         node = Node.parse(
             nodeid=report.nodeid,
             pattern_config=pattern_config,
-            title=title
+            title=title,
+            class_name=class_name
         )
         return cls(report.outcome, node)

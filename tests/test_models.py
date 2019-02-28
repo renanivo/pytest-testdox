@@ -50,15 +50,21 @@ class TestNode(object):
                                           pattern_config.files)
         )
 
-    def test_parse_should_use_overridden_title_instead_of_parse_node_id(
+    @pytest.mark.parametrize(('attribute,value'), (
+        ('title', 'new title'),
+        ('class_name', 'new class name'),
+    ))
+    def test_parse_should_use_overridden_attribute_instead_of_parse_node_id(
         self,
+        attribute,
+        value,
         pattern_config
     ):
         nodeid = 'tests/test_module.py::test_title'
 
-        node = Node.parse(nodeid, pattern_config, title='new title')
+        node = Node.parse(nodeid, pattern_config, **{attribute: value})
 
-        assert node.title == 'new title'
+        assert getattr(node, attribute) == value
 
     @pytest.mark.parametrize('nodeid,class_name', (
         ('tests/test_module.py::test_title', None),
@@ -129,14 +135,24 @@ class TestResult(object):
         assert result.outcome == report.outcome
         assert result.node == Node.parse(report.nodeid, pattern_config)
 
-    def test_create_should_call_parse_with_overridden_title(
+    @pytest.mark.parametrize('report_attribute,parameter,value', (
+        ('testdox_title', 'title', 'some title'),
+        ('testdox_class_name', 'class_name', 'some class name'),
+    ))
+    def test_create_should_call_parse_with_overridden_attributes(
         self,
+        report_attribute,
+        parameter,
+        value,
         report,
         pattern_config
     ):
-        report.testdox_title = 'some title'
+        setattr(report, report_attribute, value)
+
         result = Result.create(report, pattern_config)
+
+        kwargs = {parameter: value}
 
         assert result.node == Node.parse(nodeid=report.nodeid,
                                          pattern_config=pattern_config,
-                                         title=report.testdox_title)
+                                         **kwargs)
