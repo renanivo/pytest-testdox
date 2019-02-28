@@ -50,13 +50,13 @@ class TestNode(object):
                                           pattern_config.files)
         )
 
-    def test_parse_should_use_overwritten_title_instead_of_parse_node_id(
+    def test_parse_should_use_overridden_title_instead_of_parse_node_id(
         self,
         pattern_config
     ):
         nodeid = 'tests/test_module.py::test_title'
 
-        node = Node.parse(nodeid, pattern_config, overwrite_title='new title')
+        node = Node.parse(nodeid, pattern_config, title='new title')
 
         assert node.title == 'new title'
 
@@ -129,7 +129,7 @@ class TestResult(object):
         assert result.outcome == report.outcome
         assert result.node == Node.parse(report.nodeid, pattern_config)
 
-    def test_create_should_call_parse_with_overwritten_title(
+    def test_create_should_call_parse_with_overridden_title(
         self,
         report,
         pattern_config
@@ -139,4 +139,4 @@ class TestResult(object):
 
         assert result.node == Node.parse(nodeid=report.nodeid,
                                          pattern_config=pattern_config,
-                                         overwrite_title=report.testdox_title)
+                                         title=report.testdox_title)

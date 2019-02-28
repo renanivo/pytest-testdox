@@ -131,11 +131,11 @@ class TestReport(object):
         lines = result.stdout.get_lines_after('Test')
         assert '✓ runs' in lines[0]
 
-    def test_should_overwrite_titles_with_testdox_title_mark(self, testdir):
+    def test_should_override_titles_with_testdox_title_mark(self, testdir):
         testdir.makefile('.py', test_module_name="""
             import pytest
 
-            @pytest.mark.{}('overwritten title')
+            @pytest.mark.{}('overridden title')
             def test_a_passing_test():
                 assert True
         """.format(
@@ -144,4 +144,4 @@ class TestReport(object):
 
         result = testdir.runpytest('--testdox')
 
-        assert 'overwritten title' in result.stdout.str()
+        assert 'overridden title' in result.stdout.str()

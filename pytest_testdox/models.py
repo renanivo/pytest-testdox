@@ -38,12 +38,10 @@ class Node(object):
         )
 
     @classmethod
-    def parse(cls, nodeid, pattern_config, overwrite_title=None):
+    def parse(cls, nodeid, pattern_config, title=None):
         node_parts = nodeid.split('::')
 
-        if overwrite_title:
-            title = overwrite_title
-        else:
+        if not title:
             title = formatters.format_title(
                 node_parts[-1],
                 pattern_config.functions
@@ -110,13 +108,13 @@ class Result(object):
     @classmethod
     def create(cls, report, pattern_config):
         try:
-            overwrite_title = report.testdox_title
+            title = report.testdox_title
         except AttributeError:
-            overwrite_title = None
+            title = None
 
         node = Node.parse(
             nodeid=report.nodeid,
             pattern_config=pattern_config,
-            overwrite_title=overwrite_title
+            title=title
         )
         return cls(report.outcome, node)
