@@ -16,6 +16,7 @@ def node():
 @pytest.fixture
 def report():
     return mock.Mock(
+        spec=('nodeid', 'outcome'),
         nodeid='folder/test_file.py::test_title',
         outcome='passed'
     )
@@ -127,3 +128,15 @@ class TestResult(object):
         assert isinstance(result, Result)
         assert result.outcome == report.outcome
         assert result.node == Node.parse(report.nodeid, pattern_config)
+
+    def test_create_should_call_parse_with_overwritten_title(
+        self,
+        report,
+        pattern_config
+    ):
+        report.testdox_title = 'some title'
+        result = Result.create(report, pattern_config)
+
+        assert result.node == Node.parse(nodeid=report.nodeid,
+                                         pattern_config=pattern_config,
+                                         overwrite_title=report.testdox_title)

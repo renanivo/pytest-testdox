@@ -28,6 +28,24 @@ def pytest_configure(config):
         testdox_reporter = TestdoxTerminalReporter(standard_reporter.config)
         config.pluginmanager.unregister(standard_reporter)
         config.pluginmanager.register(testdox_reporter, 'terminalreporter')
+        config.addinivalue_line(
+            "markers",
+            "testdox_title(title): Override testdox report title"
+        )
+
+
+@pytest.hookimpl(hookwrapper=True)
+def pytest_runtest_makereport(item, call):
+    result = yield
+
+    report = result.get_result()
+
+    testdox_title = _first(
+        mark.args[0]
+        for mark in item.iter_markers(name='testdox_title')
+    )
+    if testdox_title:
+        report.testdox_title = testdox_title
 
 
 class TestdoxTerminalReporter(TerminalReporter):
@@ -84,3 +102,10 @@ class TestdoxTerminalReporter(TerminalReporter):
             self._tw.line(unicode(result))
         except NameError:
             self._tw.line(str(result))
+
+
+def _first(iterator):
+    try:
+        return next(iterator)
+    except StopIteration:
+        return None

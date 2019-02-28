@@ -109,5 +109,14 @@ class Result(object):
 
     @classmethod
     def create(cls, report, pattern_config):
-        node = Node.parse(report.nodeid, pattern_config)
+        try:
+            overwrite_title = report.testdox_title
+        except AttributeError:
+            overwrite_title = None
+
+        node = Node.parse(
+            nodeid=report.nodeid,
+            pattern_config=pattern_config,
+            overwrite_title=overwrite_title
+        )
         return cls(report.outcome, node)
