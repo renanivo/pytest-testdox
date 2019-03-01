@@ -34,6 +34,12 @@ def pytest_configure(config):
                 constants.TITLE_MARK
             )
         )
+        config.addinivalue_line(
+            "markers",
+            "{}(title): Override testdox report class title".format(
+                constants.CLASS_NAME_MARK
+            )
+        )
 
 
 @pytest.hookimpl(hookwrapper=True)
@@ -46,9 +52,15 @@ def pytest_runtest_makereport(item, call):
         mark.args[0]
         for mark in item.iter_markers(name=constants.TITLE_MARK)
     )
+    testdox_class_name = _first(
+        mark.args[0]
+        for mark in item.iter_markers(name=constants.CLASS_NAME_MARK)
+    )
     if testdox_title:
         report.testdox_title = testdox_title
 
+    if testdox_class_name:
+        report.testdox_class_name = testdox_class_name
 
 class TestdoxTerminalReporter(TerminalReporter):
 
