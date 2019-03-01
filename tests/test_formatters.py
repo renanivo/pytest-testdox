@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
+
 import os
 
 import pytest
+
 from pytest_testdox import formatters
 
 

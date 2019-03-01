@@ -2,9 +2,10 @@
 from __future__ import unicode_literals
 
 import pytest
+
 from _pytest.terminal import TerminalReporter
 
-from . import models, wrappers, constants
+from . import constants, models, wrappers
 
 
 def pytest_addoption(parser):
@@ -61,6 +62,7 @@ def pytest_runtest_makereport(item, call):
 
     if testdox_class_name:
         report.testdox_class_name = testdox_class_name
+
 
 class TestdoxTerminalReporter(TerminalReporter):
 
