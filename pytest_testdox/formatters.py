@@ -2,6 +2,7 @@
 from __future__ import unicode_literals
 
 import re
+import os
 
 STRIP_WHITE_SPACES_REGEX = r'(^[\s]+|[\s]+$)'
 
@@ -34,6 +35,22 @@ def format_multi_line_text(text):
         text,
         flags=re.MULTILINE
     )
+
+def pad_text_to_characters(characters, text):
+    lines = text.split(os.linesep)
+    if len(lines) == 1:
+        return text
+
+    result = lines[0] + os.linesep
+
+    for line in lines[1:]:
+        if not line:
+            continue
+
+        pad = len(line) + len(characters)
+        result += line.rjust(pad) + os.linesep
+
+    return result
 
 
 def _remove_patterns(statement, patterns):

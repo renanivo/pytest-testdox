@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
+import os
 
 import pytest
 from pytest_testdox import formatters
@@ -106,4 +107,33 @@ class TestFormatMultiLineText(object):
         ''') == (
             'works when used in very specific\n'
             'conditions of temperature and pressure'
+        )
+
+
+class TestJustifyTextToCharacter(object):
+
+    def test_should_not_pad_single_line_text(self):
+        assert formatters.pad_text_to_characters('>>>', 'some text') == (
+            'some text'
+        )
+
+    def test_should_pad_the_following_lines_to_the_width_of_given_characters(
+        self
+    ):
+        text = (
+            'first line{0}'
+            'second line{0}'
+            '{0}'
+            'third line{0}'
+            'fourth line{0}'
+        ).format(
+            os.linesep
+        )
+        assert formatters.pad_text_to_characters('>>>', text) == (
+            'first line{0}'
+            '   second line{0}'
+            '   third line{0}'
+            '   fourth line{0}'.format(
+                os.linesep
+            )
         )
