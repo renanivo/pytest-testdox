@@ -51,8 +51,8 @@ class TestNode(object):
         )
 
     @pytest.mark.parametrize(('attribute,value'), (
-        ('title', 'new title'),
-        ('class_name', 'new class name'),
+        ('title', ' new title '),
+        ('class_name', ' new class name '),
     ))
     def test_parse_should_use_overridden_attribute_instead_of_parse_node_id(
         self,
@@ -64,7 +64,9 @@ class TestNode(object):
 
         node = Node.parse(nodeid, pattern_config, **{attribute: value})
 
-        assert getattr(node, attribute) == value
+        result = getattr(node, attribute)
+
+        assert result == formatters.format_multi_line_text(value)
 
     @pytest.mark.parametrize('nodeid,class_name', (
         ('tests/test_module.py::test_title', None),

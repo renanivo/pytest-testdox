@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
+import re
 from collections import namedtuple
 
 import six
@@ -41,7 +42,9 @@ class Node(object):
     def parse(cls, nodeid, pattern_config, title=None, class_name=None):
         node_parts = nodeid.split('::')
 
-        if not title:
+        if title:
+            title = formatters.format_multi_line_text(title)
+        else:
             title = formatters.format_title(
                 node_parts[-1],
                 pattern_config.functions
@@ -52,7 +55,9 @@ class Node(object):
             pattern_config.files
         )
 
-        if not class_name:
+        if class_name:
+            class_name = formatters.format_multi_line_text(class_name)
+        else:
             if '()' in node_parts[-2]:
                 class_name = formatters.format_class_name(
                     node_parts[-3],
