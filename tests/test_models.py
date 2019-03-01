@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
+import os
 
 import mock
 import pytest
@@ -91,7 +92,7 @@ class TestNode(object):
         assert from_repr.class_name == node.class_name
         assert from_repr.module_name == node.module_name
 
-    def test_shoud_be_equal_when_objects_have_the_same_attributes(self, node):
+    def test_should_be_equal_when_objects_have_the_same_attributes(self, node):
         other = Node(
             title=node.title,
             class_name=node.class_name,
@@ -158,3 +159,15 @@ class TestResult(object):
         assert result.node == Node.parse(nodeid=report.nodeid,
                                          pattern_config=pattern_config,
                                          **kwargs)
+
+    def test_str_should_pad_text_to_outcome_characters(
+        self,
+        node
+    ):
+        node.title = 'some{}text'.format(os.linesep)
+        result = Result('passed', node)
+
+        assert formatters.pad_text_to_characters(
+            ' [x] ',
+            node.title
+        ) in str(result)

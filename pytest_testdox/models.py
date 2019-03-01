@@ -76,9 +76,9 @@ class Node(object):
 class Result(object):
 
     _OUTCOME_REPRESENTATION = {
-        'passed': '[x]',
-        'failed': '[ ]',
-        'skipped': '>>>',
+        'passed': ' [x] ',
+        'failed': ' [ ] ',
+        'skipped': ' >>> ',
     }
     _default_outcome_representation = '>>>'
 
@@ -99,9 +99,12 @@ class Result(object):
             self._default_outcome_representation
         )
 
-        line = ' {outcome_representation} {node}'.format(
+        line = '{outcome_representation}{node}'.format(
             outcome_representation=representation,
-            node=self.node
+            node=formatters.pad_text_to_characters(
+                characters=representation,
+                text=six.text_type(self.node)
+            )
         )
 
         return line
