@@ -92,3 +92,18 @@ class TestFormatModuleName(object):
         )
 
         assert formatted == 'module'
+
+
+class TestFormatMultiLineText(object):
+
+    def test_should_strip_spaces_from_begin_and_end(self):
+        assert formatters.format_multi_line_text('  works   ') == 'works'
+
+    def test_should_srip_spaces_from_multiple_lines(self):
+        assert formatters.format_multi_line_text('''
+            works when used in very specific
+            conditions of temperature and pressure
+        ''') == (
+            'works when used in very specific\n'
+            'conditions of temperature and pressure'
+        )
