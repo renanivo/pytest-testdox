@@ -127,7 +127,7 @@ class TestJustifyTextToCharacter(object):
             'second line{0}'
             '{0}'
             'third line{0}'
-            'fourth line{0}'
+            'fourth line'
         ).format(
             os.linesep
         )
@@ -135,7 +135,7 @@ class TestJustifyTextToCharacter(object):
             'first line{0}'
             '   second line{0}'
             '   third line{0}'
-            '   fourth line{0}'.format(
+            '   fourth line'.format(
                 os.linesep
             )
         )

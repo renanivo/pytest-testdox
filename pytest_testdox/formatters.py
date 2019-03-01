@@ -43,16 +43,17 @@ def pad_text_to_characters(characters, text):
     if len(lines) == 1:
         return text
 
-    result = lines[0] + os.linesep
+    result = []
+    result.append(lines[0])
 
     for line in lines[1:]:
         if not line:
             continue
 
         pad = len(line) + len(characters)
-        result += line.rjust(pad) + os.linesep
+        result.append(line.rjust(pad))
 
-    return result
+    return os.linesep.join(result)
 
 
 def _remove_patterns(statement, patterns):
