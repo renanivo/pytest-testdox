@@ -44,6 +44,10 @@ class TestNode(object):
         (
             'tests/test_module.py::TestClassName::()::test_title',
             formatters.format_class_name('TestClassName', ['Test*'])
+        ),
+        (
+            'tests/test_module.py::TestClassName::test_title',
+            formatters.format_class_name('TestClassName', ['Test*'])
         )
     ))
     def test_parse_with_class_name(self, pattern_config, nodeid, class_name):
