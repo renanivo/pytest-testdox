@@ -42,6 +42,59 @@ in your `ini file <https://docs.pytest.org/en/latest/customize.html#initializati
     addopts = --testdox
 
 
+Markers
+-------
+
+@pytest.mark.describe
+---------------------
+
+Override the class name in the testdox report. Example
+
+.. code-block:: python
+
+    # test_demo.py
+    @pytest.mark.describe('create_file')
+    class TestCreateFile():
+
+        def test_creates_a_file_in_the_so(self):
+            pass
+
+
+Will produce the output:
+
+::
+
+    test_demo.py
+
+    create_file
+     [x] creates a file in the so
+
+
+@pytest.mark.it
+---------------
+
+Override the test title in the testdox report. Example:
+
+.. code-block:: python
+
+    # test_demo.py
+    class TestCreateFile():
+
+        @pytest.mark.it('Creates a local file in the SO')
+        def test_creates_a_file_in_the_so(self):
+            pass
+
+
+Will produce the output:
+
+::
+
+    test_demo.py
+
+    Create File
+     [x] Creates a local file in the SO
+
+
 Configuration file options
 --------------------------
 
