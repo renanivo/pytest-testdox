@@ -1,6 +1,10 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
+import six
+
+from . import formatters
+
 
 class Wrapper(object):
 
@@ -34,19 +38,22 @@ class ColorWrapper(Wrapper):
 class UTF8Wrapper(Wrapper):
 
     _CHARACTER_BY_OUTCOME = {
-        'passed': '✓',
-        'failed': '✗',
-        'skipped': '»',
+        'passed': ' ✓ ',
+        'failed': ' ✗ ',
+        'skipped': ' » ',
     }
 
-    _default_character = '»'
+    _default_character = ' » '
 
     def __str__(self):
         outcome = self._CHARACTER_BY_OUTCOME.get(
             self.wrapped.outcome,
             self._default_character
         )
-        return ' {outcome} {node}'.format(
+        return '{outcome}{node}'.format(
             outcome=outcome,
-            node=self.wrapped.node
+            node=formatters.pad_text_to_characters(
+                characters=outcome,
+                text=six.text_type(self.wrapped.node)
+            )
         )

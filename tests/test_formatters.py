@@ -1,7 +1,10 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
+import os
+
 import pytest
+
 from pytest_testdox import formatters
 
 
@@ -92,3 +95,47 @@ class TestFormatModuleName(object):
         )
 
         assert formatted == 'module'
+
+
+class TestFormatMultiLineText(object):
+
+    def test_should_strip_spaces_from_begin_and_end(self):
+        assert formatters.format_multi_line_text('  works   ') == 'works'
+
+    def test_should_srip_spaces_from_multiple_lines(self):
+        assert formatters.format_multi_line_text('''
+            works when used in very specific
+            conditions of temperature and pressure
+        ''') == (
+            'works when used in very specific\n'
+            'conditions of temperature and pressure'
+        )
+
+
+class TestJustifyTextToCharacter(object):
+
+    def test_should_not_pad_single_line_text(self):
+        assert formatters.pad_text_to_characters('>>>', 'some text') == (
+            'some text'
+        )
+
+    def test_should_pad_the_following_lines_to_the_width_of_given_characters(
+        self
+    ):
+        text = (
+            'first line{0}'
+            'second line{0}'
+            '{0}'
+            'third line{0}'
+            'fourth line'
+        ).format(
+            os.linesep
+        )
+        assert formatters.pad_text_to_characters('>>>', text) == (
+            'first line{0}'
+            '   second line{0}'
+            '   third line{0}'
+            '   fourth line'.format(
+                os.linesep
+            )
+        )

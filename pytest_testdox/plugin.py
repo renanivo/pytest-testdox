@@ -2,9 +2,10 @@
 from __future__ import unicode_literals
 
 import pytest
+
 from _pytest.terminal import TerminalReporter
 
-from . import models, wrappers
+from . import constants, models, wrappers
 
 
 def pytest_addoption(parser):
@@ -28,6 +29,39 @@ def pytest_configure(config):
         testdox_reporter = TestdoxTerminalReporter(standard_reporter.config)
         config.pluginmanager.unregister(standard_reporter)
         config.pluginmanager.register(testdox_reporter, 'terminalreporter')
+        config.addinivalue_line(
+            "markers",
+            "{}(title): Override testdox report test title".format(
+                constants.TITLE_MARK
+            )
+        )
+        config.addinivalue_line(
+            "markers",
+            "{}(title): Override testdox report class title".format(
+                constants.CLASS_NAME_MARK
+            )
+        )
+
+
+@pytest.hookimpl(hookwrapper=True)
+def pytest_runtest_makereport(item, call):
+    result = yield
+
+    report = result.get_result()
+
+    testdox_title = _first(
+        mark.args[0]
+        for mark in item.iter_markers(name=constants.TITLE_MARK)
+    )
+    testdox_class_name = _first(
+        mark.args[0]
+        for mark in item.iter_markers(name=constants.CLASS_NAME_MARK)
+    )
+    if testdox_title:
+        report.testdox_title = testdox_title
+
+    if testdox_class_name:
+        report.testdox_class_name = testdox_class_name
 
 
 class TestdoxTerminalReporter(TerminalReporter):
@@ -84,3 +118,10 @@ class TestdoxTerminalReporter(TerminalReporter):
             self._tw.line(unicode(result))
         except NameError:
             self._tw.line(str(result))
+
+
+def _first(iterator):
+    try:
+        return next(iterator)
+    except StopIteration:
+        return None

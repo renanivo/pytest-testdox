@@ -1,7 +1,10 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
+import os
 import re
+
+STRIP_WHITE_SPACES_REGEX = r'(^[\s]+|[\s]+$)'
 
 
 def format_title(title, patterns):
@@ -24,6 +27,33 @@ def format_class_name(class_name, patterns):
 
 def format_module_name(module_name, patterns):
     return format_title(module_name.split('/')[-1], patterns)
+
+
+def format_multi_line_text(text):
+    return re.sub(
+        STRIP_WHITE_SPACES_REGEX,
+        '',
+        text,
+        flags=re.MULTILINE
+    )
+
+
+def pad_text_to_characters(characters, text):
+    lines = text.split(os.linesep)
+    if len(lines) == 1:
+        return text
+
+    result = []
+    result.append(lines[0])
+
+    for line in lines[1:]:
+        if not line:
+            continue
+
+        pad = len(line) + len(characters)
+        result.append(line.rjust(pad))
+
+    return os.linesep.join(result)
 
 
 def _remove_patterns(statement, patterns):
