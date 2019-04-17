@@ -193,3 +193,22 @@ class TestReport(object):
         result = testdir.runpytest('--testdox')
 
         assert 'should pass with parameters[param' in result.stdout.str()
+
+    def test_decorator_order_should_not_affect_parametrize(
+        self,
+        testdir
+    ):
+        testdir.makefile('.py', test_module_name="""
+            import pytest
+
+            @pytest.mark.{}('should pass with parameters')
+            @pytest.mark.parametrize('par', ['param1', 'param2'])
+            def test_a_passing_test(par):
+                assert True
+        """.format(
+            constants.TITLE_MARK
+        ))
+
+        result = testdir.runpytest('--testdox')
+
+        assert 'should pass with parameters[param' in result.stdout.str()
