@@ -42,7 +42,10 @@ class Node(object):
         node_parts = nodeid.split('::')
 
         if title:
-            title = formatters.format_multi_line_text(title)
+            title = formatters.include_parametrized(
+                formatters.format_multi_line_text(title),
+                node_parts[-1]
+            )
         else:
             title = formatters.format_title(
                 node_parts[-1],
