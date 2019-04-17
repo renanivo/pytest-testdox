@@ -183,10 +183,7 @@ class TestReport(object):
             import pytest
 
             @pytest.mark.parametrize('par', ['param1', 'param2'])
-            @pytest.mark.{}('''
-                My Title
-                My precious title
-            ''')
+            @pytest.mark.{}('should pass with parameters')
             def test_a_passing_test(par):
                 assert True
         """.format(
@@ -195,4 +192,4 @@ class TestReport(object):
 
         result = testdir.runpytest('--testdox')
 
-        assert 'My Title\n   My precious title[param' in result.stdout.str()
+        assert 'should pass with parameters[param' in result.stdout.str()
