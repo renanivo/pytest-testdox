@@ -56,6 +56,23 @@ def pad_text_to_characters(characters, text):
     return os.linesep.join(result)
 
 
+def include_parametrized(title, original_title):
+    first_bracket = original_title.find('[')
+    last_bracket = original_title.rfind(']')
+
+    has_parameters = last_bracket > first_bracket
+
+    if not has_parameters:
+        return title
+
+    parameters = original_title[first_bracket + 1:last_bracket]
+
+    return '{title}[{parameters}]'.format(
+        title=title,
+        parameters=parameters
+    )
+
+
 def _remove_patterns(statement, patterns):
     for glob_pattern in patterns:
         pattern = glob_pattern.replace('*', '')
