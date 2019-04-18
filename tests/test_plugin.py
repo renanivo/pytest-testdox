@@ -192,7 +192,8 @@ class TestReport(object):
 
         result = testdir.runpytest('--testdox')
 
-        assert 'should pass with parameters[param' in result.stdout.str()
+        assert 'should pass with parameters[param1]' in result.stdout.str()
+        assert 'should pass with parameters[param2]' in result.stdout.str()
 
     def test_decorator_order_should_not_affect_parametrize(
         self,
@@ -211,4 +212,5 @@ class TestReport(object):
 
         result = testdir.runpytest('--testdox')
 
-        assert 'should pass with parameters[param' in result.stdout.str()
+        assert 'should pass with parameters[param1]' in result.stdout.str()
+        assert 'should pass with parameters[param2]' in result.stdout.str()
