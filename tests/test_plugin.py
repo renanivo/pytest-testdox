@@ -174,3 +174,43 @@ class TestReport(object):
         result = testdir.runpytest('--testdox')
 
         assert 'My Class\nMy precious class' in result.stdout.str()
+
+    def test_should_override_test_titles_with_title_mark_parametrize(
+        self,
+        testdir
+    ):
+        testdir.makefile('.py', test_module_name="""
+            import pytest
+
+            @pytest.mark.parametrize('par', ['param1', 'param2'])
+            @pytest.mark.{}('should pass with parameters')
+            def test_a_passing_test(par):
+                assert True
+        """.format(
+            constants.TITLE_MARK
+        ))
+
+        result = testdir.runpytest('--testdox')
+
+        assert 'should pass with parameters[param1]' in result.stdout.str()
+        assert 'should pass with parameters[param2]' in result.stdout.str()
+
+    def test_decorator_order_should_not_affect_parametrize(
+        self,
+        testdir
+    ):
+        testdir.makefile('.py', test_module_name="""
+            import pytest
+
+            @pytest.mark.{}('should pass with parameters')
+            @pytest.mark.parametrize('par', ['param1', 'param2'])
+            def test_a_passing_test(par):
+                assert True
+        """.format(
+            constants.TITLE_MARK
+        ))
+
+        result = testdir.runpytest('--testdox')
+
+        assert 'should pass with parameters[param1]' in result.stdout.str()
+        assert 'should pass with parameters[param2]' in result.stdout.str()

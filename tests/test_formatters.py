@@ -139,3 +139,24 @@ class TestJustifyTextToCharacter(object):
                 os.linesep
             )
         )
+
+
+class TestIncludeParametrized(object):
+
+    def test_should_return_title_when_no_parameters_are_found(self):
+        assert formatters.include_parametrized(
+            title='Should return value',
+            original_title='test_should_return_value'
+        ) == 'Should return value'
+
+    def test_should_return_parameters_in_title(self):
+        assert formatters.include_parametrized(
+            title='A title',
+            original_title='test_should_return_value[params]'
+        ) == 'A title[params]'
+
+    def test_should_return_parameters_containing_brackets(self):
+        assert formatters.include_parametrized(
+            title='A title',
+            original_title='test_should_return_value[[[[params]]]]'
+        ) == 'A title[[[[params]]]]'
