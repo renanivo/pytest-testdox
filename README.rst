@@ -1,6 +1,10 @@
 pytest-testdox
 ==============
 
+.. image:: https://img.shields.io/pypi/v/pytest-testdox.svg?color=brightgreen
+    :target: https://pypi.org/project/pytest-testdox/
+    :alt: PyPI
+
 .. image:: https://travis-ci.org/renanivo/pytest-testdox.svg?branch=master
     :target: https://travis-ci.org/renanivo/pytest-testdox
 
