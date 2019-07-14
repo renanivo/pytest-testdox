@@ -12,6 +12,11 @@ env:
     - PYTEST="pytest>=4.0.0,<5.0.0"
     - PYTEST="pytest>=5.0.0,<6.0.0"
 
+matrix:
+  exclude:
+    - python: 2.7
+      env: PYTEST="pytest>=5.0.0,<6.0.0"
+
 cache:
   directories:
   - $HOME/.cache/pip
