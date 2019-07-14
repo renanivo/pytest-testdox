@@ -3,17 +3,33 @@ python:
 - 2.7
 - 3.5
 - 3.6
+- 3.7
+- pypy3.5
+
+env:
+  matrix:
+    - PYTEST="pytest==3.6.0"
+    - PYTEST="pytest<4.0.0"
+    - PYTEST="pytest<5.0.0"
+    - PYTEST="pytest<6.0.0"
+
 cache:
   directories:
   - $HOME/.cache/pip
+
 before_install:
 - pip install codecov
+
 install:
+- pip install $PYTEST
 - make install
+
 script:
 - make check test
+
 after_success:
 - codecov
+
 deploy:
   provider: pypi
   user: renanivo
