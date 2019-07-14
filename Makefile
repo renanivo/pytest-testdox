@@ -18,3 +18,5 @@ clean:  ## Clean cache and temporary files
 	@find . -name "*.pyo" | xargs rm -rf
 	@find . -name "__pycache__" -type d | xargs rm -rf
 	@rm -rf *.egg-info
+	@rm -rf dist/
+	@rm -rf build/
