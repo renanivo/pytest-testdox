@@ -39,3 +39,4 @@ deploy:
   on:
     tags: true
     repo: renanivo/pytest-testdox
+  skip_existing: true
