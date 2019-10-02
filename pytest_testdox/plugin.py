@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-import pytest
+import sys
 
+import pytest
 from _pytest.terminal import TerminalReporter
 
 from . import constants, models, wrappers
@@ -14,6 +15,13 @@ def pytest_addoption(parser):
         '--testdox', action='store_true', dest='testdox', default=False,
         help='Report test progress in testdox format'
     )
+    group.addoption(
+        '--force-testdox', action="store_true",
+        dest="force_testdox", default=False,
+        help=(
+            "Force testdox output even when not in real terminal"
+        )
+    )
     parser.addini(
         'testdox_format',
         help='TestDox report format (plaintext|utf8)',
@@ -21,9 +29,16 @@ def pytest_addoption(parser):
     )
 
 
+def should_enable_plugin(config):
+    return (
+        config.option.testdox and
+        (sys.stdout.isatty() or config.option.force_testdox)
+    )
+
+
 @pytest.mark.trylast
 def pytest_configure(config):
-    if config.option.testdox:
+    if should_enable_plugin(config):
         # Get the standard terminal reporter plugin and replace it with ours
         standard_reporter = config.pluginmanager.getplugin('terminalreporter')
         testdox_reporter = TestdoxTerminalReporter(standard_reporter.config)
