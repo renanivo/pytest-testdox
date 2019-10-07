@@ -17,7 +17,8 @@ def verify_target_path():
     if current_path_root not in pytest_testdox.__file__:
         warnings.warn(
             'pytest-testdox was not imported from your repository. '
-            'You might be testing the wrong code '
+            'You might be testing the wrong code. '
+            'Uninstall pytest-testdox to be able to run all test cases '
             '-- More: https://github.com/renanivo/pytest-testdox/issues/13',
             UserWarning
         )
