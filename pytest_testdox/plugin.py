@@ -31,8 +31,8 @@ def pytest_addoption(parser):
 
 def should_enable_plugin(config):
     return (
-        config.option.testdox and
-        (sys.stdout.isatty() or config.option.force_testdox)
+        (config.option.testdox and sys.stdout.isatty())
+        or config.option.force_testdox
     )
 
 

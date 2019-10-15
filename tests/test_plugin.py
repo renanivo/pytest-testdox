@@ -21,7 +21,7 @@ class TestReport(object):
                 assert True
         """)
 
-        result = testdir.runpytest('--testdox', '--force-testdox')
+        result = testdir.runpytest('--force-testdox')
 
         expected = '\033[92m ✓ a feature is working\033[0m'
         assert expected in result.stdout.str()
@@ -32,7 +32,7 @@ class TestReport(object):
                 assert False
         """)
 
-        result = testdir.runpytest('--testdox', '--force-testdox')
+        result = testdir.runpytest('--force-testdox')
         expected = '\033[91m ✗ a failed test of a feature\033[0m'
 
         assert expected in result.stdout.str()
@@ -46,7 +46,7 @@ class TestReport(object):
                 pass
         """)
 
-        result = testdir.runpytest('--testdox', '--force-testdox')
+        result = testdir.runpytest('--force-testdox')
         expected = '\033[93m » a skipped test\033[0m'
 
         assert expected in result.stdout.str()
@@ -58,7 +58,6 @@ class TestReport(object):
         """)
         result = testdir.runpytest(
             '--color=no',
-            '--testdox',
             '--force-testdox'
         )
 
@@ -73,7 +72,7 @@ class TestReport(object):
             def test_a_feature_is_working():
                 assert True
         """)
-        result = testdir.runpytest('--testdox', '--force-testdox')
+        result = testdir.runpytest('--force-testdox')
 
         expected = '\033[92m [x] a feature is working\033[0m'
         assert expected in result.stdout.str()
@@ -88,7 +87,7 @@ class TestReport(object):
                 def test_bar(self):
                     pass
         """)
-        result = testdir.runpytest('--testdox', '--force-testdox')
+        result = testdir.runpytest('--force-testdox')
 
         lines = result.stdout.get_lines_after('Foo')
         assert '✓ foo' in lines[0]
@@ -105,7 +104,7 @@ class TestReport(object):
                 assert False
         """)
 
-        result = testdir.runpytest('--testdox', '--force-testdox')
+        result = testdir.runpytest('--force-testdox')
         result.stdout.fnmatch_lines(['module name'])
 
     def test_should_print_test_summary(self, testdir):
@@ -114,7 +113,7 @@ class TestReport(object):
                 assert True
         """)
 
-        result = testdir.runpytest('--testdox', '--force-testdox')
+        result = testdir.runpytest('--force-testdox')
         assert '1 passed' in result.stdout.str()
 
     def test_should_use_python_patterns_configuration(self, testdir):
@@ -130,7 +129,7 @@ class TestReport(object):
                     pass
         """)
 
-        result = testdir.runpytest('--testdox', '--force-testdox')
+        result = testdir.runpytest('--force-testdox')
 
         lines = result.stdout.get_lines_after('Test')
         assert '✓ runs' in lines[0]
@@ -152,7 +151,7 @@ class TestReport(object):
             constants.TITLE_MARK
         ))
 
-        result = testdir.runpytest('--testdox', '--force-testdox')
+        result = testdir.runpytest('--force-testdox')
 
         assert 'My Title\n   My precious title' in result.stdout.str()
 
@@ -175,7 +174,7 @@ class TestReport(object):
             constants.CLASS_NAME_MARK
         ))
 
-        result = testdir.runpytest('--testdox', '--force-testdox')
+        result = testdir.runpytest('--force-testdox')
 
         assert 'My Class\nMy precious class' in result.stdout.str()
 
@@ -194,7 +193,7 @@ class TestReport(object):
             constants.TITLE_MARK
         ))
 
-        result = testdir.runpytest('--testdox', '--force-testdox')
+        result = testdir.runpytest('--force-testdox')
 
         assert 'should pass with parameters[param1]' in result.stdout.str()
         assert 'should pass with parameters[param2]' in result.stdout.str()
@@ -214,7 +213,7 @@ class TestReport(object):
             constants.TITLE_MARK
         ))
 
-        result = testdir.runpytest('--testdox', '--force-testdox')
+        result = testdir.runpytest('--force-testdox')
 
         assert 'should pass with parameters[param1]' in result.stdout.str()
         assert 'should pass with parameters[param2]' in result.stdout.str()
