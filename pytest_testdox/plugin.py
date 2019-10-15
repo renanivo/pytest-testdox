@@ -16,11 +16,9 @@ def pytest_addoption(parser):
         help='Report test progress in testdox format'
     )
     group.addoption(
-        '--force-testdox', action="store_true",
-        dest="force_testdox", default=False,
-        help=(
-            "Force testdox output even when not in real terminal"
-        )
+        '--force-testdox', action='store_true',
+        dest='force_testdox', default=False,
+        help='Force testdox output even when not in real terminal'
     )
     parser.addini(
         'testdox_format',
