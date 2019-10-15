@@ -45,6 +45,10 @@ in your `ini file <https://docs.pytest.org/en/latest/customize.html#initializati
     [pytest]
     addopts = --testdox
 
+When using ``--testdox``, the plugin will disable itself when not running on a
+terminal. If you want the testdox report no matter what, use the parameter
+``--force-testdox`` instead.
+
 
 Markers
 -------
