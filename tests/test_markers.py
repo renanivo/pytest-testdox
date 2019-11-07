@@ -14,7 +14,7 @@ class TestMarkers:
     def test_should_not_raise_warning_without_plugin_call(self, testdir):
         testdir.makepyfile("""
             import pytest
-            
+
             @pytest.mark.it('Should not raise warning')
             def test_with_plugin_mark():
                 assert True
