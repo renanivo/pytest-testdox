@@ -36,7 +36,6 @@ def should_enable_plugin(config):
 
 @pytest.mark.trylast
 def pytest_configure(config):
-    # Register testdox markers even though the plugin is not involved
     config.addinivalue_line(
         "markers",
         "{}(title): Override testdox report test title".format(
