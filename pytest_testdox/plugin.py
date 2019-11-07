@@ -36,24 +36,26 @@ def should_enable_plugin(config):
 
 @pytest.mark.trylast
 def pytest_configure(config):
+    # Register testdox markers even though the plugin is not involved
+    config.addinivalue_line(
+        "markers",
+        "{}(title): Override testdox report test title".format(
+            constants.TITLE_MARK
+        )
+    )
+    config.addinivalue_line(
+        "markers",
+        "{}(title): Override testdox report class title".format(
+            constants.CLASS_NAME_MARK
+        )
+    )
+
     if should_enable_plugin(config):
         # Get the standard terminal reporter plugin and replace it with ours
         standard_reporter = config.pluginmanager.getplugin('terminalreporter')
         testdox_reporter = TestdoxTerminalReporter(standard_reporter.config)
         config.pluginmanager.unregister(standard_reporter)
         config.pluginmanager.register(testdox_reporter, 'terminalreporter')
-        config.addinivalue_line(
-            "markers",
-            "{}(title): Override testdox report test title".format(
-                constants.TITLE_MARK
-            )
-        )
-        config.addinivalue_line(
-            "markers",
-            "{}(title): Override testdox report class title".format(
-                constants.CLASS_NAME_MARK
-            )
-        )
 
 
 @pytest.hookimpl(hookwrapper=True)
