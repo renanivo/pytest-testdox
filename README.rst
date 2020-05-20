@@ -40,9 +40,12 @@ in your `ini file <https://docs.pytest.org/en/latest/customize.html#initializati
 
 .. code-block:: ini
 
-    # content of pytest.ini
-    # (or tox.ini or setup.cfg)
+    # content of pytest.ini or tox.ini
     [pytest]
+    addopts = --testdox
+
+    # or if you use setup.cfg
+    [tool:pytest]
     addopts = --testdox
 
 When using ``--testdox``, the plugin will disable itself when not running on a
