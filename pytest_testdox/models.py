@@ -8,7 +8,7 @@ PatternConfig = namedtuple('PatternConfig', 'files functions classes')
 
 
 @six.python_2_unicode_compatible
-class Node(object):
+class Node:
 
     def __init__(self, title, class_name, module_name):
         self.title = title
@@ -72,7 +72,7 @@ class Node(object):
 
 
 @six.python_2_unicode_compatible
-class Result(object):
+class Result:
 
     _OUTCOME_REPRESENTATION = {
         'passed': ' [x] ',

@@ -3,7 +3,7 @@ import six
 from . import formatters
 
 
-class Wrapper(object):
+class Wrapper:
 
     def __init__(self, wrapped):
         self.wrapped = wrapped
