@@ -1,5 +1,3 @@
-import six
-
 from . import formatters
 
 
@@ -51,6 +49,6 @@ class UTF8Wrapper(Wrapper):
             outcome=outcome,
             node=formatters.pad_text_to_characters(
                 characters=outcome,
-                text=six.text_type(self.wrapped.node)
+                text=str(self.wrapped.node)
             )
         )

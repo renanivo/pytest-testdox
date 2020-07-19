@@ -21,7 +21,6 @@ setup(
     keywords='pytest testdox test report bdd',
     install_requires=[
         'pytest>=3.7.0',
-        'six>=1.11.0',
     ],
     packages=['pytest_testdox'],
     classifiers=[
