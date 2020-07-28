@@ -75,11 +75,11 @@ def _remove_patterns(statement, patterns):
         pattern = glob_pattern.replace('*', '')
 
         if glob_pattern.startswith('*'):
-            pattern = '{0}$'.format(pattern)
+            pattern = '{}$'.format(pattern)
             statement = re.sub(pattern, '', statement)
 
         elif glob_pattern.endswith('*'):
-            pattern = '^{0}'.format(pattern)
+            pattern = '^{}'.format(pattern)
             statement = re.sub(pattern, '', statement)
 
         elif '*' in glob_pattern:
@@ -89,7 +89,7 @@ def _remove_patterns(statement, patterns):
             statement = _remove_patterns(statement, infix_patterns)
 
         else:
-            pattern = '^{0}'.format(pattern)
+            pattern = '^{}'.format(pattern)
             statement = re.sub(pattern, '', statement)
 
     return statement
