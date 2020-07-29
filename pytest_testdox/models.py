@@ -1,17 +1,11 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals
-
 from collections import namedtuple
-
-import six
 
 from . import formatters
 
 PatternConfig = namedtuple('PatternConfig', 'files functions classes')
 
 
-@six.python_2_unicode_compatible
-class Node(object):
+class Node:
 
     def __init__(self, title, class_name, module_name):
         self.title = title
@@ -74,8 +68,7 @@ class Node(object):
         return cls(title=title, class_name=class_name, module_name=module_name)
 
 
-@six.python_2_unicode_compatible
-class Result(object):
+class Result:
 
     _OUTCOME_REPRESENTATION = {
         'passed': ' [x] ',
@@ -105,7 +98,7 @@ class Result(object):
             outcome_representation=representation,
             node=formatters.pad_text_to_characters(
                 characters=representation,
-                text=six.text_type(self.node)
+                text=str(self.node)
             )
         )
 

@@ -1,12 +1,7 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals
-
-import six
-
 from . import formatters
 
 
-class Wrapper(object):
+class Wrapper:
 
     def __init__(self, wrapped):
         self.wrapped = wrapped
@@ -54,6 +49,6 @@ class UTF8Wrapper(Wrapper):
             outcome=outcome,
             node=formatters.pad_text_to_characters(
                 characters=outcome,
-                text=six.text_type(self.wrapped.node)
+                text=str(self.wrapped.node)
             )
         )

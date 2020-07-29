@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals
-
 import os
 
 import pytest
@@ -8,7 +5,7 @@ import pytest
 from pytest_testdox import formatters
 
 
-class TestFormatTitle(object):
+class TestFormatTitle:
 
     @pytest.fixture
     def patterns(self):
@@ -26,7 +23,7 @@ class TestFormatTitle(object):
         )
 
 
-class TestFormatClassName(object):
+class TestFormatClassName:
 
     @pytest.fixture
     def patterns(self):
@@ -58,7 +55,7 @@ class TestFormatClassName(object):
         assert formatted == expected
 
 
-class TestFormatModuleName(object):
+class TestFormatModuleName:
 
     @pytest.fixture
     def patterns(self):
@@ -97,7 +94,7 @@ class TestFormatModuleName(object):
         assert formatted == 'module'
 
 
-class TestFormatMultiLineText(object):
+class TestFormatMultiLineText:
 
     def test_should_strip_spaces_from_begin_and_end(self):
         assert formatters.format_multi_line_text('  works   ') == 'works'
@@ -112,7 +109,7 @@ class TestFormatMultiLineText(object):
         )
 
 
-class TestJustifyTextToCharacter(object):
+class TestJustifyTextToCharacter:
 
     def test_should_not_pad_single_line_text(self):
         assert formatters.pad_text_to_characters('>>>', 'some text') == (
@@ -141,7 +138,7 @@ class TestJustifyTextToCharacter(object):
         )
 
 
-class TestIncludeParametrized(object):
+class TestIncludeParametrized:
 
     def test_should_return_title_when_no_parameters_are_found(self):
         assert formatters.include_parametrized(

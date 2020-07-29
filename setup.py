@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 import os
 
 from setuptools import setup
@@ -22,17 +21,16 @@ setup(
     keywords='pytest testdox test report bdd',
     install_requires=[
         'pytest>=3.7.0',
-        'six>=1.11.0',
     ],
     packages=['pytest_testdox'],
+    python_requires=">=3.5",
     classifiers=[
         'Development Status :: 5 - Production/Stable',
         'Framework :: Pytest',
         'Intended Audience :: Developers',
-        'Topic :: Software Development :: Testing',
-        'Programming Language :: Python',
-        'Programming Language :: Python :: 2',
-        'Programming Language :: Python :: 2.7',
+        'License :: OSI Approved :: MIT License',
+        'Operating System :: OS Independent',
+        'Programming Language :: Python :: 3 :: Only',
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
@@ -40,8 +38,8 @@ setup(
         'Programming Language :: Python :: 3.8',
         'Programming Language :: Python :: Implementation :: CPython',
         'Programming Language :: Python :: Implementation :: PyPy',
-        'Operating System :: OS Independent',
-        'License :: OSI Approved :: MIT License',
+        'Programming Language :: Python',
+        'Topic :: Software Development :: Testing',
     ],
     entry_points={
         'pytest11': [

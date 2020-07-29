@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals
-
 import sys
 
 import pytest
@@ -81,7 +78,7 @@ def pytest_runtest_makereport(item, call):
 class TestdoxTerminalReporter(TerminalReporter):
 
     def __init__(self, config, file=None):
-        TerminalReporter.__init__(self, config, file)
+        super().__init__(config, file)
         self._last_header = None
         self.pattern_config = models.PatternConfig(
             files=self.config.getini('python_files'),

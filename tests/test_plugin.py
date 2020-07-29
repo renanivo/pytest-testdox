@@ -1,12 +1,9 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals
-
 import pytest
 
 from pytest_testdox import constants
 
 
-class TestReport(object):
+class TestReport:
 
     @pytest.fixture
     def testdir(self, testdir):
@@ -79,11 +76,11 @@ class TestReport(object):
 
     def test_should_print_the_test_class_name(self, testdir):
         testdir.makepyfile("""
-            class TestFoo(object):
+            class TestFoo:
                 def test_foo(self):
                     pass
 
-            class TestBar(object):
+            class TestBar:
                 def test_bar(self):
                     pass
         """)
@@ -124,7 +121,7 @@ class TestReport(object):
             python_functions=it*
         """)
         testdir.makefile('.py', module_spec="""
-            class DescribeTest(object):
+            class DescribeTest:
                 def it_runs(self):
                     pass
         """)
@@ -166,7 +163,7 @@ class TestReport(object):
                 My Class
                 My precious class
             ''')
-            class TestClass(object):
+            class TestClass:
 
                 def test_foo(self):
                     pass

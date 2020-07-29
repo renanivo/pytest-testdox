@@ -1,9 +1,6 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals
-
 import os
+from unittest import mock
 
-import mock
 import pytest
 
 from pytest_testdox import formatters
@@ -33,7 +30,7 @@ def pattern_config():
     )
 
 
-class TestNode(object):
+class TestNode:
 
     def test_parse_should_return_a_node_instance(self, pattern_config):
         nodeid = 'tests/test_module.py::test_title'
@@ -112,7 +109,7 @@ class TestNode(object):
         assert node != other
 
 
-class TestResult(object):
+class TestResult:
 
     @pytest.fixture
     def result(self, node):
