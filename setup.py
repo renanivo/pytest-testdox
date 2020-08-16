@@ -12,7 +12,7 @@ def read(fname):
 
 setup(
     name='pytest-testdox',
-    version='1.2.1',
+    version='2.0.0',
     description='A testdox format reporter for pytest',
     long_description=read('README.md'),
     long_description_content_type='text/markdown',
