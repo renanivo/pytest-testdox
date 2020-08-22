@@ -1,0 +1,57 @@
+name: Continuous Integration
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: [3.5, 3.6, 3.7, 3.8, 3.9-dev, pypy3]
+        os: [ubuntu-latest, macos-latest]
+        pytest: [
+          "pytest==3.7.0",
+          "pytest>3.7.0,<4.0.0",
+          "pytest>=4.0.0,<5.0.0",
+          "pytest>=5.0.0,<6.0.0",
+          "pytest>=6.0.0,<7.0.0",
+        ]
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Get pip cache dir
+        id: pip-cache
+        run: |
+          echo "::set-output name=dir::$(pip cache dir)"
+
+      - name: pip cache
+        uses: actions/cache@v2
+        with:
+          path: ${{ steps.pip-cache.outputs.dir }}
+          key:
+            ${{ matrix.os }}-${{ matrix.python-version }}-v2-${{ hashFiles('**/setup.py') }}
+          restore-keys: |
+            ${{ matrix.os }}-${{ matrix.python-version }}-v2-
+
+      - name: Install dependencies
+        run: |
+          python -m pip install -U pip
+          python -m pip install "${{ matrix.pytest }}"
+          make install
+
+      - name: Test
+        shell: bash
+        run: |
+          make check test
+
+      - name: Upload coverage
+        uses: codecov/codecov-action@v1
+        with:
+          name: ${{ matrix.os }} Python ${{ matrix.python-version }} ${{ matrix.pytest }}

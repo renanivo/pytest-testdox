@@ -1,7 +1,7 @@
 # pytest-testdox
 
 [![PyPI](https://img.shields.io/pypi/v/pytest-testdox.svg?color=brightgreen)](https://pypi.org/project/pytest-testdox/)
-[![Build Status](https://travis-ci.org/renanivo/pytest-testdox.svg?branch=master)](https://travis-ci.org/renanivo/pytest-testdox)
+[![Build Status](https://github.com/renanivo/pytest-testdox/workflows/ci/badge.svg)](https://github.com/renanivo/pytest-testdox/actions)
 [![codecov](https://codecov.io/gh/renanivo/pytest-testdox/branch/master/graph/badge.svg)](https://codecov.io/gh/renanivo/pytest-testdox)
 
 A [TestDox format](https://en.wikipedia.org/wiki/TestDox) reporter for pytest.
