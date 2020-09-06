@@ -1,3 +1,5 @@
+from collections import Counter
+
 import pytest
 
 from pytest_testdox import constants
@@ -226,3 +228,24 @@ class TestReport:
         expected_testdox_output = '\033[92m ✓ a feature is working\033[0m'
 
         assert expected_testdox_output not in result.stdout.str()
+
+    def test_should_not_aggregate_tests_under_same_class_in_different_modules(
+        self, testdir
+    ):
+        testdir.makepyfile(
+            test_first="""
+            class TestFoo(object):
+                def test_a_feature_is_working(self):
+                    assert True
+            """,
+            test_second="""
+            class TestFoo(object):
+                def test_a_feature_is_working_in_another_module(self):
+                    assert True
+            """
+        )
+
+        result = testdir.runpytest('--force-testdox')
+        word_count = Counter(result.stdout.lines)
+
+        assert word_count['Foo'] == 2
