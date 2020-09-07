@@ -1,3 +1,5 @@
+import os
+
 import pytest
 
 from pytest_testdox import constants
@@ -150,7 +152,10 @@ class TestReport:
 
         result = testdir.runpytest('--force-testdox')
 
-        assert 'My Title\n   My precious title' in result.stdout.str()
+        assert (
+            f'My Title{os.linesep}   My precious title'
+            in result.stdout.str()
+        )
 
     def test_should_override_class_names_with_class_name_mark(
         self,
