@@ -151,6 +151,7 @@ class TestReport:
         ))
 
         result = testdir.runpytest('--force-testdox')
+        print(result.stdout.str())
 
         assert (
             f'My Title{os.linesep}   My precious title'
