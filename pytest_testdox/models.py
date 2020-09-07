@@ -40,6 +40,7 @@ class Node:
                 formatters.format_multi_line_text(title),
                 node_parts[-1]
             )
+            print(f'title: {title!r}')
         else:
             title = formatters.format_title(
                 node_parts[-1],

@@ -141,8 +141,8 @@ class TestReport:
             import pytest
 
             @pytest.mark.{}('''
-                My Title
-                My precious title
+            My Title
+            My precious title
             ''')
             def test_a_passing_test():
                 assert True
@@ -154,7 +154,7 @@ class TestReport:
         print(result.stdout.str())
 
         assert (
-            f'My Title{os.linesep}   My precious title'
+            f'My Title\n   My precious title'
             in result.stdout.str()
         )
 
