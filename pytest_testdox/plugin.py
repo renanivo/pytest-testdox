@@ -125,10 +125,7 @@ class TestdoxTerminalReporter(TerminalReporter):
             self._tw.sep(' ')
             self._tw.line(result.header)
 
-        try:
-            self._tw.line(unicode(result))
-        except NameError:
-            self._tw.line(str(result))
+        self._tw.line(str(result))
 
 
 def _first(iterator):
