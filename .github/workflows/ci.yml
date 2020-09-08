@@ -3,8 +3,9 @@ name: Continuous Integration
 on: [push, pull_request]
 
 jobs:
-  build:
+  ci:
     runs-on: ${{ matrix.os }}
+    if: "!contains(github.event.head_commit.message, '[ci skip]') && !contains(github.event.head_commit.message, '[skip ci]')"
     strategy:
       fail-fast: false
       matrix:
