@@ -79,7 +79,7 @@ class TestdoxTerminalReporter(TerminalReporter):
 
     def __init__(self, config, file=None):
         super().__init__(config, file)
-        self._last_header = None
+        self._last_header_id = None
         self.pattern_config = models.PatternConfig(
             files=self.config.getini('python_files'),
             functions=self.config.getini('python_functions'),
@@ -120,15 +120,12 @@ class TestdoxTerminalReporter(TerminalReporter):
         for wrapper in self.result_wrappers:
             result = wrapper(result)
 
-        if result.header != self._last_header:
-            self._last_header = result.header
+        if result.header_id != self._last_header_id:
+            self._last_header_id = result.header_id
             self._tw.sep(' ')
             self._tw.line(result.header)
 
-        try:
-            self._tw.line(unicode(result))
-        except NameError:
-            self._tw.line(str(result))
+        self._tw.line(str(result))
 
 
 def _first(iterator):

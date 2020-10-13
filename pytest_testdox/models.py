@@ -108,6 +108,15 @@ class Result:
     def header(self):
         return self.node.class_name or self.node.module_name
 
+    @property
+    def header_id(self):
+        """
+        Return the same value when the result should be aggregated under the
+        same class or module (this is not guaranteed in "header" property,
+        which should be used when displaying to the user)
+        """
+        return self.node.module_name + (self.node.class_name or '')
+
     @classmethod
     def create(cls, report, pattern_config):
         title = getattr(report, 'testdox_title', None)
