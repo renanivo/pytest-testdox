@@ -65,7 +65,7 @@ class TestNode:
 
         result = getattr(node, attribute)
 
-        assert result == formatters.format_multi_line_text(value)
+        assert result == formatters.trim_multi_line_text(value)
 
     @pytest.mark.parametrize('nodeid,class_name', (
         ('tests/test_module.py::test_title', None),

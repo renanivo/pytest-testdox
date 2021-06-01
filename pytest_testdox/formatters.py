@@ -1,7 +1,7 @@
 import os
 import re
 
-STRIP_WHITE_SPACES_REGEX = r'(^[\s]+|[\s]+$)'
+TRIM_SPACES_REGEX = r'(^[\s]+|[\s]+$)'
 
 
 def format_title(title, patterns):
@@ -26,9 +26,9 @@ def format_module_name(module_name, patterns):
     return format_title(module_name.split('/')[-1], patterns)
 
 
-def format_multi_line_text(text):
+def trim_multi_line_text(text):
     return re.sub(
-        STRIP_WHITE_SPACES_REGEX,
+        TRIM_SPACES_REGEX,
         '',
         text,
         flags=re.MULTILINE

@@ -37,7 +37,7 @@ class Node:
 
         if title:
             title = formatters.include_parametrized(
-                formatters.format_multi_line_text(title),
+                formatters.trim_multi_line_text(title),
                 node_parts[-1]
             )
         else:
@@ -52,7 +52,7 @@ class Node:
         )
 
         if class_name:
-            class_name = formatters.format_multi_line_text(class_name)
+            class_name = formatters.trim_multi_line_text(class_name)
         else:
             if '()' in node_parts[-2]:
                 class_name = formatters.format_class_name(
