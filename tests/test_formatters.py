@@ -124,7 +124,6 @@ class TestPadTextToCharacters:
         text = (
             'first line{0}'
             'second line{0}'
-            '{0}'
             'third line{0}'
             'fourth line'
         ).format(
@@ -135,6 +134,25 @@ class TestPadTextToCharacters:
             '   second line{0}'
             '   third line{0}'
             '   fourth line'.format(
+                os.linesep
+            )
+        )
+
+    def test_should_remove_empty_lines(self):
+        text = (
+            'first line{0}'
+            '{0}'
+            'second line{0}'
+            '{0}'
+            '{0}'
+            'third line'
+        ).format(
+            os.linesep
+        )
+        assert formatters.pad_text_to_characters_length(text, '>>>') == (
+            'first line{0}'
+            '   second line{0}'
+            '   third line'.format(
                 os.linesep
             )
         )
