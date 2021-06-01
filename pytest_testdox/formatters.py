@@ -40,6 +40,7 @@ def pad_text_to_characters_length(text, characters):
     if len(lines) == 1:
         return text
 
+    characters_length = len(characters)
     result = []
     result.append(lines[0])
 
@@ -47,7 +48,7 @@ def pad_text_to_characters_length(text, characters):
         if not line:
             continue
 
-        pad = len(line) + len(characters)
+        pad = len(line) + characters_length
         result.append(line.rjust(pad))
 
     return os.linesep.join(result)
