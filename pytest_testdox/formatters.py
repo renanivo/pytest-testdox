@@ -35,7 +35,7 @@ def format_multi_line_text(text):
     )
 
 
-def pad_text_to_characters(characters, text):
+def pad_text_to_characters_length(text, characters):
     lines = text.split(os.linesep)
     if len(lines) == 1:
         return text

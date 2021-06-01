@@ -96,9 +96,9 @@ class Result:
 
         line = '{outcome_representation}{node}'.format(
             outcome_representation=representation,
-            node=formatters.pad_text_to_characters(
-                characters=representation,
-                text=str(self.node)
+            node=formatters.pad_text_to_characters_length(
+                text=str(self.node),
+                characters=representation
             )
         )
 

@@ -47,8 +47,8 @@ class UTF8Wrapper(Wrapper):
         )
         return '{outcome}{node}'.format(
             outcome=outcome,
-            node=formatters.pad_text_to_characters(
-                characters=outcome,
-                text=str(self.wrapped.node)
+            node=formatters.pad_text_to_characters_length(
+                text=str(self.wrapped.node),
+                characters=outcome
             )
         )

@@ -112,7 +112,9 @@ class TestFormatMultiLineText:
 class TestPadTextToCharacters:
 
     def test_should_not_pad_single_line_text(self):
-        assert formatters.pad_text_to_characters('>>>', 'some text') == (
+        assert formatters.pad_text_to_characters_length(
+            'some text', '>>>'
+        ) == (
             'some text'
         )
 
@@ -128,7 +130,7 @@ class TestPadTextToCharacters:
         ).format(
             os.linesep
         )
-        assert formatters.pad_text_to_characters('>>>', text) == (
+        assert formatters.pad_text_to_characters_length(text, '>>>') == (
             'first line{0}'
             '   second line{0}'
             '   third line{0}'

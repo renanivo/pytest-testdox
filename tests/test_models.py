@@ -165,7 +165,7 @@ class TestResult:
         node.title = 'some{}text'.format(os.linesep)
         result = Result('passed', node)
 
-        assert formatters.pad_text_to_characters(
-            ' [x] ',
-            node.title
+        assert formatters.pad_text_to_characters_length(
+            node.title,
+            ' [x] '
         ) in str(result)
