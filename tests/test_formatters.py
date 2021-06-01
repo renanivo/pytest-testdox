@@ -109,7 +109,7 @@ class TestFormatMultiLineText:
         )
 
 
-class TestJustifyTextToCharacter:
+class TestPadTextToCharacters:
 
     def test_should_not_pad_single_line_text(self):
         assert formatters.pad_text_to_characters('>>>', 'some text') == (
