@@ -109,13 +109,13 @@ class TestTrimMultiLineText:
         )
 
 
-class TestPadTextToCharacters:
+class TestFormatResult:
 
     def test_should_not_pad_single_line_text(self):
-        assert formatters.pad_text_to_characters_length(
-            'some text', '>>>'
+        assert formatters.format_result_str(
+            '>>> ', 'some text'
         ) == (
-            'some text'
+            '>>> some text'
         )
 
     def test_should_pad_the_following_lines_to_the_width_of_given_characters(
@@ -129,11 +129,11 @@ class TestPadTextToCharacters:
         ).format(
             os.linesep
         )
-        assert formatters.pad_text_to_characters_length(text, '>>>') == (
-            'first line{0}'
-            '   second line{0}'
-            '   third line{0}'
-            '   fourth line'.format(
+        assert formatters.format_result_str('>>> ', text) == (
+            '>>> first line{0}'
+            '    second line{0}'
+            '    third line{0}'
+            '    fourth line'.format(
                 os.linesep
             )
         )
@@ -149,10 +149,10 @@ class TestPadTextToCharacters:
         ).format(
             os.linesep
         )
-        assert formatters.pad_text_to_characters_length(text, '>>>') == (
-            'first line{0}'
-            '   second line{0}'
-            '   third line'.format(
+        assert formatters.format_result_str('>>> ', text) == (
+            '>>> first line{0}'
+            '    second line{0}'
+            '    third line'.format(
                 os.linesep
             )
         )

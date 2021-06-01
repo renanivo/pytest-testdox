@@ -158,14 +158,14 @@ class TestResult:
                                          pattern_config=pattern_config,
                                          **kwargs)
 
-    def test_str_should_pad_text_to_outcome_characters(
+    def test_str_should_format_result_str(
         self,
         node
     ):
         node.title = 'some{}text'.format(os.linesep)
         result = Result('passed', node)
 
-        assert formatters.pad_text_to_characters_length(
-            node.title,
-            ' [x] '
+        assert formatters.format_result_str(
+            ' [x] ',
+            node.title
         ) in str(result)

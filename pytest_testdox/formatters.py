@@ -26,23 +26,14 @@ def format_module_name(module_name, patterns):
     return format_title(module_name.split('/')[-1], patterns)
 
 
-def trim_multi_line_text(text):
-    return re.sub(
-        TRIM_SPACES_REGEX,
-        '',
-        text,
-        flags=re.MULTILINE
-    )
-
-
-def pad_text_to_characters_length(text, characters):
-    lines = text.split(os.linesep)
+def format_result_str(outcome, node_str):
+    lines = node_str.split(os.linesep)
     if len(lines) == 1:
-        return text
+        return outcome + node_str
 
-    characters_length = len(characters)
+    characters_length = len(outcome)
     result = []
-    result.append(lines[0])
+    result.append(outcome + lines[0])
 
     for line in lines[1:]:
         if not line:
@@ -52,6 +43,15 @@ def pad_text_to_characters_length(text, characters):
         result.append(line.rjust(pad))
 
     return os.linesep.join(result)
+
+
+def trim_multi_line_text(text):
+    return re.sub(
+        TRIM_SPACES_REGEX,
+        '',
+        text,
+        flags=re.MULTILINE
+    )
 
 
 def include_parametrized(title, original_title):

@@ -94,15 +94,10 @@ class Result:
             self._default_outcome_representation
         )
 
-        line = '{outcome_representation}{node}'.format(
-            outcome_representation=representation,
-            node=formatters.pad_text_to_characters_length(
-                text=str(self.node),
-                characters=representation
-            )
+        return formatters.format_result_str(
+            outcome=representation,
+            node_str=str(self.node)
         )
-
-        return line
 
     @property
     def header(self):
