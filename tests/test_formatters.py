@@ -94,13 +94,13 @@ class TestFormatModuleName:
         assert formatted == 'module'
 
 
-class TestFormatMultiLineText:
+class TestTrimMultiLineText:
 
     def test_should_strip_spaces_from_begin_and_end(self):
-        assert formatters.format_multi_line_text('  works   ') == 'works'
+        assert formatters.trim_multi_line_text('  works   ') == 'works'
 
     def test_should_srip_spaces_from_multiple_lines(self):
-        assert formatters.format_multi_line_text('''
+        assert formatters.trim_multi_line_text('''
             works when used in very specific
             conditions of temperature and pressure
         ''') == (
@@ -109,11 +109,13 @@ class TestFormatMultiLineText:
         )
 
 
-class TestJustifyTextToCharacter:
+class TestFormatResult:
 
     def test_should_not_pad_single_line_text(self):
-        assert formatters.pad_text_to_characters('>>>', 'some text') == (
-            'some text'
+        assert formatters.format_result_str(
+            '>>> ', 'some text'
+        ) == (
+            '>>> some text'
         )
 
     def test_should_pad_the_following_lines_to_the_width_of_given_characters(
@@ -122,17 +124,35 @@ class TestJustifyTextToCharacter:
         text = (
             'first line{0}'
             'second line{0}'
-            '{0}'
             'third line{0}'
             'fourth line'
         ).format(
             os.linesep
         )
-        assert formatters.pad_text_to_characters('>>>', text) == (
+        assert formatters.format_result_str('>>> ', text) == (
+            '>>> first line{0}'
+            '    second line{0}'
+            '    third line{0}'
+            '    fourth line'.format(
+                os.linesep
+            )
+        )
+
+    def test_should_remove_empty_lines(self):
+        text = (
             'first line{0}'
-            '   second line{0}'
-            '   third line{0}'
-            '   fourth line'.format(
+            '{0}'
+            'second line{0}'
+            '{0}'
+            '{0}'
+            'third line'
+        ).format(
+            os.linesep
+        )
+        assert formatters.format_result_str('>>> ', text) == (
+            '>>> first line{0}'
+            '    second line{0}'
+            '    third line'.format(
                 os.linesep
             )
         )

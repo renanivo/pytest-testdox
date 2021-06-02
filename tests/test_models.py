@@ -65,7 +65,7 @@ class TestNode:
 
         result = getattr(node, attribute)
 
-        assert result == formatters.format_multi_line_text(value)
+        assert result == formatters.trim_multi_line_text(value)
 
     @pytest.mark.parametrize('nodeid,class_name', (
         ('tests/test_module.py::test_title', None),
@@ -158,14 +158,14 @@ class TestResult:
                                          pattern_config=pattern_config,
                                          **kwargs)
 
-    def test_str_should_pad_text_to_outcome_characters(
+    def test_str_should_format_result_str(
         self,
         node
     ):
         node.title = 'some{}text'.format(os.linesep)
         result = Result('passed', node)
 
-        assert formatters.pad_text_to_characters(
+        assert formatters.format_result_str(
             ' [x] ',
             node.title
         ) in str(result)

@@ -37,7 +37,7 @@ class Node:
 
         if title:
             title = formatters.include_parametrized(
-                formatters.format_multi_line_text(title),
+                formatters.trim_multi_line_text(title),
                 node_parts[-1]
             )
         else:
@@ -52,7 +52,7 @@ class Node:
         )
 
         if class_name:
-            class_name = formatters.format_multi_line_text(class_name)
+            class_name = formatters.trim_multi_line_text(class_name)
         else:
             if '()' in node_parts[-2]:
                 class_name = formatters.format_class_name(
@@ -94,15 +94,10 @@ class Result:
             self._default_outcome_representation
         )
 
-        line = '{outcome_representation}{node}'.format(
-            outcome_representation=representation,
-            node=formatters.pad_text_to_characters(
-                characters=representation,
-                text=str(self.node)
-            )
+        return formatters.format_result_str(
+            outcome=representation,
+            node_str=str(self.node)
         )
-
-        return line
 
     @property
     def header(self):
