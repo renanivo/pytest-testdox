@@ -12,9 +12,7 @@ jobs:
         python-version: [3.6, 3.7, 3.8, 3.9, pypy3]
         os: [ubuntu-latest, macos-latest]
         pytest: [
-          "pytest==3.7.0",
-          "pytest>3.7.0,<4.0.0",
-          "pytest>=4.0.0,<5.0.0",
+          "pytest>=4.6.0,<5.0.0",
           "pytest>=5.0.0,<6.0.0",
           "pytest>=6.0.0,<7.0.0",
         ]
