@@ -10,8 +10,8 @@ test:
 	@pytest tests/ --cov pytest_testdox --cov-report=xml
 
 check:  ## Run static code checks
-	isort --check
-	flake8 .
+	@isort --check .
+	@flake8 .
 
 clean:  ## Clean cache and temporary files
 	@find . -name "*.pyc" | xargs rm -rf
