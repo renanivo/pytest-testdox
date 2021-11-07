@@ -19,5 +19,5 @@ def verify_target_path():
             'You might be testing the wrong code. '
             'Uninstall pytest-testdox to be able to run all test cases '
             '-- More: https://github.com/renanivo/pytest-testdox/issues/13',
-            UserWarning
+            UserWarning,
         )

@@ -46,12 +46,7 @@ def format_result_str(outcome, node_str):
 
 
 def trim_multi_line_text(text):
-    return re.sub(
-        TRIM_SPACES_REGEX,
-        '',
-        text,
-        flags=re.MULTILINE
-    )
+    return re.sub(TRIM_SPACES_REGEX, '', text, flags=re.MULTILINE)
 
 
 def include_parametrized(title, original_title):
@@ -63,12 +58,9 @@ def include_parametrized(title, original_title):
     if not has_parameters:
         return title
 
-    parameters = original_title[first_bracket + 1:last_bracket]
+    parameters = original_title[first_bracket + 1 : last_bracket]
 
-    return '{title}[{parameters}]'.format(
-        title=title,
-        parameters=parameters
-    )
+    return '{title}[{parameters}]'.format(title=title, parameters=parameters)
 
 
 def _remove_patterns(statement, patterns):

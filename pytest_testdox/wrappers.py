@@ -2,7 +2,6 @@ from . import formatters
 
 
 class Wrapper:
-
     def __init__(self, wrapped):
         self.wrapped = wrapped
 
@@ -24,9 +23,7 @@ class ColorWrapper(Wrapper):
         reset = self._color_reset if color else ''
 
         return '{color}{result}{reset}'.format(
-            color=color,
-            result=self.wrapped,
-            reset=reset
+            color=color, result=self.wrapped, reset=reset
         )
 
 
@@ -42,10 +39,8 @@ class UTF8Wrapper(Wrapper):
 
     def __str__(self):
         outcome = self._CHARACTER_BY_OUTCOME.get(
-            self.wrapped.outcome,
-            self._default_character
+            self.wrapped.outcome, self._default_character
         )
         return formatters.format_result_str(
-            outcome=outcome,
-            node_str=str(self.wrapped.node)
+            outcome=outcome, node_str=str(self.wrapped.node)
         )

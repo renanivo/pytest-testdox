@@ -1,3 +1,4 @@
+black==21.10b0
 bumpversion~=0.6.0
 flake8~=4.0.1
 isort~=5.10.0
