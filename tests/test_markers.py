@@ -2,22 +2,25 @@ import pytest
 
 
 class TestMarkers:
-
     @pytest.fixture
     def testdir(self, testdir):
-        testdir.makeconftest("""
+        testdir.makeconftest(
+            """
             pytest_plugins = 'pytest_testdox.plugin'
-        """)
+        """
+        )
         return testdir
 
     def test_should_not_raise_warning_without_plugin_call(self, testdir):
-        testdir.makepyfile("""
+        testdir.makepyfile(
+            """
             import pytest
 
             @pytest.mark.it('Should not raise warning')
             def test_with_plugin_mark():
                 assert True
-        """)
+        """
+        )
 
         result = testdir.runpytest()
 

@@ -6,7 +6,6 @@ PatternConfig = namedtuple('PatternConfig', 'files functions classes')
 
 
 class Node:
-
     def __init__(self, title, class_name, module_name):
         self.title = title
         self.class_name = class_name
@@ -17,18 +16,15 @@ class Node:
 
     def __repr__(self):
         return '{}(title={!r}, class_name={!r}, module_name={!r})'.format(
-            type(self).__name__,
-            self.title,
-            self.class_name,
-            self.module_name
+            type(self).__name__, self.title, self.class_name, self.module_name
         )
 
     def __eq__(self, other):
         return (
-            type(self) == type(other) and
-            self.title == other.title and
-            self.class_name == other.class_name and
-            self.module_name == other.module_name
+            type(self) == type(other)
+            and self.title == other.title
+            and self.class_name == other.class_name
+            and self.module_name == other.module_name
         )
 
     @classmethod
@@ -37,18 +33,15 @@ class Node:
 
         if title:
             title = formatters.include_parametrized(
-                formatters.trim_multi_line_text(title),
-                node_parts[-1]
+                formatters.trim_multi_line_text(title), node_parts[-1]
             )
         else:
             title = formatters.format_title(
-                node_parts[-1],
-                pattern_config.functions
+                node_parts[-1], pattern_config.functions
             )
 
         module_name = formatters.format_module_name(
-            node_parts[0],
-            pattern_config.files
+            node_parts[0], pattern_config.files
         )
 
         if class_name:
@@ -56,13 +49,11 @@ class Node:
         else:
             if '()' in node_parts[-2]:
                 class_name = formatters.format_class_name(
-                    node_parts[-3],
-                    pattern_config.classes
+                    node_parts[-3], pattern_config.classes
                 )
             elif len(node_parts) > 2:
                 class_name = formatters.format_class_name(
-                    node_parts[-2],
-                    pattern_config.classes
+                    node_parts[-2], pattern_config.classes
                 )
 
         return cls(title=title, class_name=class_name, module_name=module_name)
@@ -83,20 +74,16 @@ class Result:
 
     def __repr__(self):
         return '{}(outcome={!r}, node={!r})'.format(
-            type(self).__name__,
-            self.outcome,
-            self.node
+            type(self).__name__, self.outcome, self.node
         )
 
     def __str__(self):
         representation = self._OUTCOME_REPRESENTATION.get(
-            self.outcome,
-            self._default_outcome_representation
+            self.outcome, self._default_outcome_representation
         )
 
         return formatters.format_result_str(
-            outcome=representation,
-            node_str=str(self.node)
+            outcome=representation, node_str=str(self.node)
         )
 
     @property
@@ -121,6 +108,6 @@ class Result:
             nodeid=report.nodeid,
             pattern_config=pattern_config,
             title=title,
-            class_name=class_name
+            class_name=class_name,
         )
         return cls(report.outcome, node)

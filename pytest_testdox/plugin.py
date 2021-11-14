@@ -9,26 +9,30 @@ from . import constants, models, wrappers
 def pytest_addoption(parser):
     group = parser.getgroup('terminal reporting', 'reporting', after='general')
     group.addoption(
-        '--testdox', action='store_true', dest='testdox', default=False,
-        help='Report test progress in testdox format'
+        '--testdox',
+        action='store_true',
+        dest='testdox',
+        default=False,
+        help='Report test progress in testdox format',
     )
     group.addoption(
-        '--force-testdox', action='store_true',
-        dest='force_testdox', default=False,
-        help='Force testdox output even when not in real terminal'
+        '--force-testdox',
+        action='store_true',
+        dest='force_testdox',
+        default=False,
+        help='Force testdox output even when not in real terminal',
     )
     parser.addini(
         'testdox_format',
         help='TestDox report format (plaintext|utf8)',
-        default='utf8'
+        default='utf8',
     )
 
 
 def should_enable_plugin(config):
     return (
-        (config.option.testdox and sys.stdout.isatty())
-        or config.option.force_testdox
-    )
+        config.option.testdox and sys.stdout.isatty()
+    ) or config.option.force_testdox
 
 
 @pytest.mark.trylast
@@ -37,13 +41,13 @@ def pytest_configure(config):
         "markers",
         "{}(title): Override testdox report test title".format(
             constants.TITLE_MARK
-        )
+        ),
     )
     config.addinivalue_line(
         "markers",
         "{}(title): Override testdox report class title".format(
             constants.CLASS_NAME_MARK
-        )
+        ),
     )
 
     if should_enable_plugin(config):
@@ -61,8 +65,7 @@ def pytest_runtest_makereport(item, call):
     report = result.get_result()
 
     testdox_title = _first(
-        mark.args[0]
-        for mark in item.iter_markers(name=constants.TITLE_MARK)
+        mark.args[0] for mark in item.iter_markers(name=constants.TITLE_MARK)
     )
     testdox_class_name = _first(
         mark.args[0]
@@ -76,14 +79,13 @@ def pytest_runtest_makereport(item, call):
 
 
 class TestdoxTerminalReporter(TerminalReporter):
-
     def __init__(self, config, file=None):
         super().__init__(config, file)
         self._last_header_id = None
         self.pattern_config = models.PatternConfig(
             files=self.config.getini('python_files'),
             functions=self.config.getini('python_functions'),
-            classes=self.config.getini('python_classes')
+            classes=self.config.getini('python_classes'),
         )
         self.result_wrappers = []
 
@@ -102,8 +104,7 @@ class TestdoxTerminalReporter(TerminalReporter):
         https://github.com/pytest-dev/pytest/blob/47a2a77/_pytest/terminal.py#L198-L201
         """
         res = self.config.hook.pytest_report_teststatus(
-            report=report,
-            config=self.config
+            report=report, config=self.config
         )
         category = res[0]
         self.stats.setdefault(category, []).append(report)
