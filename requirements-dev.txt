@@ -1,5 +1,5 @@
-black[typed-ast]==21.10b0;platform_python_implementation == "PyPy"
-black==21.10b0
+black[typed-ast]==21.12b0;platform_python_implementation == "PyPy"
+black==21.12b0;platform_python_implementation != "PyPy"
 bumpversion~=0.6.0
 flake8~=4.0.1
 isort~=5.10.0
