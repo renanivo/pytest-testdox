@@ -112,7 +112,7 @@ class TestdoxTerminalReporter(TerminalReporter):
 
     def pytest_runtest_logreport(self, report):
         self._register_stats(report)
-        
+
         if report.skipped and report.when == 'teardown':
             return
         if report.when != 'call' and not report.skipped:
