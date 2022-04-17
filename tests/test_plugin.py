@@ -246,7 +246,7 @@ class TestReport:
             """
             def test_a_feature_is_working():
                 assert True
-        """
+            """
         )
 
         result = testdir.runpytest('--testdox')
@@ -275,3 +275,20 @@ class TestReport:
         word_count = Counter(result.stdout.lines)
 
         assert word_count['Foo'] == 2
+
+    def test_verbose_mode_should_not_affect_the_filename_output(
+        self, testdir
+    ):
+        file = testdir.makepyfile(
+            """
+            def test_foo():
+                assert True
+
+            def test_bar():
+                assert True
+            """
+        )
+
+        result = testdir.runpytest('--verbose', '--force-testdox')
+
+        result.stdout.re_match_lines(r'^' + file.basename + r'\s+$')
