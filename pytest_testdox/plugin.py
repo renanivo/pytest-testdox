@@ -132,7 +132,10 @@ class TestdoxTerminalReporter(TerminalReporter):
         # Ensure that the path is printed before the
         # 1st test of a module starts running.
         self.write_fspath_result(nodeid, "")
-        self.flush()
+
+        # To support Pytest < 6.0.0
+        if hasattr(self, 'flush'):
+            self.flush()
 
 
 def _first(iterator):
