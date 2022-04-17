@@ -11,7 +11,7 @@ class TestReport:
         testdir.makeconftest(
             """
             pytest_plugins = 'pytest_testdox.plugin'
-        """
+            """
         )
         return testdir
 
@@ -20,7 +20,7 @@ class TestReport:
             """
             def test_a_feature_is_working():
                 assert True
-        """
+            """
         )
 
         result = testdir.runpytest('--force-testdox')
@@ -33,7 +33,7 @@ class TestReport:
             """
             def test_a_failed_test_of_a_feature():
                 assert False
-        """
+            """
         )
 
         result = testdir.runpytest('--force-testdox')
@@ -49,7 +49,7 @@ class TestReport:
             @pytest.mark.skip
             def test_a_skipped_test():
                 pass
-        """
+            """
         )
 
         result = testdir.runpytest('--force-testdox')
@@ -62,7 +62,7 @@ class TestReport:
             """
             def test_a_feature_is_working():
                 assert True
-        """
+            """
         )
         result = testdir.runpytest('--color=no', '--force-testdox')
 
@@ -73,13 +73,13 @@ class TestReport:
             """
             [pytest]
             testdox_format=plaintext
-        """
+            """
         )
         testdir.makepyfile(
             """
             def test_a_feature_is_working():
                 assert True
-        """
+            """
         )
         result = testdir.runpytest('--force-testdox')
 
@@ -96,7 +96,7 @@ class TestReport:
             class TestBar:
                 def test_bar(self):
                     pass
-        """
+            """
         )
         result = testdir.runpytest('--force-testdox')
 
@@ -114,7 +114,7 @@ class TestReport:
             test_module_name="""
             def test_a_failed_test_of_a_feature():
                 assert False
-        """,
+            """,
         )
 
         result = testdir.runpytest('--force-testdox')
@@ -126,7 +126,7 @@ class TestReport:
             test_module_name="""
             def test_a_passing_test():
                 assert True
-        """,
+            """,
         )
 
         result = testdir.runpytest('--force-testdox')
@@ -139,7 +139,7 @@ class TestReport:
             python_classes=Describe*
             python_files=*spec.py
             python_functions=it*
-        """
+            """
         )
         testdir.makefile(
             '.py',
@@ -147,7 +147,7 @@ class TestReport:
             class DescribeTest:
                 def it_runs(self):
                     pass
-        """,
+            """,
         )
 
         result = testdir.runpytest('--force-testdox')
@@ -167,7 +167,7 @@ class TestReport:
             ''')
             def test_a_passing_test():
                 assert True
-        """.format(
+            """.format(
                 constants.TITLE_MARK
             ),
         )
@@ -190,7 +190,7 @@ class TestReport:
 
                 def test_foo(self):
                     pass
-        """.format(
+            """.format(
                 constants.CLASS_NAME_MARK
             ),
         )
@@ -211,7 +211,7 @@ class TestReport:
             @pytest.mark.{}('should pass with parameters')
             def test_a_passing_test(par):
                 assert True
-        """.format(
+            """.format(
                 constants.TITLE_MARK
             ),
         )
@@ -231,7 +231,7 @@ class TestReport:
             @pytest.mark.parametrize('par', ['param1', 'param2'])
             def test_a_passing_test(par):
                 assert True
-        """.format(
+            """.format(
                 constants.TITLE_MARK
             ),
         )
@@ -276,9 +276,7 @@ class TestReport:
 
         assert word_count['Foo'] == 2
 
-    def test_verbose_mode_should_not_affect_the_filename_output(
-        self, testdir
-    ):
+    def test_verbose_mode_should_not_affect_the_filename_output(self, testdir):
         file = testdir.makepyfile(
             """
             def test_foo():
