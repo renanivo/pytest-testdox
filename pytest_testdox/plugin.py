@@ -128,6 +128,15 @@ class TestdoxTerminalReporter(TerminalReporter):
 
         self._tw.line(str(result))
 
+    def pytest_runtest_logstart(self, nodeid, location):
+        # Ensure that the path is printed before the
+        # 1st test of a module starts running.
+        self.write_fspath_result(nodeid, "")
+
+        # To support Pytest < 6.0.0
+        if hasattr(self, 'flush'):
+            self.flush()
+
 
 def _first(iterator):
     try:
