@@ -1,4 +1,4 @@
-black[typed-ast]==22.3.0;platform_python_implementation == "PyPy"
+black[typed-ast]==22.6.0;platform_python_implementation == "PyPy"
 black==22.3.0;platform_python_implementation != "PyPy"
 bumpversion~=0.6.0
 flake8~=4.0.1
