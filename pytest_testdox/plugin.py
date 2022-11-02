@@ -1,14 +1,14 @@
 import sys
-from typing import Optional, Tuple
+from typing import Generator, List, Optional, TextIO, Tuple
 
 import pytest
-from _pytest.reports import TestReport
 from _pytest.terminal import TerminalReporter
+from pytest import CallInfo, Config, Item, Parser, TestReport
 
 from . import constants, models, wrappers
 
 
-def pytest_addoption(parser):
+def pytest_addoption(parser: Parser):
     group = parser.getgroup('terminal reporting', 'reporting', after='general')
     group.addoption(
         '--testdox',
@@ -31,14 +31,14 @@ def pytest_addoption(parser):
     )
 
 
-def should_enable_plugin(config):
+def should_enable_plugin(config: Config):
     return (
         config.option.testdox and sys.stdout.isatty()
     ) or config.option.force_testdox
 
 
 @pytest.mark.trylast
-def pytest_configure(config):
+def pytest_configure(config: Config):
     config.addinivalue_line(
         "markers",
         "{}(title): Override testdox report test title".format(
@@ -61,7 +61,9 @@ def pytest_configure(config):
 
 
 @pytest.hookimpl(hookwrapper=True)
-def pytest_runtest_makereport(item, call):
+def pytest_runtest_makereport(
+    item: Item, call: CallInfo[None]
+) -> Generator[None, TestReport, None]:
     result = yield
 
     report = result.get_result()
@@ -81,15 +83,15 @@ def pytest_runtest_makereport(item, call):
 
 
 class TestdoxTerminalReporter(TerminalReporter):  # type: ignore
-    def __init__(self, config, file=None):
+    def __init__(self, config: Config, file: TextIO = None):
         super().__init__(config, file)
-        self._last_header_id = None
+        self._last_header_id: Optional[str] = None
         self.pattern_config = models.PatternConfig(
             files=self.config.getini('python_files'),
             functions=self.config.getini('python_functions'),
             classes=self.config.getini('python_classes'),
         )
-        self.result_wrappers = []
+        self.result_wrappers: List[type] = []
 
         if config.getini('testdox_format') != 'plaintext':
             self.result_wrappers.append(wrappers.UTF8Wrapper)
@@ -97,7 +99,7 @@ class TestdoxTerminalReporter(TerminalReporter):  # type: ignore
         if config.option.color != 'no':
             self.result_wrappers.append(wrappers.ColorWrapper)
 
-    def _register_stats(self, report):
+    def _register_stats(self, report: TestReport):
         """
         This method is not created for this plugin, but it is needed in order
         to the reporter display the tests summary at the end.
