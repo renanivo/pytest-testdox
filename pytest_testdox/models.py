@@ -1,34 +1,36 @@
-from collections import namedtuple
+from __future__ import annotations
 
-from . import formatters
+from dataclasses import dataclass
+from typing import List, NamedTuple, Optional
 
-PatternConfig = namedtuple('PatternConfig', 'files functions classes')
+from pytest import TestReport
+
+from pytest_testdox import formatters
 
 
+class PatternConfig(NamedTuple):
+    files: List[str]
+    functions: List[str]
+    classes: List[str]
+
+
+@dataclass
 class Node:
-    def __init__(self, title, class_name, module_name):
-        self.title = title
-        self.class_name = class_name
-        self.module_name = module_name
+    module_name: str
+    title: Optional[str]
+    class_name: Optional[str]
 
     def __str__(self):
         return self.title
 
-    def __repr__(self):
-        return '{}(title={!r}, class_name={!r}, module_name={!r})'.format(
-            type(self).__name__, self.title, self.class_name, self.module_name
-        )
-
-    def __eq__(self, other):
-        return (
-            type(self) == type(other)
-            and self.title == other.title
-            and self.class_name == other.class_name
-            and self.module_name == other.module_name
-        )
-
     @classmethod
-    def parse(cls, nodeid, pattern_config, title=None, class_name=None):
+    def parse(
+        cls,
+        nodeid: str,
+        pattern_config: PatternConfig,
+        title: str = None,
+        class_name: str = None,
+    ):
         node_parts = nodeid.split('::')
 
         if title:
@@ -59,7 +61,10 @@ class Node:
         return cls(title=title, class_name=class_name, module_name=module_name)
 
 
+@dataclass(frozen=True)
 class Result:
+    outcome: str
+    node: Node
 
     _OUTCOME_REPRESENTATION = {
         'passed': ' [x] ',
@@ -68,16 +73,7 @@ class Result:
     }
     _default_outcome_representation = '>>>'
 
-    def __init__(self, outcome, node):
-        self.outcome = outcome
-        self.node = node
-
-    def __repr__(self):
-        return '{}(outcome={!r}, node={!r})'.format(
-            type(self).__name__, self.outcome, self.node
-        )
-
-    def __str__(self):
+    def __str__(self) -> str:
         representation = self._OUTCOME_REPRESENTATION.get(
             self.outcome, self._default_outcome_representation
         )
@@ -87,11 +83,11 @@ class Result:
         )
 
     @property
-    def header(self):
+    def header(self) -> str:
         return self.node.class_name or self.node.module_name
 
     @property
-    def header_id(self):
+    def header_id(self) -> str:
         """
         Return the same value when the result should be aggregated under the
         same class or module (this is not guaranteed in "header" property,
@@ -100,7 +96,9 @@ class Result:
         return self.node.module_name + (self.node.class_name or '')
 
     @classmethod
-    def create(cls, report, pattern_config):
+    def create(
+        cls, report: TestReport, pattern_config: PatternConfig
+    ) -> Result:
         title = getattr(report, 'testdox_title', None)
         class_name = getattr(report, 'testdox_class_name', None)
 
