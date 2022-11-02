@@ -3,7 +3,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import List, NamedTuple, Optional
 
-from pytest import TestReport
+from _pytest.reports import TestReport
 
 from pytest_testdox import formatters
 

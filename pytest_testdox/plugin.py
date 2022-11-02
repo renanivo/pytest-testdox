@@ -2,8 +2,9 @@ import sys
 from typing import Generator, List, Optional, TextIO, Tuple
 
 import pytest
+from _pytest.reports import TestReport
 from _pytest.terminal import TerminalReporter
-from pytest import CallInfo, Config, Item, Parser, TestReport
+from pytest import CallInfo, Config, Item, Parser
 
 from . import constants, models, wrappers
 
