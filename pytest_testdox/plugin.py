@@ -78,7 +78,7 @@ def pytest_runtest_makereport(item, call):
         report.testdox_class_name = testdox_class_name
 
 
-class TestdoxTerminalReporter(TerminalReporter):
+class TestdoxTerminalReporter(TerminalReporter):  # type: ignore
     def __init__(self, config, file=None):
         super().__init__(config, file)
         self._last_header_id = None
