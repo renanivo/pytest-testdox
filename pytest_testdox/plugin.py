@@ -1,6 +1,8 @@
 import sys
+from typing import Optional, Tuple
 
 import pytest
+from _pytest.reports import TestReport
 from _pytest.terminal import TerminalReporter
 
 from . import constants, models, wrappers
@@ -110,7 +112,7 @@ class TestdoxTerminalReporter(TerminalReporter):  # type: ignore
         self.stats.setdefault(category, []).append(report)
         self._tests_ran = True
 
-    def pytest_runtest_logreport(self, report):
+    def pytest_runtest_logreport(self, report: TestReport) -> None:
         self._register_stats(report)
 
         if report.when != 'call' and not report.skipped:
@@ -128,10 +130,12 @@ class TestdoxTerminalReporter(TerminalReporter):  # type: ignore
 
         self._tw.line(str(result))
 
-    def pytest_runtest_logstart(self, nodeid, location):
+    def pytest_runtest_logstart(
+        self, nodeid: str, location: Tuple[str, Optional[int], str]
+    ) -> None:
         # Ensure that the path is printed before the
         # 1st test of a module starts running.
-        self.write_fspath_result(nodeid, "")
+        self.write_fspath_result(nodeid, '')
 
         # To support Pytest < 6.0.0
         if hasattr(self, 'flush'):
