@@ -1,8 +1,13 @@
-from . import formatters
+from __future__ import annotations
+
+from typing import Union
+
+from pytest_testdox import formatters
+from pytest_testdox.models import Result
 
 
 class Wrapper:
-    def __init__(self, wrapped):
+    def __init__(self, wrapped: Union[Result, Wrapper]):
         self.wrapped = wrapped
 
     def __getattr__(self, name):
@@ -18,7 +23,7 @@ class ColorWrapper(Wrapper):
     }
     _color_reset = '\033[0m'
 
-    def __str__(self):
+    def __str__(self) -> str:
         color = self._COLOR_BY_OUTCOME.get(self.wrapped.outcome, '')
         reset = self._color_reset if color else ''
 
@@ -37,7 +42,7 @@ class UTF8Wrapper(Wrapper):
 
     _default_character = ' » '
 
-    def __str__(self):
+    def __str__(self) -> str:
         outcome = self._CHARACTER_BY_OUTCOME.get(
             self.wrapped.outcome, self._default_character
         )

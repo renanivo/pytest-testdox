@@ -10,6 +10,7 @@ test:
 	@pytest tests/ --cov pytest_testdox --cov-report=xml
 
 check:  ## Run static code checks
+	@mypy .
 	@black --check .
 	@isort --check .
 	@flake8 .

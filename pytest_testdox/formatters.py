@@ -1,14 +1,15 @@
 import os
 import re
+from typing import List
 
 TRIM_SPACES_REGEX = r'(^[\s]+|[\s]+$)'
 
 
-def format_title(title, patterns):
+def format_title(title, patterns: List[str]):
     return _remove_patterns(title, patterns).replace('_', ' ').strip()
 
 
-def format_class_name(class_name, patterns):
+def format_class_name(class_name: str, patterns: List[str]):
     formatted = ''
 
     class_name = _remove_patterns(class_name, patterns)
@@ -22,11 +23,11 @@ def format_class_name(class_name, patterns):
     return formatted.strip()
 
 
-def format_module_name(module_name, patterns):
+def format_module_name(module_name: str, patterns: List[str]):
     return format_title(module_name.split('/')[-1], patterns)
 
 
-def format_result_str(outcome, node_str):
+def format_result_str(outcome: str, node_str: str):
     lines = node_str.split(os.linesep)
     if len(lines) == 1:
         return outcome + node_str
@@ -45,11 +46,11 @@ def format_result_str(outcome, node_str):
     return os.linesep.join(result)
 
 
-def trim_multi_line_text(text):
+def trim_multi_line_text(text: str):
     return re.sub(TRIM_SPACES_REGEX, '', text, flags=re.MULTILINE)
 
 
-def include_parametrized(title, original_title):
+def include_parametrized(title: str, original_title: str):
     first_bracket = original_title.find('[')
     last_bracket = original_title.rfind(']')
 
@@ -63,7 +64,7 @@ def include_parametrized(title, original_title):
     return '{title}[{parameters}]'.format(title=title, parameters=parameters)
 
 
-def _remove_patterns(statement, patterns):
+def _remove_patterns(statement: str, patterns: List[str]):
     for glob_pattern in patterns:
         pattern = glob_pattern.replace('*', '')
 
@@ -88,7 +89,7 @@ def _remove_patterns(statement, patterns):
     return statement
 
 
-def _has_lower_letter_besides(index, string):
+def _has_lower_letter_besides(index: int, string: str):
     letter_before = string[index - 1] if index > 0 else ''
     letter_after = string[index + 1] if index < len(string) - 1 else ''
 

@@ -85,44 +85,11 @@ class TestNode:
 
         assert node.class_name == class_name
 
-    def test_repr_should_return_a_string_representation_of_itself(self, node):
-        from_repr = eval(repr(node))
-
-        assert from_repr.title == node.title
-        assert from_repr.class_name == node.class_name
-        assert from_repr.module_name == node.module_name
-
-    def test_should_be_equal_when_objects_have_the_same_attributes(self, node):
-        other = Node(
-            title=node.title,
-            class_name=node.class_name,
-            module_name=node.module_name,
-        )
-
-        assert node == other
-
-    def test_should_not_be_equal_when_it_is_not_the_same_class(self, node):
-        other = mock.Mock(
-            title=node.title,
-            class_name=node.class_name,
-            module_name=node.module_name,
-        )
-
-        assert node != other
-
 
 class TestResult:
     @pytest.fixture
     def result(self, node):
         return Result('passed', node)
-
-    def test_repr_should_return_a_string_representation_of_itself(
-        self, node, result
-    ):
-        from_repr = eval(repr(result))
-
-        assert from_repr.outcome == result.outcome
-        assert isinstance(from_repr.node, Node)
 
     def test_create_should_return_a_result_with_a_parsed_node(
         self, report, pattern_config
