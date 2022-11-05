@@ -3,13 +3,13 @@ from typing import Generator, List, Optional, TextIO, Tuple
 
 import pytest
 
-if pytest.__version__ < '7.0.0':
+try:
+    from pytest import CallInfo, Config, Parser, TestReport  # type: ignore
+except ImportError:  # For pytest < 7.0.0
     from _pytest.config import Config
     from _pytest.config.argparsing import Parser
     from _pytest.reports import TestReport
     from _pytest.runner import CallInfo
-else:
-    from pytest import Config, Parser, TestReport, CallInfo
 
 from _pytest.terminal import TerminalReporter
 from pytest import Item
