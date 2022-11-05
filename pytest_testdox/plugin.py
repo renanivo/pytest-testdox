@@ -2,9 +2,17 @@ import sys
 from typing import Generator, List, Optional, TextIO, Tuple
 
 import pytest
-from _pytest.reports import TestReport
+
+if pytest.__version__ < '7.0.0':
+    from _pytest.config import Config
+    from _pytest.config.argparsing import Parser
+    from _pytest.reports import TestReport
+    from _pytest.runner import CallInfo
+else:
+    from pytest import Config, Parser, TestReport, CallInfo
+
 from _pytest.terminal import TerminalReporter
-from pytest import CallInfo, Config, Item, Parser
+from pytest import Item
 
 from . import constants, models, wrappers
 
@@ -63,7 +71,7 @@ def pytest_configure(config: Config):
 
 @pytest.hookimpl(hookwrapper=True)
 def pytest_runtest_makereport(
-    item: Item, call: CallInfo[None]
+    item: Item, call: CallInfo
 ) -> Generator[None, TestReport, None]:
     result = yield
 
