@@ -14,7 +14,7 @@ else:
 from _pytest.terminal import TerminalReporter
 from pytest import Item
 
-from . import constants, models, wrappers
+from pytest_testdox import constants, models, wrappers
 
 
 def pytest_addoption(parser: Parser):
