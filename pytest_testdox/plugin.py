@@ -78,22 +78,22 @@ def pytest_runtest_makereport(
 
     report = result.get_result()
 
-    testdox_title = _first(
-        mark.args[0] for mark in item.iter_markers(name=constants.TITLE_MARK)
+    testdox_title = next(
+        (
+            mark.args[0]
+            for mark in item.iter_markers(name=constants.TITLE_MARK)
+        ),
+        None,
     )
-    testdox_class_name = _first(
-        mark.args[0]
-        for mark in item.iter_markers(name=constants.CLASS_NAME_MARK)
+    testdox_class_name = next(
+        (
+            mark.args[0]
+            for mark in item.iter_markers(name=constants.CLASS_NAME_MARK)
+        ),
+        None,
     )
     if testdox_title:
         report.testdox_title = testdox_title
 
     if testdox_class_name:
         report.testdox_class_name = testdox_class_name
-
-
-def _first(iterator):
-    try:
-        return next(iterator)
-    except StopIteration:
-        return None
