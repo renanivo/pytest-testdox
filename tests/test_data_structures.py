@@ -4,7 +4,7 @@ from unittest import mock
 import pytest
 
 from pytest_testdox import formatters
-from pytest_testdox.models import Node, PatternConfig, Result
+from pytest_testdox.data_structures import Node, PatternConfig, Result
 
 
 @pytest.fixture

@@ -14,7 +14,7 @@ except ImportError:  # For pytest < 7.0.0
 from _pytest.terminal import TerminalReporter
 from pytest import Item
 
-from pytest_testdox import constants, models, wrappers
+from pytest_testdox import constants, data_structures, wrappers
 
 
 def pytest_addoption(parser: Parser):
@@ -95,7 +95,7 @@ class TestdoxTerminalReporter(TerminalReporter):  # type: ignore
     def __init__(self, config: Config, file: TextIO = None):
         super().__init__(config, file)
         self._last_header_id: Optional[str] = None
-        self.pattern_config = models.PatternConfig(
+        self.pattern_config = data_structures.PatternConfig(
             files=self.config.getini('python_files'),
             functions=self.config.getini('python_functions'),
             classes=self.config.getini('python_classes'),
@@ -129,7 +129,7 @@ class TestdoxTerminalReporter(TerminalReporter):  # type: ignore
         if report.when != 'call' and not report.skipped:
             return
 
-        result = models.Result.create(report, self.pattern_config)
+        result = data_structures.Result.create(report, self.pattern_config)
 
         for wrapper in self.result_wrappers:
             result = wrapper(result)
