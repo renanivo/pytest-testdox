@@ -3,7 +3,7 @@ from __future__ import annotations
 from typing import Union
 
 from pytest_testdox import formatters
-from pytest_testdox.models import Result
+from pytest_testdox.data_structures import Result
 
 
 class Wrapper:
