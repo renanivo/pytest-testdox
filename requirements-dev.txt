@@ -3,6 +3,6 @@ black==22.10.0;platform_python_implementation != "PyPy"
 bumpversion~=0.6.0
 flake8~=5.0.4
 isort~=5.10.0
-mypy==0.982
+mypy==0.991
 pytest-cov~=4.0.0
 pytest>=4.6.0
