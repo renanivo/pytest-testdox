@@ -45,7 +45,7 @@ def should_enable_plugin(config: Config):
     ) or config.option.force_testdox
 
 
-@pytest.mark.trylast
+@pytest.hookimpl(trylast=True)
 def pytest_configure(config: Config):
     config.addinivalue_line(
         "markers",
