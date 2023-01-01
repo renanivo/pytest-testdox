@@ -2,7 +2,7 @@ black[typed-ast]==22.10.0;platform_python_implementation == "PyPy"
 black==22.10.0;platform_python_implementation != "PyPy"
 bumpversion~=0.6.0
 flake8~=5.0.4
-isort~=5.10.0
+isort~=5.11.4
 mypy==0.982
 pytest-cov~=4.0.0
 pytest>=4.6.0
