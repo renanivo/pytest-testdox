@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import List, NamedTuple, Optional
+from typing import List, NamedTuple
 
 from _pytest.reports import TestReport
 
@@ -17,8 +17,8 @@ class PatternConfig(NamedTuple):
 @dataclass
 class Node:
     module_name: str
-    title: Optional[str]
-    class_name: Optional[str]
+    title: str | None
+    class_name: str | None
 
     def __str__(self):
         return self.title
@@ -28,8 +28,8 @@ class Node:
         cls,
         nodeid: str,
         pattern_config: PatternConfig,
-        title: str = None,
-        class_name: str = None,
+        title: str | None = None,
+        class_name: str | None = None,
     ):
         node_parts = nodeid.split('::')
 
@@ -84,7 +84,7 @@ class Result:
 
     @property
     def header(self) -> str:
-        return self.node.class_name or self.node.module_name
+        return self.node.class_name or self.node.module_name  # type: ignore
 
     @property
     def header_id(self) -> str:
