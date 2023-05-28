@@ -27,6 +27,8 @@ jobs:
             pytest: "pytest>=4.6.0,<5.0.0"
           - python-version: "3.11"
             pytest: "pytest>=5.0.0,<6.0.0"
+          - python-version: "pypy-3.9"
+            os: macos-latest
 
     steps:
       - uses: actions/checkout@v3
