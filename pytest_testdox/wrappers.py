@@ -15,7 +15,6 @@ class Wrapper:
 
 
 class ColorWrapper(Wrapper):
-
     _COLOR_BY_OUTCOME = {
         'passed': '\033[92m',
         'failed': '\033[91m',
@@ -33,7 +32,6 @@ class ColorWrapper(Wrapper):
 
 
 class UTF8Wrapper(Wrapper):
-
     _CHARACTER_BY_OUTCOME = {
         'passed': ' ✓ ',
         'failed': ' ✗ ',
