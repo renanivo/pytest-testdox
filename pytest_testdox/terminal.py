@@ -12,7 +12,7 @@ from pytest_testdox import data_structures, wrappers
 
 
 class TestdoxTerminalReporter(TerminalReporter):  # type: ignore
-    def __init__(self, config: Config, file: TextIO = None):
+    def __init__(self, config: Config, file: Optional[TextIO] = None) -> None:
         super().__init__(config, file)
         self._last_header_id: Optional[str] = None
         self.pattern_config = data_structures.PatternConfig(
