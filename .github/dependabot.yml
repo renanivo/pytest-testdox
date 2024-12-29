@@ -5,10 +5,15 @@ updates:
   directory: "/"
   schedule:
     interval: monthly
-  ignore:
-    - dependency-name: "*"
-      update-types: ["version-update:semver-patch"]
+  groups:
+    python_dependencies:
+      patterns:
+        - "*"
 - package-ecosystem: "github-actions"
   directory: "/"
   schedule:
     interval: monthly
+  groups:
+    gh_actions_dependencies:
+      patterns:
+        - "*"
