@@ -7,7 +7,7 @@ install:  ## Install package for development
 	@pip install -r requirements-dev.txt
 
 test:
-	@pytest tests/ --cov pytest_testdox --cov-report=xml
+	@pytest tests/ --cov pytest_testdox --cov-report=xml --junitxml=junit.xml -o junit_family=legacy
 
 check:  ## Run static code checks
 	@mypy .
