@@ -1,9 +1,59 @@
+[project]
+name = "pytest-testdox"
+version = "3.1.0"
+description = "A testdox format reporter for pytest"
+authors = [
+    {name = "Renan Ivo",email = "renanivom@gmail.com"}
+]
+license = { file = "LICENSE" }
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "pytest (>=6.0.0)",
+]
+keywords=["pytest", "testdox", "test", "report", "bdd"]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Framework :: Pytest",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: Implementation :: CPython",
+    "Programming Language :: Python :: Implementation :: PyPy",
+    "Programming Language :: Python",
+    "Topic :: Software Development :: Testing",
+]
+packages=[
+    { include = "pytest_testdox" },
+]
+
+[project.urls]
+homepage = "https://github.com/renanivo/pytest-testdox"
+
+[project.entry-points."pytest11"]
+testdox = "pytest_testdox.plugin"
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.group.dev.dependencies]
+black = {version = "24.10.0", extras = ["typed-ast"]}
+mypy = "1.14.1"
+bumpversion = "^0.6.0"
+flake8 = "^7.1.1"
+pytest-cov = "^6.0.0"
+isort = "^5.13.2"
+
 [tool.black]
 skip-string-normalization = true
 line-length = 79
 
 [tool.mypy]
 ignore_missing_imports = true
-
-[tool.isort]
-known_first_party = "pytest_testdox"
