@@ -46,7 +46,6 @@ build-backend = "poetry.core.masonry.api"
 [tool.poetry.group.dev.dependencies]
 black = {version = "24.10.0", extras = ["typed-ast"]}
 mypy = "1.14.1"
-bumpversion = "^0.6.0"
 flake8 = "^7.1.1"
 pytest-cov = "^6.0.0"
 isort = "^5.13.2"
@@ -57,3 +56,16 @@ line-length = 79
 
 [tool.mypy]
 ignore_missing_imports = true
+
+[tool.coverage.run]
+omit = [
+    "*/*/tests/*",
+]
+
+[tool.isort]
+profile = "black"
+known_first_party = "pytest_testdox"
+atomic = true
+line_length = 79
+multi_line_output = 3
+use_parentheses = true
