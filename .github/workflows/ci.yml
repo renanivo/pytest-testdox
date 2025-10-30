@@ -17,6 +17,8 @@ jobs:
           - "3.11"
           - "3.12"
           - "3.13"
+          - "3.14"
+          - "3.14t"
           - "pypy-3.10"
         os: [ubuntu-latest, macos-latest]
         pytest:
@@ -24,8 +26,10 @@ jobs:
           - "pytest>=7.0.0,<8.0.0"
           - "pytest>=8.0.0,<9.0.0"
         exclude:
-          - python-version: "pypy-3.9"
-            os: macos-latest
+          - python-version: "3.14"
+            pytest: "pytest>=6.0.0,<7.0.0"
+          - python-version: "3.14t"
+            pytest: "pytest>=6.0.0,<7.0.0"
 
     steps:
       - uses: actions/checkout@v4
