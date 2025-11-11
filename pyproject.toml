@@ -5,5 +5,15 @@ line-length = 79
 [tool.mypy]
 ignore_missing_imports = true
 
+[tool.coverage.run]
+omit = [
+    "*/*/tests/*",
+]
+
 [tool.isort]
+profile = "black"
 known_first_party = "pytest_testdox"
+atomic = true
+line_length = 79
+multi_line_output = 3
+use_parentheses = true
