@@ -207,10 +207,12 @@ class TestReport:
             ),
         )
 
-        result = testdir.runpytest('--force-testdox')
+        result = testdir.runpytest('--force-testdox', '--color=no')
 
-        assert 'should pass with parameters[param1]' in result.stdout.str()
-        assert 'should pass with parameters[param2]' in result.stdout.str()
+        result.assert_outcomes(passed=2)
+        assert '   should pass with parameters' in result.stdout.lines
+        assert '    ✓ param1' in result.stdout.lines
+        assert '    ✓ param2' in result.stdout.lines
 
     def test_decorator_order_should_not_affect_parametrize(self, testdir):
         testdir.makefile(
@@ -227,21 +229,29 @@ class TestReport:
             ),
         )
 
-        result = testdir.runpytest('--force-testdox')
+        result = testdir.runpytest('--force-testdox', '--color=no')
 
-        assert 'should pass with parameters[param1]' in result.stdout.str()
-        assert 'should pass with parameters[param2]' in result.stdout.str()
+        result.assert_outcomes(passed=2)
+        assert '   should pass with parameters' in result.stdout.lines
+        assert '    ✓ param1' in result.stdout.lines
+        assert '    ✓ param2' in result.stdout.lines
 
-    @pytest.mark.parametrize('enable_with_ini', [False, True])
+    @pytest.mark.parametrize(
+        'ini_value, option',
+        [
+            (None, None),
+            ('true', None),
+            ('false', '--testdox-group-params'),
+        ],
+    )
     @pytest.mark.parametrize('output_format', ['utf8', 'plaintext'])
     def test_should_group_parametrized_results(
-        self, testdir, enable_with_ini, output_format
+        self, testdir, ini_value, option, output_format
     ):
-        testdir.makeini(
-            '[pytest]\ntestdox_format = {}\ntestdox_group_params = {}'.format(
-                output_format, str(enable_with_ini).lower()
-            )
-        )
+        ini = '[pytest]\ntestdox_format = {}'.format(output_format)
+        if ini_value is not None:
+            ini += '\ntestdox_group_params = ' + ini_value
+        testdir.makeini(ini)
         testdir.makepyfile(
             """
             import pytest
@@ -260,8 +270,8 @@ class TestReport:
             """
         )
         args = ['--force-testdox', '--color=no']
-        if not enable_with_ini:
-            args.append('--testdox-group-params')
+        if option:
+            args.append(option)
         result = testdir.runpytest(*args)
 
         result.assert_outcomes(passed=2, failed=1, skipped=1)
@@ -282,9 +292,19 @@ class TestReport:
         assert lines[start : start + len(expected)] == expected
         assert lines.count(expected[0]) == 1
 
-    def test_should_keep_parametrized_output_unchanged_by_default(
-        self, testdir
+    @pytest.mark.parametrize(
+        'ini_value, option',
+        [
+            (None, '--no-testdox-group-params'),
+            ('false', None),
+            ('true', '--no-testdox-group-params'),
+        ],
+    )
+    def test_should_show_full_test_titles_when_grouping_is_disabled(
+        self, testdir, ini_value, option
     ):
+        if ini_value is not None:
+            testdir.makeini('[pytest]\ntestdox_group_params = ' + ini_value)
         testdir.makepyfile(
             """
             import pytest
@@ -294,11 +314,15 @@ class TestReport:
                 pass
             """
         )
-        result = testdir.runpytest('--force-testdox', '--color=no')
+        args = ['--force-testdox', '--color=no']
+        if option:
+            args.append(option)
+        result = testdir.runpytest(*args)
 
         result.assert_outcomes(passed=2)
         assert ' ✓ colors[blue]' in result.stdout.lines
         assert ' ✓ colors[green]' in result.stdout.lines
+        assert '   colors' not in result.stdout.lines
 
     def test_should_group_parametrized_fixtures_with_colors(self, testdir):
         testdir.makepyfile(

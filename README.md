@@ -48,8 +48,8 @@ terminal. If you want the testdox report no matter what, use the parameter
 
 ## Parametrized tests
 
-Use `pytest --testdox --testdox-group-params` to group parametrized cases
-under their test title:
+Parametrized cases are grouped under their test title by default when
+running `pytest --testdox`:
 
 ```python
 @pytest.mark.parametrize('parameter', ['blue', 'yellow', 'green'])
@@ -66,14 +66,17 @@ def test_passes_with_parameters(parameter):
 
 Each case keeps its own result indicator. The parent title has no result
 indicator. Custom parameter IDs and `@pytest.mark.it` titles are supported.
-The default output remains unchanged. To enable grouping in configuration:
+To show the full test title on each case instead, run
+`pytest --testdox --no-testdox-group-params` or disable grouping in configuration:
 
 ```ini
 [pytest]
-testdox_group_params = true
+testdox_group_params = false
 ```
 
-This option controls formatting; enable the reporter with `--testdox` or
+Use `--testdox-group-params` to enable grouping even when configuration
+disables it. Command-line options take precedence over configuration.
+These options control formatting; enable the reporter with `--testdox` or
 `--force-testdox` as usual.
 
 ## Markers

@@ -40,14 +40,21 @@ def pytest_addoption(parser: Parser):
     group.addoption(
         '--testdox-group-params',
         action='store_true',
-        default=False,
+        default=None,
         help='Group parametrized cases under their test title',
+    )
+    group.addoption(
+        '--no-testdox-group-params',
+        action='store_false',
+        dest='testdox_group_params',
+        default=None,
+        help='Show parametrized cases with the full test title on each line',
     )
     parser.addini(
         'testdox_group_params',
         help='Group parametrized cases under their test title',
         type='bool',
-        default=False,
+        default=True,
     )
 
 

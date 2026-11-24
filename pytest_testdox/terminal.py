@@ -16,9 +16,9 @@ class TestdoxTerminalReporter(TerminalReporter):  # type: ignore
         super().__init__(config, file)
         self._last_header_id: Optional[str] = None
         self._last_group_id: Optional[str] = None
-        self.group_params = config.getoption('testdox_group_params') or (
-            config.getini('testdox_group_params')
-        )
+        self.group_params = config.getoption('testdox_group_params')
+        if self.group_params is None:
+            self.group_params = config.getini('testdox_group_params')
         self.pattern_config = data_structures.PatternConfig(
             files=self.config.getini('python_files'),
             functions=self.config.getini('python_functions'),
