@@ -6,6 +6,14 @@ import pytest
 pytest_plugins = 'pytester'
 
 
+@pytest.fixture
+def testdir(testdir, monkeypatch):
+    # Inner pytest runs load our plugin explicitly, without installed plugins.
+    monkeypatch.setenv('PYTEST_DISABLE_PLUGIN_AUTOLOAD', '1')
+    testdir.makeconftest("pytest_plugins = 'pytest_testdox.plugin'")
+    return testdir
+
+
 @pytest.fixture(scope='session', autouse=True)
 def verify_target_path():
     import pytest_testdox

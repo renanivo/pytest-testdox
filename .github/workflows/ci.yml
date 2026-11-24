@@ -13,22 +13,28 @@ jobs:
       fail-fast: false
       matrix:
         python-version:
-          - "3.10"
           - "3.11"
           - "3.12"
           - "3.13"
           - "3.14"
           - "3.14t"
-          - "pypy-3.10"
+          - "3.15"
+          - "3.15t"
+          - "pypy-3.11"
         os: [ubuntu-latest, macos-latest]
         pytest:
           - "pytest>=6.0.0,<7.0.0"
           - "pytest>=7.0.0,<8.0.0"
           - "pytest>=8.0.0,<9.0.0"
+          - "pytest>=9.0.0"
         exclude:
           - python-version: "3.14"
             pytest: "pytest>=6.0.0,<7.0.0"
           - python-version: "3.14t"
+            pytest: "pytest>=6.0.0,<7.0.0"
+          - python-version: "3.15"
+            pytest: "pytest>=6.0.0,<7.0.0"
+          - python-version: "3.15t"
             pytest: "pytest>=6.0.0,<7.0.0"
 
     steps:
@@ -38,6 +44,7 @@ jobs:
         uses: actions/setup-python@v6
         with:
           python-version: ${{ matrix.python-version }}
+          allow-prereleases: true
 
       - name: Get pip cache dir
         id: pip-cache

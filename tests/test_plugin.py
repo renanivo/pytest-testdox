@@ -6,15 +6,6 @@ from pytest_testdox import constants
 
 
 class TestReport:
-    @pytest.fixture
-    def testdir(self, testdir):
-        testdir.makeconftest(
-            """
-            pytest_plugins = 'pytest_testdox.plugin'
-            """
-        )
-        return testdir
-
     def test_should_print_a_green_passing_test(self, testdir):
         testdir.makepyfile(
             """
@@ -240,6 +231,125 @@ class TestReport:
 
         assert 'should pass with parameters[param1]' in result.stdout.str()
         assert 'should pass with parameters[param2]' in result.stdout.str()
+
+    @pytest.mark.parametrize('enable_with_ini', [False, True])
+    @pytest.mark.parametrize('output_format', ['utf8', 'plaintext'])
+    def test_should_group_parametrized_results(
+        self, testdir, enable_with_ini, output_format
+    ):
+        testdir.makeini(
+            '[pytest]\ntestdox_format = {}\ntestdox_group_params = {}'.format(
+                output_format, str(enable_with_ini).lower()
+            )
+        )
+        testdir.makepyfile(
+            """
+            import pytest
+
+            @pytest.mark.parametrize('value', [
+                pytest.param(1, id='blue_sky[light]::day'),
+                pytest.param(0, id='failure'),
+                pytest.param(2, id='skip', marks=pytest.mark.skip),
+            ])
+            @pytest.mark.it('works with parameters')
+            def test_values(value):
+                assert value
+
+            def test_regular():
+                pass
+            """
+        )
+        args = ['--force-testdox', '--color=no']
+        if not enable_with_ini:
+            args.append('--testdox-group-params')
+        result = testdir.runpytest(*args)
+
+        result.assert_outcomes(passed=2, failed=1, skipped=1)
+        symbols = (
+            ('✓', '✗', '»')
+            if output_format == 'utf8'
+            else ('[x]', '[ ]', '>>>')
+        )
+        expected = [
+            '   works with parameters',
+            '    {} blue_sky[light]::day'.format(symbols[0]),
+            '    {} failure'.format(symbols[1]),
+            '    {} skip'.format(symbols[2]),
+            ' {} regular'.format(symbols[0]),
+        ]
+        lines = result.stdout.lines
+        start = lines.index(expected[0])
+        assert lines[start : start + len(expected)] == expected
+        assert lines.count(expected[0]) == 1
+
+    def test_should_keep_parametrized_output_unchanged_by_default(
+        self, testdir
+    ):
+        testdir.makepyfile(
+            """
+            import pytest
+
+            @pytest.mark.parametrize('value', ['blue', 'green'])
+            def test_colors(value):
+                pass
+            """
+        )
+        result = testdir.runpytest('--force-testdox', '--color=no')
+
+        result.assert_outcomes(passed=2)
+        assert ' ✓ colors[blue]' in result.stdout.lines
+        assert ' ✓ colors[green]' in result.stdout.lines
+
+    def test_should_group_parametrized_fixtures_with_colors(self, testdir):
+        testdir.makepyfile(
+            """
+            import pytest
+
+            @pytest.fixture(params=['blue_sky', 'green_field'])
+            def color(request):
+                return request.param
+
+            def test_colors(color):
+                pass
+            """
+        )
+        result = testdir.runpytest('--force-testdox', '--testdox-group-params')
+
+        result.assert_outcomes(passed=2)
+        lines = result.stdout.lines
+        start = lines.index('   colors')
+        assert lines[start + 1 : start + 3] == [
+            '   \033[92m ✓ blue_sky\033[0m',
+            '   \033[92m ✓ green_field\033[0m',
+        ]
+
+    def test_should_keep_groups_separate_for_tests_with_the_same_title(
+        self, testdir
+    ):
+        source = """
+            import pytest
+
+            class TestColors:
+                @pytest.mark.it('same title')
+                @pytest.mark.parametrize('value', ['blue', 'green'])
+                def test_first(self, value):
+                    pass
+
+                @pytest.mark.it('same title')
+                @pytest.mark.parametrize('value', ['blue', 'green'])
+                def test_second(self, value):
+                    pass
+        """
+        testdir.makepyfile(test_first=source, test_second=source)
+        result = testdir.runpytest(
+            '--force-testdox', '--testdox-group-params', '--color=no'
+        )
+
+        result.assert_outcomes(passed=8)
+        lines = result.stdout.lines
+        assert lines.count('   same title') == 4
+        assert lines.count('    ✓ blue') == 4
+        assert lines.count('    ✓ green') == 4
 
     def test_should_not_enable_plugin_when_test_run_out_of_tty(self, testdir):
         testdir.makepyfile(

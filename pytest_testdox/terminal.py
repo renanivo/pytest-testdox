@@ -15,6 +15,10 @@ class TestdoxTerminalReporter(TerminalReporter):  # type: ignore
     def __init__(self, config: Config, file: Optional[TextIO] = None) -> None:
         super().__init__(config, file)
         self._last_header_id: Optional[str] = None
+        self._last_group_id: Optional[str] = None
+        self.group_params = config.getoption('testdox_group_params') or (
+            config.getini('testdox_group_params')
+        )
         self.pattern_config = data_structures.PatternConfig(
             files=self.config.getini('python_files'),
             functions=self.config.getini('python_functions'),
@@ -49,7 +53,23 @@ class TestdoxTerminalReporter(TerminalReporter):  # type: ignore
         if report.when != 'call' and not report.skipped:
             return
 
-        result = data_structures.Result.create(report, self.pattern_config)
+        group_id = (
+            getattr(report, 'testdox_group_id', None)
+            if self.group_params
+            else None
+        )
+        if group_id is not None:
+            node = data_structures.Node.parse(
+                group_id,
+                self.pattern_config,
+                title=getattr(report, 'testdox_title', None),
+                class_name=getattr(report, 'testdox_class_name', None),
+            )
+            group_title = str(node)
+            node.title = report.testdox_param_id
+            result = data_structures.Result(report.outcome, node)
+        else:
+            result = data_structures.Result.create(report, self.pattern_config)
 
         for wrapper in self.result_wrappers:
             result = wrapper(result)
@@ -59,7 +79,11 @@ class TestdoxTerminalReporter(TerminalReporter):  # type: ignore
             self._tw.sep(' ')
             self._tw.line(result.header)
 
-        self._tw.line(str(result))
+        if group_id is not None and group_id != self._last_group_id:
+            self._tw.line('   ' + group_title.replace('\n', '\n   '))
+        self._last_group_id = group_id
+
+        self._tw.line(('   ' if group_id is not None else '') + str(result))
 
     def pytest_runtest_logstart(
         self, nodeid: str, location: Tuple[str, Optional[int], str]
