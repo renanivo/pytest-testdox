@@ -1,16 +1,4 @@
-import pytest
-
-
 class TestMarkers:
-    @pytest.fixture
-    def testdir(self, testdir):
-        testdir.makeconftest(
-            """
-            pytest_plugins = 'pytest_testdox.plugin'
-        """
-        )
-        return testdir
-
     def test_should_not_raise_warning_without_plugin_call(self, testdir):
         testdir.makepyfile(
             """

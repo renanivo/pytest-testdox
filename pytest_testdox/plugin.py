@@ -37,6 +37,25 @@ def pytest_addoption(parser: Parser):
         help='TestDox report format (plaintext|utf8)',
         default='utf8',
     )
+    group.addoption(
+        '--testdox-group-params',
+        action='store_true',
+        default=None,
+        help='Group parametrized cases under their test title',
+    )
+    group.addoption(
+        '--no-testdox-group-params',
+        action='store_false',
+        dest='testdox_group_params',
+        default=None,
+        help='Show parametrized cases with the full test title on each line',
+    )
+    parser.addini(
+        'testdox_group_params',
+        help='Group parametrized cases under their test title',
+        type='bool',
+        default=True,
+    )
 
 
 def should_enable_plugin(config: Config):
@@ -77,6 +96,12 @@ def pytest_runtest_makereport(
     result = yield
 
     report = result.get_result()
+
+    if hasattr(item, 'callspec'):
+        report.testdox_param_id = item.callspec.id
+        report.testdox_group_id = item.nodeid.removesuffix(
+            '[{}]'.format(item.callspec.id)
+        )
 
     testdox_title = next(
         (

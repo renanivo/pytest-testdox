@@ -10,6 +10,10 @@ A [TestDox format](https://en.wikipedia.org/wiki/TestDox) reporter for pytest.
 
 ## Install
 
+Requires Python 3.11 or newer. CI covers CPython through 3.15, including
+the free-threaded 3.14t and 3.15t builds, and pytest 9 or newer alongside
+older pytest versions where compatible.
+
 ```
 pip install pytest-testdox
 ```
@@ -41,6 +45,39 @@ When using `--testdox`, the plugin will disable itself when not running on a
 terminal. If you want the testdox report no matter what, use the parameter
 `--force-testdox` instead.
 
+
+## Parametrized tests
+
+Parametrized cases are grouped under their test title by default when
+running `pytest --testdox`:
+
+```python
+@pytest.mark.parametrize('parameter', ['blue', 'yellow', 'green'])
+def test_passes_with_parameters(parameter):
+    assert True
+```
+
+```text
+   passes with parameters
+    ✓ blue
+    ✓ yellow
+    ✓ green
+```
+
+Each case keeps its own result indicator. The parent title has no result
+indicator. Custom parameter IDs and `@pytest.mark.it` titles are supported.
+To show the full test title on each case instead, run
+`pytest --testdox --no-testdox-group-params` or disable grouping in configuration:
+
+```ini
+[pytest]
+testdox_group_params = false
+```
+
+Use `--testdox-group-params` to enable grouping even when configuration
+disables it. Command-line options take precedence over configuration.
+These options control formatting; enable the reporter with `--testdox` or
+`--force-testdox` as usual.
 
 ## Markers
 
