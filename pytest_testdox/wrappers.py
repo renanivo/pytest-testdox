@@ -1,13 +1,13 @@
 from __future__ import annotations
 
-from typing import Union
+from typing import ClassVar
 
 from pytest_testdox import formatters
 from pytest_testdox.data_structures import Result
 
 
 class Wrapper:
-    def __init__(self, wrapped: Union[Result, Wrapper]):
+    def __init__(self, wrapped: Result | Wrapper):
         self.wrapped = wrapped
 
     def __getattr__(self, name):
@@ -15,7 +15,7 @@ class Wrapper:
 
 
 class ColorWrapper(Wrapper):
-    _COLOR_BY_OUTCOME = {
+    _COLOR_BY_OUTCOME: ClassVar[dict[str, str]] = {
         'passed': '\033[92m',
         'failed': '\033[91m',
         'skipped': '\033[93m',
@@ -26,13 +26,11 @@ class ColorWrapper(Wrapper):
         color = self._COLOR_BY_OUTCOME.get(self.wrapped.outcome, '')
         reset = self._color_reset if color else ''
 
-        return '{color}{result}{reset}'.format(
-            color=color, result=self.wrapped, reset=reset
-        )
+        return f'{color}{self.wrapped}{reset}'
 
 
 class UTF8Wrapper(Wrapper):
-    _CHARACTER_BY_OUTCOME = {
+    _CHARACTER_BY_OUTCOME: ClassVar[dict[str, str]] = {
         'passed': ' ✓ ',
         'failed': ' ✗ ',
         'skipped': ' » ',

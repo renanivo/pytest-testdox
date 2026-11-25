@@ -149,18 +149,16 @@ class TestReport:
     def test_should_override_test_titles_with_title_mark(self, testdir):
         testdir.makefile(
             '.py',
-            test_module_name="""
+            test_module_name=f"""
             import pytest
 
-            @pytest.mark.{}('''
+            @pytest.mark.{constants.TITLE_MARK}('''
                 My Title
                 My precious title
             ''')
             def test_a_passing_test():
                 assert True
-            """.format(
-                constants.TITLE_MARK
-            ),
+            """,
         )
 
         result = testdir.runpytest('--force-testdox')
@@ -170,10 +168,10 @@ class TestReport:
     def test_should_override_class_names_with_class_name_mark(self, testdir):
         testdir.makefile(
             '.py',
-            test_module_name="""
+            test_module_name=f"""
             import pytest
 
-            @pytest.mark.{}('''
+            @pytest.mark.{constants.CLASS_NAME_MARK}('''
                 My Class
                 My precious class
             ''')
@@ -181,9 +179,7 @@ class TestReport:
 
                 def test_foo(self):
                     pass
-            """.format(
-                constants.CLASS_NAME_MARK
-            ),
+            """,
         )
 
         result = testdir.runpytest('--force-testdox')
@@ -195,16 +191,14 @@ class TestReport:
     ):
         testdir.makefile(
             '.py',
-            test_module_name="""
+            test_module_name=f"""
             import pytest
 
             @pytest.mark.parametrize('par', ['param1', 'param2'])
-            @pytest.mark.{}('should pass with parameters')
+            @pytest.mark.{constants.TITLE_MARK}('should pass with parameters')
             def test_a_passing_test(par):
                 assert True
-            """.format(
-                constants.TITLE_MARK
-            ),
+            """,
         )
 
         result = testdir.runpytest('--force-testdox', '--color=no')
@@ -217,16 +211,14 @@ class TestReport:
     def test_decorator_order_should_not_affect_parametrize(self, testdir):
         testdir.makefile(
             '.py',
-            test_module_name="""
+            test_module_name=f"""
             import pytest
 
-            @pytest.mark.{}('should pass with parameters')
+            @pytest.mark.{constants.TITLE_MARK}('should pass with parameters')
             @pytest.mark.parametrize('par', ['param1', 'param2'])
             def test_a_passing_test(par):
                 assert True
-            """.format(
-                constants.TITLE_MARK
-            ),
+            """,
         )
 
         result = testdir.runpytest('--force-testdox', '--color=no')
@@ -248,7 +240,7 @@ class TestReport:
     def test_should_group_parametrized_results(
         self, testdir, ini_value, option, output_format
     ):
-        ini = '[pytest]\ntestdox_format = {}'.format(output_format)
+        ini = f'[pytest]\ntestdox_format = {output_format}'
         if ini_value is not None:
             ini += '\ntestdox_group_params = ' + ini_value
         testdir.makeini(ini)
@@ -282,10 +274,10 @@ class TestReport:
         )
         expected = [
             '   works with parameters',
-            '    {} blue_sky[light]::day'.format(symbols[0]),
-            '    {} failure'.format(symbols[1]),
-            '    {} skip'.format(symbols[2]),
-            ' {} regular'.format(symbols[0]),
+            f'    {symbols[0]} blue_sky[light]::day',
+            f'    {symbols[1]} failure',
+            f'    {symbols[2]} skip',
+            f' {symbols[0]} regular',
         ]
         lines = result.stdout.lines
         start = lines.index(expected[0])

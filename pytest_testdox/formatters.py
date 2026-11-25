@@ -1,15 +1,14 @@
 import os
 import re
-from typing import List
 
 TRIM_SPACES_REGEX = r'(^[\s]+|[\s]+$)'
 
 
-def format_title(title, patterns: List[str]):
+def format_title(title, patterns: list[str]):
     return _remove_patterns(title, patterns).replace('_', ' ').strip()
 
 
-def format_class_name(class_name: str, patterns: List[str]):
+def format_class_name(class_name: str, patterns: list[str]):
     formatted = ''
 
     class_name = _remove_patterns(class_name, patterns)
@@ -23,7 +22,7 @@ def format_class_name(class_name: str, patterns: List[str]):
     return formatted.strip()
 
 
-def format_module_name(module_name: str, patterns: List[str]):
+def format_module_name(module_name: str, patterns: list[str]):
     return format_title(module_name.split('/')[-1], patterns)
 
 
@@ -61,29 +60,29 @@ def include_parametrized(title: str, original_title: str):
 
     parameters = original_title[first_bracket + 1 : last_bracket]
 
-    return '{title}[{parameters}]'.format(title=title, parameters=parameters)
+    return f'{title}[{parameters}]'
 
 
-def _remove_patterns(statement: str, patterns: List[str]):
+def _remove_patterns(statement: str, patterns: list[str]):
     for glob_pattern in patterns:
         pattern = glob_pattern.replace('*', '')
 
         if glob_pattern.startswith('*'):
-            pattern = '{}$'.format(pattern)
+            pattern = f'{pattern}$'
             statement = re.sub(pattern, '', statement)
 
         elif glob_pattern.endswith('*'):
-            pattern = '^{}'.format(pattern)
+            pattern = f'^{pattern}'
             statement = re.sub(pattern, '', statement)
 
         elif '*' in glob_pattern:
             infix_patterns = glob_pattern.split('*', 2)
-            infix_patterns[0] = '{}*'.format(infix_patterns[0])
-            infix_patterns[1] = '*{}'.format(infix_patterns[1])
+            infix_patterns[0] = f'{infix_patterns[0]}*'
+            infix_patterns[1] = f'*{infix_patterns[1]}'
             statement = _remove_patterns(statement, infix_patterns)
 
         else:
-            pattern = '^{}'.format(pattern)
+            pattern = f'^{pattern}'
             statement = re.sub(pattern, '', statement)
 
     return statement

@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import List, NamedTuple
+from typing import ClassVar, NamedTuple
 
 from _pytest.reports import TestReport
 
@@ -9,9 +9,9 @@ from pytest_testdox import formatters
 
 
 class PatternConfig(NamedTuple):
-    files: List[str]
-    functions: List[str]
-    classes: List[str]
+    files: list[str]
+    functions: list[str]
+    classes: list[str]
 
 
 @dataclass
@@ -66,7 +66,7 @@ class Result:
     outcome: str
     node: Node
 
-    _OUTCOME_REPRESENTATION = {
+    _OUTCOME_REPRESENTATION: ClassVar[dict[str, str]] = {
         'passed': ' [x] ',
         'failed': ' [ ] ',
         'skipped': ' >>> ',
