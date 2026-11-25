@@ -1,5 +1,5 @@
 import sys
-from typing import Generator
+from collections.abc import Generator
 
 import pytest
 
@@ -68,15 +68,12 @@ def should_enable_plugin(config: Config):
 def pytest_configure(config: Config):
     config.addinivalue_line(
         "markers",
-        "{}(title): Override testdox report test title".format(
-            constants.TITLE_MARK
-        ),
+        f"{constants.TITLE_MARK}(title): Override testdox report test title",
     )
     config.addinivalue_line(
         "markers",
-        "{}(title): Override testdox report class title".format(
-            constants.CLASS_NAME_MARK
-        ),
+        f"{constants.CLASS_NAME_MARK}(title): "
+        "Override testdox report class title",
     )
 
     if should_enable_plugin(config):
@@ -100,7 +97,7 @@ def pytest_runtest_makereport(
     if hasattr(item, 'callspec'):
         report.testdox_param_id = item.callspec.id
         report.testdox_group_id = item.nodeid.removesuffix(
-            '[{}]'.format(item.callspec.id)
+            f'[{item.callspec.id}]'
         )
 
     testdox_title = next(

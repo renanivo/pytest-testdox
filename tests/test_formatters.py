@@ -94,17 +94,14 @@ class TestTrimMultiLineText:
         assert formatters.trim_multi_line_text('  works   ') == 'works'
 
     def test_should_srip_spaces_from_multiple_lines(self):
-        assert (
-            formatters.trim_multi_line_text(
-                '''
+        assert formatters.trim_multi_line_text(
+            '''
             works when used in very specific
             conditions of temperature and pressure
         '''
-            )
-            == (
-                'works when used in very specific\n'
-                'conditions of temperature and pressure'
-            )
+        ) == (
+            'works when used in very specific\n'
+            'conditions of temperature and pressure'
         )
 
 
@@ -118,23 +115,24 @@ class TestFormatResult:
         self,
     ):
         text = (
-            'first line{0}' 'second line{0}' 'third line{0}' 'fourth line'
-        ).format(os.linesep)
+            f'first line{os.linesep}second line{os.linesep}'
+            f'third line{os.linesep}fourth line'
+        )
         assert formatters.format_result_str('>>> ', text) == (
-            '>>> first line{0}'
-            '    second line{0}'
-            '    third line{0}'
-            '    fourth line'.format(os.linesep)
+            f'>>> first line{os.linesep}'
+            f'    second line{os.linesep}'
+            f'    third line{os.linesep}'
+            '    fourth line'
         )
 
     def test_should_remove_empty_lines(self):
         text = (
-            'first line{0}' '{0}' 'second line{0}' '{0}' '{0}' 'third line'
-        ).format(os.linesep)
+            f'first line{os.linesep}{os.linesep}second line'
+            f'{os.linesep}{os.linesep}{os.linesep}third line'
+        )
         assert formatters.format_result_str('>>> ', text) == (
-            '>>> first line{0}'
-            '    second line{0}'
-            '    third line'.format(os.linesep)
+            f'>>> first line{os.linesep}'
+            f'    second line{os.linesep}    third line'
         )
 
 

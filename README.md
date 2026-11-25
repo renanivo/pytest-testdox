@@ -18,6 +18,22 @@ older pytest versions where compatible.
 pip install pytest-testdox
 ```
 
+## Development
+
+Install [uv](https://docs.astral.sh/uv/getting-started/installation/), then run:
+
+```sh
+uv sync --locked
+make check test
+```
+
+`make check` runs Pyrefly, Ruff lint, and Ruff's formatting check. Use
+`make format` to format code and sort imports. `uv.lock` pins development
+dependencies; run `uv lock --upgrade` to update them.
+
+Build the wheel and source distribution with `uv build` (or `make build`).
+The artifacts are written to `dist/`.
+
 ## Usage
 
 Add the parameter `--testdox` when running `pytest`. For example:
@@ -88,8 +104,7 @@ Override the class name in the testdox report. For example:
 ```python
 # test_demo.py
 @pytest.mark.describe('create_file')
-class TestCreateFile():
-
+class TestCreateFile:
     def test_creates_a_file_in_the_so(self):
         pass
 ```
@@ -109,8 +124,7 @@ Override the test title in the testdox report. For example:
 
 ```python
 # test_demo.py
-class TestCreateFile():
-
+class TestCreateFile:
     @pytest.mark.it('Creates a local file in the SO')
     def test_creates_a_file_in_the_so(self):
         pass

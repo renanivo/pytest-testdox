@@ -1,4 +1,4 @@
-from typing import List, Optional, TextIO, Tuple
+from typing import TextIO
 
 try:
     from pytest import Config, TestReport  # type: ignore
@@ -12,10 +12,10 @@ from pytest_testdox import data_structures, wrappers
 
 
 class TestdoxTerminalReporter(TerminalReporter):  # type: ignore
-    def __init__(self, config: Config, file: Optional[TextIO] = None) -> None:
+    def __init__(self, config: Config, file: TextIO | None = None) -> None:
         super().__init__(config, file)
-        self._last_header_id: Optional[str] = None
-        self._last_group_id: Optional[str] = None
+        self._last_header_id: str | None = None
+        self._last_group_id: str | None = None
         self.group_params = config.getoption('testdox_group_params')
         if self.group_params is None:
             self.group_params = config.getini('testdox_group_params')
@@ -24,7 +24,7 @@ class TestdoxTerminalReporter(TerminalReporter):  # type: ignore
             functions=self.config.getini('python_functions'),
             classes=self.config.getini('python_classes'),
         )
-        self.result_wrappers: List[type] = []
+        self.result_wrappers: list[type] = []
 
         if config.getini('testdox_format') != 'plaintext':
             self.result_wrappers.append(wrappers.UTF8Wrapper)
@@ -86,7 +86,7 @@ class TestdoxTerminalReporter(TerminalReporter):  # type: ignore
         self._tw.line(('   ' if group_id is not None else '') + str(result))
 
     def pytest_runtest_logstart(
-        self, nodeid: str, location: Tuple[str, Optional[int], str]
+        self, nodeid: str, location: tuple[str, int | None, str]
     ) -> None:
         # Ensure that the path is printed before the
         # 1st test of a module starts running.

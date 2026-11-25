@@ -121,7 +121,7 @@ class TestResult:
         )
 
     def test_str_should_format_result_str(self, node):
-        node.title = 'some{}text'.format(os.linesep)
+        node.title = f'some{os.linesep}text'
         result = Result('passed', node)
 
         assert formatters.format_result_str(' [x] ', node.title) in str(result)

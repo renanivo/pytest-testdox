@@ -1,9 +1,72 @@
-[tool.black]
-skip-string-normalization = true
+[build-system]
+requires = ["uv_build>=0.13.1,<0.14.0"]
+build-backend = "uv_build"
+
+[project]
+name = "pytest-testdox"
+version = "3.1.0"
+description = "A testdox format reporter for pytest"
+readme = "README.md"
+requires-python = ">=3.11"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [{ name = "Renan Ivo", email = "renanivom@gmail.com" }]
+keywords = ["pytest", "testdox", "test", "report", "bdd"]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Framework :: Pytest",
+    "Intended Audience :: Developers",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Programming Language :: Python :: 3.15",
+    "Programming Language :: Python :: Implementation :: CPython",
+    "Programming Language :: Python :: Implementation :: PyPy",
+    "Programming Language :: Python",
+    "Topic :: Software Development :: Testing",
+]
+dependencies = ["pytest>=6.0.0"]
+
+[project.urls]
+Homepage = "https://github.com/renanivo/pytest-testdox"
+
+[project.entry-points.pytest11]
+testdox = "pytest_testdox.plugin"
+
+[dependency-groups]
+dev = [
+    "bumpversion~=0.6.0",
+    "pyrefly==1.5.0",
+    "pytest>=6.0.0",
+    "pytest-cov~=7.1.0",
+    "ruff>=0.14.0,<1",
+]
+
+[tool.uv.build-backend]
+module-root = ""
+source-include = ["tests/**", "Makefile", "setup.cfg", "uv.lock"]
+
+[tool.pyrefly]
+project-includes = ["pytest_testdox/**/*.py", "tests/**/*.py"]
+preset = "legacy"
+ignore-missing-imports = ["*"]
+
+[tool.coverage.run]
+omit = ["*/*/tests/*"]
+
+[tool.ruff]
 line-length = 79
+target-version = "py311"
 
-[tool.mypy]
-ignore_missing_imports = true
+[tool.ruff.lint]
+select = ["E", "F", "FURB", "I", "INP", "RUF", "SIM", "UP", "W"]
 
-[tool.isort]
-known_first_party = "pytest_testdox"
+[tool.ruff.lint.isort]
+known-first-party = ["pytest_testdox"]
+
+[tool.ruff.format]
+quote-style = "preserve"
