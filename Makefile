@@ -8,8 +8,9 @@ help:  ## This help
 install:  ## Install package for development
 	@uv sync --locked
 
+# Fixtures load the plugin after coverage starts, avoiding unmeasured imports.
 test:
-	@$(UV_RUN) pytest tests/ --cov pytest_testdox --cov-report=xml --junitxml=junit.xml -o junit_family=legacy
+	@$(UV_RUN) pytest -p no:testdox tests/ --cov pytest_testdox --cov-report=xml --junitxml=junit.xml -o junit_family=legacy
 
 check:  ## Run static code checks
 	@$(UV_RUN) mypy pytest_testdox tests
