@@ -40,7 +40,7 @@ testdox = "pytest_testdox.plugin"
 [dependency-groups]
 dev = [
     "bumpversion~=0.6.0",
-    "mypy==2.4.1",
+    "pyrefly==1.5.0",
     "pytest>=6.0.0",
     "pytest-cov~=7.1.0",
     "ruff>=0.14.0,<1",
@@ -50,8 +50,10 @@ dev = [
 module-root = ""
 source-include = ["tests/**", "Makefile", "setup.cfg", "uv.lock"]
 
-[tool.mypy]
-ignore_missing_imports = true
+[tool.pyrefly]
+project-includes = ["pytest_testdox/**/*.py", "tests/**/*.py"]
+preset = "legacy"
+ignore-missing-imports = ["*"]
 
 [tool.coverage.run]
 omit = ["*/*/tests/*"]

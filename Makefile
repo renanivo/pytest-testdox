@@ -13,7 +13,7 @@ test:
 	@$(UV_RUN) pytest -p no:testdox tests/ --cov pytest_testdox --cov-report=term-missing --cov-report=xml --junitxml=junit.xml -o junit_family=legacy
 
 check:  ## Run static code checks
-	@$(UV_RUN) mypy pytest_testdox tests
+	@$(UV_RUN) pyrefly check
 	@$(UV_RUN) ruff check .
 	@$(UV_RUN) ruff format --check .
 

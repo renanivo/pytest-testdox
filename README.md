@@ -27,7 +27,7 @@ uv sync --locked
 make check test
 ```
 
-`make check` runs Mypy, Ruff lint, and Ruff's formatting check. Use
+`make check` runs Pyrefly, Ruff lint, and Ruff's formatting check. Use
 `make format` to format code and sort imports. `uv.lock` pins development
 dependencies; run `uv lock --upgrade` to update them.
 
